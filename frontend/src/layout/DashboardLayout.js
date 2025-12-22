@@ -2,7 +2,8 @@ import React from "react";
 import { Box } from "@mui/material";
 import MenuDrawer from "../MenuDrawer";
 
-const DRAWER_WIDTH = 280;
+const DRAWER_WIDTH = 280;   // ✅ ADD
+const MINI_WIDTH = 72;      // ✅ ADD
 
 const DashboardLayout = ({ drawerOpen, setDrawerOpen, children }) => {
   return (
@@ -15,16 +16,24 @@ const DashboardLayout = ({ drawerOpen, setDrawerOpen, children }) => {
         sx={{
           flexGrow: 1,
           p: 3,
-          transition: "0.3s",
-          marginLeft: drawerOpen ? `${DRAWER_WIDTH}px` : "0px",
+          transition: "all 0.3s ease",
+          marginLeft: drawerOpen
+            ? `${DRAWER_WIDTH}px`
+            : `${MINI_WIDTH}px`,
           width: drawerOpen
             ? `calc(100% - ${DRAWER_WIDTH}px)`
-            : "100%",
+            : `calc(100% - ${MINI_WIDTH}px)`,
           minHeight: "100vh",
-          bgcolor: 'background.default'
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "flex-start",
+          bgcolor: "background.default",
         }}
       >
-        {children}
+        {/* Content centered */}
+        <Box sx={{ width: "100%", maxWidth: 1200 }}>
+          {children}
+        </Box>
       </Box>
     </Box>
   );

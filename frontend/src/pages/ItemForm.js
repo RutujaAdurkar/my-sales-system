@@ -7,11 +7,12 @@ import {
   Select,
   Paper,
   Button,
+
 } from "@mui/material";
 
 const FormRow = ({ label, children }) => (
   <Box sx={{ display: "flex", alignItems: "center", mb: 1.5, gap: 2 }}>
-    <Box sx={{ width: "180px", fontWeight: 600, fontSize: "13px" }}>
+    <Box sx={{ width: { xs: '90px', sm: '110px' }, fontWeight: 600, fontSize: "13px" }}>
       {label}
     </Box>
     <Box sx={{ flexGrow: 1 }}>{children}</Box>
@@ -54,7 +55,9 @@ const initialFormState = {
 
 // ✅ ItemForm can work alone OR receive editData + onClose from list page
 const ItemForm = ({ editData = null, onClose }) => {
-  const [formData, setFormData] = useState(initialFormState);
+  const [formData, setFormData] = useState(
+    JSON.parse(localStorage.getItem("draftItemForm")) || initialFormState
+  );
 
   // dropdown lists
   const [statisticGroups, setStatisticGroups] = useState([]);
@@ -64,10 +67,14 @@ const ItemForm = ({ editData = null, onClose }) => {
   const [typeSelections, setTypeSelections] = useState([]);
   const [errors, setErrors] = useState({});
 
+   
+
   // ------------------------------------------------
   // LOAD DROPDOWN OPTIONS FROM BACKEND
   // ------------------------------------------------
   useEffect(() => {
+
+
     const loadLookups = async () => {
       try {
         const [sgRes, mRes, pfRes, subRes, tsRes] = await Promise.all([
@@ -270,52 +277,7 @@ const ItemForm = ({ editData = null, onClose }) => {
     setErrors(prev => ({ ...prev, [field]: msg }));
     return !msg;
   };
-
-  // const validateForm = () => {
-  //   const required = Object.keys(initialFormState);
-  //   let newErrors = {};
-
-  //   // required fields
-  //   required.forEach((f) => {
-  //     if (!formData[f] || formData[f].toString().trim() === "") newErrors[f] = "Required";
-  //   });
-
-  //   // numeric validations
-  //   const numericFields = ["basicPrice","netPrice","value","openingQty","reorderLevel","minLevel","maxLevel","custReorder","transitDays","customDuty","factor"];
-  //   numericFields.forEach((f) => {
-  //     const v = formData[f];
-  //     if (v !== "" && v !== null && v !== undefined && v.toString().trim() !== "") {
-  //       if (!/^\d+(\.\d+)?$/.test(v)) newErrors[f] = "Must be a non-negative number";
-  //     }
-  //   });
-
-  //   // hsn
-  //   if (formData.hsnCode && !/^\d+$/.test(formData.hsnCode)) newErrors.hsnCode = "Must be numeric";
-
-  //   // taxes
-  //   ["cgst","sgst","igst"].forEach((f) => {
-  //     const v = formData[f];
-  //     if (v !== "" && v !== null && v !== undefined && v.toString().trim() !== "") {
-  //       if (!/^\d+(\.\d+)?$/.test(v)) newErrors[f] = "Must be a number";
-  //       else if (Number(v) < 0 || Number(v) > 100) newErrors[f] = "Enter 0 - 100";
-  //     }
-  //   });
-
-  //   // date check
-  //   if (formData.validity && !/^\d{4}-\d{2}-\d{2}$/.test(formData.validity)) newErrors.validity = "Invalid date";
-
-  //   // comments length
-  //   if (formData.comments && formData.comments.length > 500) newErrors.comments = "Max 500 chars";
-
-  //   // min/max relationship
-  //   if (formData.minLevel !== "" && formData.maxLevel !== "" && Number(formData.minLevel) > Number(formData.maxLevel)) {
-  //     newErrors.minLevel = "Min should be <= Max";
-  //     newErrors.maxLevel = "Max should be >= Min";
-  //   }
-
-  //   setErrors(newErrors);
-  //   return Object.keys(newErrors).length === 0;
-  // };
+  
 const requiredFields = [
   "statisticGroupId",
   "articleNo",
@@ -491,7 +453,7 @@ const handleSubmit = async () => {
 >
       <Grid container spacing={2} columns={12}>
         {/* Statistic Group Id DROPDOWN (full width row) */}
-        <Grid size  xs={12} sm={4}>
+        <Grid item xs={12}>
           <FormRow label="Statistic Group Id:">
             <Select
               fullWidth
@@ -519,7 +481,7 @@ const handleSubmit = async () => {
         </Grid>
 
         {/* MAIN 3-COLUMN FORM */}
-        <Grid size xs={12}>
+        <Grid item xs={12} >
           <Box
             sx={{
               p: 2,
@@ -535,9 +497,10 @@ const handleSubmit = async () => {
             >
               {/* COLUMN 1 */}
               <Grid
-                size
+                item
                 xs={12}
                 sm={4}
+                md={4}
                 sx={{ display: "flex", flexDirection: "column", gap: 2 }}
               >
                 <Box>
@@ -707,9 +670,10 @@ const handleSubmit = async () => {
 
               {/* COLUMN 2 */}
               <Grid
-                size
+                item
                 xs={12}
                 sm={4}
+                md={4}
                 sx={{ display: "flex", flexDirection: "column", gap: 2 }}
               >
                 <Box>
@@ -826,12 +790,12 @@ const handleSubmit = async () => {
                     displayEmpty
                   > */}
                   <Select
-  fullWidth
-  size="small"
-  value={formData.productFocus ?? ""}
-  onChange={handleChange("productFocus")}
-  displayEmpty
->
+                    fullWidth
+                    size="small"
+                    value={formData.productFocus ?? ""}
+                    onChange={handleChange("productFocus")}
+                    displayEmpty
+                  >
 
                  <MenuItem value="">
                    <em>Select Focus</em>
@@ -867,9 +831,10 @@ const handleSubmit = async () => {
 
               {/* COLUMN 3 */}
               <Grid
-                size
+                item
                 xs={12}
                 sm={4}
+                md={4}
                 sx={{ display: "flex", flexDirection: "column", gap: 2 }}
               >
                 <Box>
@@ -1022,7 +987,7 @@ const handleSubmit = async () => {
         </Grid>
 
         {/* BUTTONS */}
-        <Grid size xs={12}>
+        <Grid item xs={12}>
           <Box sx={{ display: "flex", justifyContent: "center", gap: 3, mt: 3 }}>
             <Button variant="contained" sx={{ width: 120 }} onClick={handleSubmit}>
               {editData ? "Update" : "Submit"}
@@ -1044,3 +1009,242 @@ const handleSubmit = async () => {
 };
 
 export default ItemForm;
+
+
+// import React, { useState, useEffect } from "react";
+// import {
+//   Box,
+//   Grid,
+//   TextField,
+//   MenuItem,
+//   Select,
+//   Paper,
+//   Button,
+//   Stepper,
+//   Step,
+//   StepLabel
+// } from "@mui/material";
+
+// /* small row layout */
+// const FormRow = ({ label, children }) => (
+//   <Box sx={{ display: "flex", alignItems: "center", mb: 1.5, gap: 2 }}>
+//     <Box sx={{ width: 120, fontWeight: 600, fontSize: "13px" }}>
+//       {label}
+//     </Box>
+//     <Box sx={{ flexGrow: 1 }}>{children}</Box>
+//   </Box>
+// );
+
+// /* initial fields */
+// const initialFormState = {
+//   statisticGroupId: "",
+//   articleNo: "",
+//   typeDesignation: "",
+//   masterId: "",
+//   ffhw: "",
+//   validity: "",
+//   basicPrice: "",
+//   storeLocation: "",
+//   openingQty: "",
+//   reorderLevel: "",
+//   minLevel: "",
+//   maxLevel: "",
+//   custReorder: "",
+//   factor: "",
+//   hsnCode: "",
+//   cgst: "",
+//   sgst: "",
+//   typeSelection: "Component",
+//   selectionCode: "",
+//   units: "Nos",
+//   netPrice: "",
+//   value: "",
+//   comments: "",
+//   substituteItem: "",
+//   exciseHeadNo: "",
+//   quotationFor: "Rs",
+//   transitDays: "",
+//   customDuty: "",
+//   productFocus: "",
+//   igst: "",
+// };
+
+// const ItemForm = ({ onClose }) => {
+
+//   const [formData, setFormData] = useState(initialFormState);
+//   const [, setErrors] = useState({});
+//   const [step, setStep] = useState(1);
+//   const [statisticGroups, setStatisticGroups] = useState([]);
+
+//   const requiredStepFields = [
+//     ["statisticGroupId", "articleNo"],
+//     ["netPrice", "value"],
+//     ["comments"]
+//   ];
+
+//   /* Restore saved draft */
+//   useEffect(() => {
+//     const saved = localStorage.getItem("draftItemForm");
+//     if (saved) setFormData(JSON.parse(saved));
+//   }, []);
+
+//   /* save draft */
+//   useEffect(() => {
+//     localStorage.setItem("draftItemForm", JSON.stringify(formData));
+//   }, [formData]);
+
+//   /* load dropdown values */
+//   useEffect(() => {
+//     const loadLookup = async () => {
+//       try {
+//         const res = await fetch("http://localhost:5000/api/dropdowns/statistic-groups");
+//         const data = await res.json();
+//         setStatisticGroups(data);
+//       } catch (err) {}
+//     };
+//     loadLookup();
+//   }, []);
+
+//   /* validate full form */
+//   const validateStep = () => {
+//     let newErrors = {};
+
+//     const required = requiredStepFields[step - 1];
+
+//     required.forEach((f) => {
+//       const v = formData[f];
+
+//       if (
+//         v === "" ||
+//         v === null ||
+//         v === undefined ||
+//         (typeof v === "string" && v.trim() === "")
+//       ) {
+//         newErrors[f] = "Required";
+//       }
+//     });
+
+//     setErrors(newErrors);
+//     return Object.keys(newErrors).length === 0;
+//   };
+
+//   /* change handler */
+//   const handleChange = (field) => (e) => {
+//     setFormData({ ...formData, [field]: e.target.value });
+//   };
+
+//   /* submit form to DB */
+//   const handleFinalDBSubmit = async () => {
+//     const payload = { ...formData };
+
+//     await fetch("http://localhost:5000/api/itemmaster", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json"},
+//       body: JSON.stringify(payload)
+//     });
+
+//     alert("✔ Saved Successfully");
+
+//     localStorage.removeItem("draftItemForm");
+
+//     if (onClose) onClose();
+//     else setFormData(initialFormState);
+//   };
+
+//   /* next handler */
+//   const handleNext = async () => {
+
+//     if (!validateStep()) return;
+
+//     if (step < 3) {
+//       setStep(step + 1);
+//     } else {
+//       await handleFinalDBSubmit();  // complete submit only at final step
+//     }
+//   };
+
+//   return (
+//     <Paper sx={{ p: 2, maxWidth: 1400, mx: "auto", mt: 2 }}>
+
+//       <Stepper activeStep={step - 1} sx={{ mb: 3 }}>
+//         <Step><StepLabel>Basic</StepLabel></Step>
+//         <Step><StepLabel>Pricing</StepLabel></Step>
+//         <Step><StepLabel>Others</StepLabel></Step>
+//       </Stepper>
+
+//       <Grid container spacing={2}>
+
+//         {step === 1 && (
+//           <Grid item xs={12}>
+//             <FormRow label="Statistic Group Id:">
+//               <Select
+//                 fullWidth
+//                 size="small"
+//                 value={formData.statisticGroupId}
+//                 onChange={handleChange("statisticGroupId")}
+//               >
+//                 <MenuItem value=""><em>Select</em></MenuItem>
+//                 {statisticGroups.map(g => (
+//                   <MenuItem key={g.GroupId} value={g.GroupId}>
+//                     {g.GroupName}
+//                   </MenuItem>
+//                 ))}
+//               </Select>
+//             </FormRow>
+
+//             <FormRow label="Article No:">
+//               <TextField fullWidth size="small"
+//                 value={formData.articleNo}
+//                 onChange={handleChange("articleNo")}
+//               />
+//             </FormRow>
+//           </Grid>
+//         )}
+
+//         {step === 2 && (
+//           <Grid item xs={12}>
+//             <FormRow label="Net Price:">
+//               <TextField fullWidth size="small"
+//                 value={formData.netPrice}
+//                 onChange={handleChange("netPrice")}
+//               />
+//             </FormRow>
+
+//             <FormRow label="Value:">
+//               <TextField fullWidth size="small"
+//                 value={formData.value}
+//                 onChange={handleChange("value")}
+//               />
+//             </FormRow>
+//           </Grid>
+//         )}
+
+//         {step === 3 && (
+//           <Grid item xs={12}>
+//             <FormRow label="Comments:">
+//               <TextField fullWidth size="small"
+//                 multiline rows={3}
+//                 value={formData.comments}
+//                 onChange={handleChange("comments")}
+//               />
+//             </FormRow>
+//           </Grid>
+//         )}
+
+//         <Grid item xs={12} textAlign="center" mt={3}>
+//           <Button
+//             variant="contained"
+//             sx={{ width: 140 }}
+//             onClick={handleNext}
+//           >
+//             {step < 3 ? "Next" : "Submit"}
+//           </Button>
+//         </Grid>
+
+//       </Grid>
+
+//     </Paper>
+//   );
+// };
+
+// export default ItemForm;

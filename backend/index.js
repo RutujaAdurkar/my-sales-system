@@ -7,6 +7,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Serve uploaded files publicly from /uploads
+app.use('/uploads', express.static('uploads'));
+
 
 // SQL CONFIG
 const config = {
@@ -27,6 +30,10 @@ app.use((req, res, next) => {
 // ROUTES IMPORT
 const itemRoutes = require("./routes/itemRoutes");
 const dropdownRoutes = require("./routes/dropdownRoutes");
+const appReportRoutes = require("./routes/appReportRoutes");
+const appDropdownRoutes = require("./routes/appDropdownRoutes");
+const paymentFollowUpRoute = require("./routes/paymentFollowUp");
+const dropdownRoute = require("./routes/dropdown");
 
 // TEST API
 app.get("/", (req, res) => {
@@ -59,12 +66,13 @@ app.get("/api/emp", async (req, res) => {
 // ITEMMASTER API
 app.use("/api", itemRoutes);
 app.use("/api/dropdowns", dropdownRoutes);
+app.use("/api/appReport", appReportRoutes);
+app.use("/api/appDropdowns", appDropdownRoutes);
+app.use("/api/payment", paymentFollowUpRoute);
+app.use("/api/dropdown", dropdownRoute);
 
 // START SERVER
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
-
-
-
