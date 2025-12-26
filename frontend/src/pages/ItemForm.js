@@ -66,6 +66,8 @@ const ItemForm = ({ editData = null, onClose }) => {
   const [substituteItems, setSubstituteItems] = useState([]);
   const [typeSelections, setTypeSelections] = useState([]);
   const [errors, setErrors] = useState({});
+  // read-only view mode (for "View" action)
+  const [readOnly, setReadOnly] = useState(false);
 
    
 
@@ -111,7 +113,10 @@ const ItemForm = ({ editData = null, onClose }) => {
   // LOAD VALUES IN EDIT MODE (when editData is passed)
   // ------------------------------------------------
   useEffect(() => {
-    if (!editData) return;
+    if (!editData) {
+      setReadOnly(false);
+      return;
+    }
 
     // Map DB field names to form fields (adjust if your column names differ)
     const mapped = {
@@ -150,6 +155,8 @@ const ItemForm = ({ editData = null, onClose }) => {
     };
 
     setFormData({ ...initialFormState, ...mapped });
+    // if editData carries a view/readOnly flag, honor it
+    setReadOnly(!!(editData.readOnly || editData.view));
   }, [editData]);
 
   // ------------------------------------------------
@@ -464,6 +471,7 @@ const handleSubmit = async () => {
               error={!!errors.statisticGroupId}
               sx={{ backgroundColor: 'background.paper' }}
               displayEmpty
+              disabled={readOnly}
             >
               <MenuItem value="">
                 <em>Select Group</em>
@@ -514,6 +522,7 @@ const handleSubmit = async () => {
                       error={!!errors.articleNo}
                       helperText={errors.articleNo}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
 
@@ -527,6 +536,7 @@ const handleSubmit = async () => {
                       error={!!errors.typeDesignation}
                       helperText={errors.typeDesignation}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
 
@@ -541,6 +551,7 @@ const handleSubmit = async () => {
                       error={!!errors.masterId}
                       sx={{ backgroundColor: 'background.paper' }}
                       displayEmpty
+                      disabled={readOnly}
                     >
                       <MenuItem value="">
                         <em>Select Master</em>
@@ -566,6 +577,7 @@ const handleSubmit = async () => {
                       error={!!errors.ffhw}
                       helperText={errors.ffhw}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
 
@@ -580,6 +592,7 @@ const handleSubmit = async () => {
                       error={!!errors.validity}
                       helperText={errors.validity}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
 
@@ -593,6 +606,7 @@ const handleSubmit = async () => {
                       error={!!errors.basicPrice}
                       helperText={errors.basicPrice}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
 
@@ -606,6 +620,7 @@ const handleSubmit = async () => {
                       error={!!errors.storeLocation}
                       helperText={errors.storeLocation}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
 
@@ -619,6 +634,7 @@ const handleSubmit = async () => {
                       error={!!errors.openingQty}
                       helperText={errors.openingQty}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
 
@@ -632,6 +648,7 @@ const handleSubmit = async () => {
                       error={!!errors.transitDays}
                       helperText={errors.transitDays}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
 
@@ -645,6 +662,7 @@ const handleSubmit = async () => {
                       error={!!errors.customDuty}
                       helperText={errors.customDuty}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
 
@@ -661,6 +679,7 @@ const handleSubmit = async () => {
                       error={!!errors.comments}
                       helperText={errors.comments}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
                 </Box>
@@ -687,6 +706,7 @@ const handleSubmit = async () => {
                       error={!!errors.reorderLevel}
                       helperText={errors.reorderLevel}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
 
@@ -700,6 +720,7 @@ const handleSubmit = async () => {
                       error={!!errors.minLevel}
                       helperText={errors.minLevel}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
 
@@ -713,6 +734,7 @@ const handleSubmit = async () => {
                       error={!!errors.maxLevel}
                       helperText={errors.maxLevel}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
 
@@ -726,6 +748,7 @@ const handleSubmit = async () => {
                       error={!!errors.custReorder}
                       helperText={errors.custReorder}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
 
@@ -739,6 +762,7 @@ const handleSubmit = async () => {
                       error={!!errors.factor}
                       helperText={errors.factor}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
 
@@ -752,6 +776,7 @@ const handleSubmit = async () => {
                       error={!!errors.hsnCode}
                       helperText={errors.hsnCode}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
 
@@ -765,6 +790,7 @@ const handleSubmit = async () => {
                       error={!!errors.cgst}
                       helperText={errors.cgst}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
 
@@ -778,6 +804,7 @@ const handleSubmit = async () => {
                       error={!!errors.sgst}
                       helperText={errors.sgst}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
 
@@ -795,6 +822,7 @@ const handleSubmit = async () => {
                     value={formData.productFocus ?? ""}
                     onChange={handleChange("productFocus")}
                     displayEmpty
+                    disabled={readOnly}
                   >
 
                  <MenuItem value="">
@@ -822,6 +850,7 @@ const handleSubmit = async () => {
                       error={!!errors.igst}
                       helperText={errors.igst}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
                 </Box>
@@ -847,6 +876,7 @@ const handleSubmit = async () => {
                       displayEmpty
                      // error={!!errors.typeSelection}
                      // sx={{ background: "white" }}
+                     disabled={readOnly}
                     >
                     <MenuItem value="" >
                       <em>Select Type</em>
@@ -873,6 +903,7 @@ const handleSubmit = async () => {
                       error={!!errors.selectionCode}
                       helperText={errors.selectionCode}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
 
@@ -885,6 +916,7 @@ const handleSubmit = async () => {
                       onBlur={() => validateField("units")}
                       error={!!errors.units}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     >
                       <MenuItem value="Nos">Nos</MenuItem>
                       <MenuItem value="Set">Set</MenuItem>
@@ -905,6 +937,7 @@ const handleSubmit = async () => {
                       error={!!errors.netPrice}
                       helperText={errors.netPrice}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
 
@@ -918,6 +951,7 @@ const handleSubmit = async () => {
                       error={!!errors.value}
                       helperText={errors.value}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
 
@@ -932,6 +966,7 @@ const handleSubmit = async () => {
                       error={!!errors.substituteItem}
                       sx={{ backgroundColor: 'background.paper' }}
                       displayEmpty
+                      disabled={readOnly}
                     >
                       <MenuItem value="">
                         <em>Select Substitute</em>
@@ -957,6 +992,7 @@ const handleSubmit = async () => {
                       error={!!errors.exciseHeadNo}
                       helperText={errors.exciseHeadNo}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     />
                   </FormRow>
 
@@ -969,6 +1005,7 @@ const handleSubmit = async () => {
                       onBlur={() => validateField("quotationFor")}
                       error={!!errors.quotationFor}
                       sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
                     >
                       <MenuItem value="Rs">Rs</MenuItem>
                       <MenuItem value="Euro">Euro</MenuItem>
@@ -989,9 +1026,11 @@ const handleSubmit = async () => {
         {/* BUTTONS */}
         <Grid item xs={12}>
           <Box sx={{ display: "flex", justifyContent: "center", gap: 3, mt: 3 }}>
-            <Button variant="contained" sx={{ width: 120 }} onClick={handleSubmit}>
-              {editData ? "Update" : "Submit"}
-            </Button>
+            {!readOnly && (
+              <Button variant="contained" sx={{ width: 120 }} onClick={handleSubmit}>
+                {editData ? "Update" : "Submit"}
+              </Button>
+            )}
 
             <Button
               variant="outlined"
@@ -999,7 +1038,7 @@ const handleSubmit = async () => {
               sx={{ width: 120 }}
               onClick={handleCancel}
             >
-              Cancel
+              {readOnly ? 'Close' : 'Cancel'}
             </Button>
           </Box>
         </Grid>

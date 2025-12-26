@@ -18,10 +18,13 @@ import {
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 
-const FormRow = ({ label, children }) => (
+const FormRow = ({ label, children, error }) => (
   <Box sx={{ display: "flex", alignItems: "center", mb: 2, gap: 2 }}>
     <Box sx={{ width: 170, fontWeight: 600 }}>{label}</Box>
-    <Box sx={{ flexGrow: 1 }}>{children}</Box>
+    <Box sx={{ flexGrow: 1 }}>
+      {children}
+      {error && <Box sx={{ color: 'error.main', mt: 0.5, fontSize: 12 }}>{error}</Box>}
+    </Box>
   </Box>
 );
 
@@ -46,6 +49,8 @@ const ApplicationReportEntry = ({ initialData = null, editingIdFromProps = null,
     kindAttention: ""
   });
 
+  const [errors, setErrors] = useState({});
+
   const [file, setFile] = useState(null);
 
   // table / form view state
@@ -56,6 +61,9 @@ const ApplicationReportEntry = ({ initialData = null, editingIdFromProps = null,
   const [menuRow, setMenuRow] = useState(null);
   const menuRowRef = useRef(null);
 
+  // read-only view state for "View" action
+  const [readOnly, setReadOnly] = useState(false);
+
   // helper to extract id from row regardless of casing
   const getRowId = (r) => {
     if (!r) return null;
@@ -64,6 +72,24 @@ const ApplicationReportEntry = ({ initialData = null, editingIdFromProps = null,
 
   const handleChange = (field) => (e) =>
     setFormData({ ...formData, [field]: e.target.value });
+
+  // Allow only letters (no digits)
+  const handleAlphaOnly = (field) => (e) => {
+    const value = e.target.value.replace(/[^A-Za-z\s\-']/g, "");
+    setFormData({ ...formData, [field]: value });
+  };
+
+  // Allow alphanumeric (letters, digits, spaces, hyphen)
+  // const handleAlphaNumeric = (field) => (e) => {
+  //   const value = e.target.value.replace(/[^A-Za-z0-9\s-]/g, "");
+  //   setFormData({ ...formData, [field]: value });
+  // };
+
+  // Numeric only (integers)
+  const handleNumericOnly = (field) => (e) => {
+    const value = e.target.value.replace(/[^0-9]/g, "");
+    setFormData({ ...formData, [field]: value });
+  };
 
   /* FETCH DROPDOWN DATA FROM API */
   useEffect(() => {
@@ -175,6 +201,7 @@ const ApplicationReportEntry = ({ initialData = null, editingIdFromProps = null,
     });
     setFile(null);
     setEditingId(null);
+    setReadOnly(false);
     setView('form');
   };
 
@@ -195,6 +222,28 @@ const ApplicationReportEntry = ({ initialData = null, editingIdFromProps = null,
       kindAttention: row.KindAttention || ''
     });
     setEditingId(getRowId(row));
+    setReadOnly(false);
+    setView('form');
+  };
+
+  const openViewForm = (row) => {
+    setFormData({
+      reportNo: row.ReportNo || '',
+      date: row.Date || '',
+      customer: row.Customer || '',
+      quotationNo: row.QuotationNo || '',
+      duration: row.Duration || '',
+      machineName: row.MachineName || '',
+      contactPerson: row.ContactPerson || '',
+      oemsInvolved: row.OEMsInvolved || '',
+      partNumber: row.PartNumber || '',
+      quantity: row.Quantity || '',
+      application: row.ApplicationText || '',
+      ifmSolution: row.IFMSolution || '',
+      kindAttention: row.KindAttention || ''
+    });
+    setEditingId(getRowId(row));
+    setReadOnly(true);
     setView('form');
   }; 
 
@@ -237,7 +286,23 @@ const ApplicationReportEntry = ({ initialData = null, editingIdFromProps = null,
   /* ------------------------------------------------
      SUBMIT FORM DATA TO BACKEND API
   ------------------------------------------------ */
+  const validate = () => {
+    const newErr = {};
+    if (!formData.reportNo || String(formData.reportNo).trim() === "") newErr.reportNo = 'Report No is required.';
+    if (!formData.date) newErr.date = 'Date is required.';
+    if (!formData.customer) newErr.customer = 'Customer is required.';
+    if (!formData.machineName || String(formData.machineName).trim() === "") newErr.machineName = 'Machine / Application name is required.';
+
+    if (!formData.quantity && formData.quantity !== 0) newErr.quantity = 'Quantity is required.';
+    else if (formData.quantity && !/^\d+$/.test(String(formData.quantity))) newErr.quantity = 'Enter a valid integer quantity.';
+
+    setErrors(newErr);
+    return Object.keys(newErr).length === 0;
+  };
+
   const handleSubmit = async () => {
+    if (!validate()) { alert('Please fix validation errors before saving.'); return; }
+
     try {
       // If editing an existing record, call PUT with JSON (no file upload here)
       if (editingId !== null && editingId !== undefined) {
@@ -314,9 +379,9 @@ const ApplicationReportEntry = ({ initialData = null, editingIdFromProps = null,
         {view === 'table' ? (
           <Button variant="contained" onClick={openAddForm}>Add</Button>
         ) : (
-          <Button variant="outlined" onClick={() => { setView('table'); setEditingId(null); }}>Back to List</Button>
+          <Button variant="outlined" onClick={() => { setView('table'); setEditingId(null); setReadOnly(false); }}>Back to List</Button>
         )}
-      </Box>
+      </Box> 
 
       {view === 'table' ? (
         <Paper sx={{ p: 2, mb: 2 }}>
@@ -350,6 +415,7 @@ const ApplicationReportEntry = ({ initialData = null, editingIdFromProps = null,
           </Table>
 
           <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+            <MUIMenuItem onClick={() => { const rowToView = menuRowRef.current || menuRow; const id = getRowId(rowToView); handleMenuClose(); if (rowToView && id != null) openViewForm(rowToView); else alert('No record selected for view'); }}>View</MUIMenuItem>
             <MUIMenuItem onClick={() => { const rowToEdit = menuRowRef.current || menuRow; const id = getRowId(rowToEdit); console.log('Edit clicked, captured id:', id, 'row:', rowToEdit); handleMenuClose(); if (rowToEdit && id != null) openEditForm(rowToEdit); else alert('No record selected for edit'); }}>Edit</MUIMenuItem>
             <MUIMenuItem onClick={() => { const rowToDelete = menuRowRef.current || menuRow; const id = getRowId(rowToDelete); console.log('Delete clicked, captured id:', id, 'row:', rowToDelete); handleMenuClose(); if (id != null) handleDelete(id); else alert('No record selected for delete'); }}>Delete</MUIMenuItem>
           </Menu>
@@ -361,21 +427,28 @@ const ApplicationReportEntry = ({ initialData = null, editingIdFromProps = null,
         {/* LEFT COLUMN */}
         <Grid item xs={12} sm={6}>
 
-          <FormRow label="Application Report No:">
+          <FormRow label="Application Report No:" error={errors.reportNo}>
             <TextField size="small" fullWidth
               value={formData.reportNo}
-              onChange={handleChange("reportNo")}
+              onChange={handleNumericOnly("reportNo")}
+              error={!!errors.reportNo}
+              helperText={errors.reportNo || ""}
+              inputProps={{ maxLength: 30 }}
+              disabled={readOnly}
             />
           </FormRow>
 
           {/* CUSTOMER DROPDOWN */}
-          <FormRow label="Customer:">
+          <FormRow label="Customer:" error={errors.customer}>
             <TextField
               select
               size="small"
               fullWidth
               value={formData.customer}
               onChange={handleChange("customer")}
+              error={!!errors.customer}
+              helperText={errors.customer || ""}
+              disabled={readOnly}
             >
               <MenuItem value="">Select Customer</MenuItem>
               {customers.map(c => (
@@ -386,10 +459,13 @@ const ApplicationReportEntry = ({ initialData = null, editingIdFromProps = null,
             </TextField>
           </FormRow>
 
-          <FormRow label="Machine / Application Name:">
+          <FormRow label="Machine / Application Name:" error={errors.machineName}>
             <TextField size="small" fullWidth
               value={formData.machineName}
-              onChange={handleChange("machineName")}
+              onChange={handleAlphaOnly("machineName")}
+              error={!!errors.machineName}
+              helperText={errors.machineName || ""}
+              disabled={readOnly}
             />
           </FormRow>
 
@@ -401,6 +477,7 @@ const ApplicationReportEntry = ({ initialData = null, editingIdFromProps = null,
               fullWidth
               value={formData.kindAttention}
               onChange={handleChange("kindAttention")}
+              disabled={readOnly}
             >
               <MenuItem value="">Select Person</MenuItem>
               {attentionList.map(p => (
@@ -415,13 +492,18 @@ const ApplicationReportEntry = ({ initialData = null, editingIdFromProps = null,
             <TextField size="small" fullWidth multiline rows={2}
               value={formData.oemsInvolved}
               onChange={handleChange("oemsInvolved")}
+              disabled={readOnly}
             />
           </FormRow>
 
-          <FormRow label="Quantity:">
+          <FormRow label="Quantity:" error={errors.quantity}>
             <TextField size="small" fullWidth
               value={formData.quantity}
-              onChange={handleChange("quantity")}
+              onChange={handleNumericOnly("quantity")}
+              error={!!errors.quantity}
+              helperText={errors.quantity || ""}
+              inputProps={{ inputMode: 'numeric', pattern: '\\d+' }}
+              disabled={readOnly}
             />
           </FormRow>
 
@@ -429,6 +511,7 @@ const ApplicationReportEntry = ({ initialData = null, editingIdFromProps = null,
             <TextField size="small" fullWidth multiline rows={3}
               value={formData.application}
               onChange={handleChange("application")}
+              disabled={readOnly}
             />
           </FormRow>
         </Grid>
@@ -443,13 +526,16 @@ const ApplicationReportEntry = ({ initialData = null, editingIdFromProps = null,
               InputLabelProps={{ shrink: true }}
               value={formData.date}
               onChange={handleChange("date")}
+              disabled={readOnly}
             />
           </FormRow>
 
           <FormRow label="Quotation No:">
             <TextField size="small" fullWidth
               value={formData.quotationNo}
-              onChange={handleChange("quotationNo")}
+              onChange={handleNumericOnly("quotationNo")}
+              inputProps={{ maxLength: 30 }}
+              disabled={readOnly}
             />
           </FormRow>
 
@@ -457,13 +543,14 @@ const ApplicationReportEntry = ({ initialData = null, editingIdFromProps = null,
             <TextField size="small" fullWidth
               value={formData.duration}
               onChange={handleChange("duration")}
+              disabled={readOnly}
             />
           </FormRow>
 
           {/* FILE UPLOAD */}
           <FormRow label="Diagram File:">
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-              <Button variant="outlined" component="label" sx={{ width: 130 }}>
+              <Button variant="outlined" component="label" sx={{ width: 130 }} disabled={readOnly}>
                 Select File
                 <input
                   type="file"
@@ -479,6 +566,7 @@ const ApplicationReportEntry = ({ initialData = null, editingIdFromProps = null,
                   variant="contained"
                   size="small"
                   onClick={() => window.open(URL.createObjectURL(file))}
+                  disabled={readOnly}
                 >
                   View
                 </Button>
@@ -489,7 +577,9 @@ const ApplicationReportEntry = ({ initialData = null, editingIdFromProps = null,
           <FormRow label="Part Number:">
             <TextField size="small" fullWidth multiline rows={2}
               value={formData.partNumber}
-              onChange={handleChange("partNumber")}
+              onChange={handleNumericOnly("partNumber")}
+              inputProps={{ maxLength: 50 }}
+              disabled={readOnly}
             />
           </FormRow>
 
@@ -497,6 +587,7 @@ const ApplicationReportEntry = ({ initialData = null, editingIdFromProps = null,
             <TextField size="small" fullWidth multiline rows={3}
               value={formData.ifmSolution}
               onChange={handleChange("ifmSolution")}
+              disabled={readOnly}
             />
           </FormRow>
 
@@ -505,13 +596,15 @@ const ApplicationReportEntry = ({ initialData = null, editingIdFromProps = null,
 
         {/* BUTTON ROW */}
         <Grid item xs={12} sx={{ textAlign: "center", mt: 2 }}>
-          <Button variant="contained" sx={{ mr: 2, width: 120 }}
-            onClick={handleSubmit}
-          >
-            Save
-          </Button>
-          <Button variant="outlined" color="error" sx={{ width: 120 }}>
-            Cancel
+          {!readOnly && (
+            <Button variant="contained" sx={{ mr: 2, width: 120 }}
+              onClick={handleSubmit}
+            >
+              Save
+            </Button>
+          )}
+          <Button variant="outlined" color="error" sx={{ width: 120 }} onClick={() => { setView('table'); setEditingId(null); setReadOnly(false); }}>
+            {readOnly ? 'Close' : 'Cancel'}
           </Button>
         </Grid>
 

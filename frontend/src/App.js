@@ -19,7 +19,8 @@ import DashboardLayout from "./layout/DashboardLayout";
 import ItemForm from "./pages/ItemForm";
 import ItemMasterList from "./pages/ItemMasterList";
 import ApplicationReportForm from "./pages/ApplicationReportForm";
-import PaymentFollowUpForm from "./pages/PaymentFollowUpForm";
+import ProjectFollowUpForm from "./pages/ProjectFollowUpForm";
+
 
 function App() {
   // 🔹 Drawer state (unchanged)
@@ -144,9 +145,11 @@ function App() {
              
               {/* APPLICATION REPORT FORM */}
                <Route path="/application-report" element={<ApplicationReportForm />} />
+
+              {/* PROJECT FOLLOW-UP FORM */}
+               <Route path="/project-followup" element={<ProjectFollowUpForm />} />
               
-              {/* PAYMENT FOLLOW-UP FORM */}
-              <Route path="/payment-followup" element={<PaymentFollowUpForm />} />
+              
             </Routes>
           </Box>
         </DashboardLayout>

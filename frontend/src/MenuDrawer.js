@@ -299,9 +299,13 @@ const MenuDrawer = ({ open, setOpen }) => {
       navigate("/application-report");
     }
 
-    if (menuName === "Payment Follow-up Entry") {    // ⭐ add this
-    navigate("/payment-followup");
-  }
+    if (menuName === "Project Follow-up Entry") {
+      navigate("/project-followup");
+    }
+
+    if (menuName === "Payment Follow-up Entry") {
+      navigate("/payment-followup");
+    }
 
     if (menuName === "Exit") {
       navigate("/");
