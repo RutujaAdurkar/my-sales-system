@@ -34,6 +34,9 @@ const appReportRoutes = require("./routes/appReportRoutes");
 const appDropdownRoutes = require("./routes/appDropdownRoutes");
 const paymentFollowUpRoute = require("./routes/paymentFollowUp");
 const dropdownRoute = require("./routes/dropdown");
+const cityMasterRoutes = require("./routes/cityMasterRoutes");
+const stateRoutes = require("./routes/stateRoutes");
+const stateMasterRoutes = require("./routes/stateMasterRoutes");
 
 // TEST API
 app.get("/", (req, res) => {
@@ -70,6 +73,9 @@ app.use("/api/appReport", appReportRoutes);
 app.use("/api/appDropdowns", appDropdownRoutes);
 app.use("/api/payment", paymentFollowUpRoute);
 app.use("/api/dropdown", dropdownRoute);
+app.use("/api/citymaster", cityMasterRoutes);
+app.use("/api/state", stateRoutes);
+app.use("/api/statemaster", stateMasterRoutes);
 
 // START SERVER
 const PORT = process.env.PORT || 5000;

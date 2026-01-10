@@ -46,33 +46,3 @@ exports.saveReport = async (req, res) => {
     res.status(500).json({ message: "DB Error", error: err });
   }
 };
-
-
-// const { sql, poolPromise } = require("../db");
-
-// exports.saveReport = async (req, res) => {
-//   try {
-
-//     const filename = req.file ? req.file.filename : null;
-
-//     const pool = await poolPromise;
-
-//     await pool.request()
-//       .input("reportNo", sql.VarChar, req.body.reportNo)
-//       .input("date", sql.VarChar, req.body.date)
-//       .input("customer", sql.VarChar, req.body.customer)
-//       .input("quantity", sql.Int, req.body.quantity)
-//       .input("fileName", sql.VarChar, filename)
-//       .query(`
-//         INSERT INTO application_report 
-//         (ReportNo, Date, Customer, Quantity, FileName)
-//         VALUES (@reportNo, @date, @customer, @quantity, @fileName)
-//       `);
-
-//     res.json({ message: "Inserted successfully" });
-
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ message: "DB error", err });
-//   }
-// };

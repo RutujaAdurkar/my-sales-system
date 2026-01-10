@@ -20,7 +20,8 @@ import ItemForm from "./pages/ItemForm";
 import ItemMasterList from "./pages/ItemMasterList";
 import ApplicationReportForm from "./pages/ApplicationReportForm";
 import ProjectFollowUpForm from "./pages/ProjectFollowUpForm";
-
+import CityMasterForm from "./pages/CityMasterForm";
+import StateMasterForm from "./pages/StateMasterForm";
 
 function App() {
   // 🔹 Drawer state (unchanged)
@@ -89,7 +90,7 @@ function App() {
 
       <Router>
         {/* 🔹 TOP APP BAR (UNCHANGED FUNCTIONALITY) */}
-        {/* <AppBar position="fixed" color="primary"> */}
+       
         <AppBar
   position="fixed"
   sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -149,7 +150,12 @@ function App() {
               {/* PROJECT FOLLOW-UP FORM */}
                <Route path="/project-followup" element={<ProjectFollowUpForm />} />
               
+              {/* CITY MASTER FORM */}
+              <Route path="/city-master" element={<CityMasterForm />} />
               
+              {/* STATE MASTER FORM */}
+              <Route path="/state-master" element={<StateMasterForm />} />
+            
             </Routes>
           </Box>
         </DashboardLayout>

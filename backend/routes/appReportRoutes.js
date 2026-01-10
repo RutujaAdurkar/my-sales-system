@@ -1,17 +1,3 @@
-// const express = require("express");
-// const router = express.Router();
-// const upload = require("../middlewares/upload");
-// const { saveReport } = require("../controllers/appReportController");
-
-// //const upload = multer({ dest: "uploads/" });
-
-// //const { saveReport } = require("../controllers/appReportController");
-
-// router.post("/", upload, saveReport);
-
-// module.exports = router;
-
-
 const express = require("express");
 const router = express.Router();
 

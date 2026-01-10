@@ -365,7 +365,7 @@ const requiredFields = [
 
 const handleSubmit = async () => {
   if (!validateForm()) {
-    alert("Please fix validation errors before submitting.");
+    alert("Please fill all required fields!");
     return;
   }
 
@@ -449,15 +449,33 @@ const handleSubmit = async () => {
   // ------------------------------------------------
   // FORM UI (3 equal-height columns)
   // ------------------------------------------------
-  return (
-    //<Paper sx={{ width: "100%", maxWidth: 1400, mx: "auto", my: 2, p: 2 }}>
-      <Paper
-  sx={{
-    borderRadius: 2,
-    boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
-    bgcolor: 'background.paper'
-  }}
->
+return (
+  <Box sx={{ width: "100%", p: 2 }}>
+    {/* 🔙 Back To Table Button */}
+    {onClose && (
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 1 }}>
+        <Button 
+        variant="contained" 
+        size="small" 
+        sx={{ background: "#1976d2" }}
+        onClick={onClose}
+        >
+          Back to Table
+        </Button>
+      </Box>
+    )}
+
+    <Paper
+      sx={{
+        borderRadius: 2,
+        boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
+        bgcolor: "background.paper",
+      }}
+    >
+      {/* ... existing form code ... */}
+
+      
+
       <Grid container spacing={2} columns={12}>
         {/* Statistic Group Id DROPDOWN (full width row) */}
         <Grid item xs={12}>
@@ -809,13 +827,6 @@ const handleSubmit = async () => {
                   </FormRow>
 
                 <FormRow label="Product In Focus:">
-                  {/* <Select
-                    fullWidth
-                    size="small"
-                    value={formData.productFocus}
-                    onChange={handleChange("productFocus")}
-                    displayEmpty
-                  > */}
                   <Select
                     fullWidth
                     size="small"
@@ -874,9 +885,7 @@ const handleSubmit = async () => {
                       value={formData.typeSelection ?? ""}
                       onChange={handleChange("typeSelection")}
                       displayEmpty
-                     // error={!!errors.typeSelection}
-                     // sx={{ background: "white" }}
-                     disabled={readOnly}
+                      disabled={readOnly}
                     >
                     <MenuItem value="" >
                       <em>Select Type</em>
@@ -923,7 +932,8 @@ const handleSubmit = async () => {
                       <MenuItem value="Kg">Kg</MenuItem>
                     </Select>
                     {errors.units && (
-                      <Box sx={{ color: 'error.main', fontSize: '12px', mt: 0.5 }}>{errors.units}</Box>
+                      <Box sx={{ color: 'error.main', fontSize: '12px', mt: 0.5 }}>{errors.units}
+                      </Box>
                     )}
                   </FormRow>
 
@@ -978,7 +988,9 @@ const handleSubmit = async () => {
                       ))}
                     </Select>
                     {errors.substituteItem && (
-                      <Box sx={{ color: 'error.main', fontSize: '12px', mt: 0.5 }}>{errors.substituteItem}</Box>
+                      <Box sx={{ color: 'error.main', fontSize: '12px', mt: 0.5 }}>
+                        {errors.substituteItem}
+                      </Box>
                     )}
                   </FormRow>
 
@@ -1033,257 +1045,26 @@ const handleSubmit = async () => {
             )}
 
             <Button
-              variant="outlined"
-              color="error"
-              sx={{ width: 120 }}
-              onClick={handleCancel}
-            >
-              {readOnly ? 'Close' : 'Cancel'}
-            </Button>
+             variant="contained"
+             color="error"
+             sx={{
+             width: 120,
+             bgcolor: "#d32f2f",        // Red
+             color: "#fff",
+             "&:hover": {
+             bgcolor: "#b71c1c",      // Darker red on hover
+             },
+            }}
+           onClick={handleCancel}
+          >
+         {readOnly ? "Close" : "Cancel"}
+        </Button>
           </Box>
         </Grid>
       </Grid>
     </Paper>
+    </Box>
   );
 };
 
 export default ItemForm;
-
-
-// import React, { useState, useEffect } from "react";
-// import {
-//   Box,
-//   Grid,
-//   TextField,
-//   MenuItem,
-//   Select,
-//   Paper,
-//   Button,
-//   Stepper,
-//   Step,
-//   StepLabel
-// } from "@mui/material";
-
-// /* small row layout */
-// const FormRow = ({ label, children }) => (
-//   <Box sx={{ display: "flex", alignItems: "center", mb: 1.5, gap: 2 }}>
-//     <Box sx={{ width: 120, fontWeight: 600, fontSize: "13px" }}>
-//       {label}
-//     </Box>
-//     <Box sx={{ flexGrow: 1 }}>{children}</Box>
-//   </Box>
-// );
-
-// /* initial fields */
-// const initialFormState = {
-//   statisticGroupId: "",
-//   articleNo: "",
-//   typeDesignation: "",
-//   masterId: "",
-//   ffhw: "",
-//   validity: "",
-//   basicPrice: "",
-//   storeLocation: "",
-//   openingQty: "",
-//   reorderLevel: "",
-//   minLevel: "",
-//   maxLevel: "",
-//   custReorder: "",
-//   factor: "",
-//   hsnCode: "",
-//   cgst: "",
-//   sgst: "",
-//   typeSelection: "Component",
-//   selectionCode: "",
-//   units: "Nos",
-//   netPrice: "",
-//   value: "",
-//   comments: "",
-//   substituteItem: "",
-//   exciseHeadNo: "",
-//   quotationFor: "Rs",
-//   transitDays: "",
-//   customDuty: "",
-//   productFocus: "",
-//   igst: "",
-// };
-
-// const ItemForm = ({ onClose }) => {
-
-//   const [formData, setFormData] = useState(initialFormState);
-//   const [, setErrors] = useState({});
-//   const [step, setStep] = useState(1);
-//   const [statisticGroups, setStatisticGroups] = useState([]);
-
-//   const requiredStepFields = [
-//     ["statisticGroupId", "articleNo"],
-//     ["netPrice", "value"],
-//     ["comments"]
-//   ];
-
-//   /* Restore saved draft */
-//   useEffect(() => {
-//     const saved = localStorage.getItem("draftItemForm");
-//     if (saved) setFormData(JSON.parse(saved));
-//   }, []);
-
-//   /* save draft */
-//   useEffect(() => {
-//     localStorage.setItem("draftItemForm", JSON.stringify(formData));
-//   }, [formData]);
-
-//   /* load dropdown values */
-//   useEffect(() => {
-//     const loadLookup = async () => {
-//       try {
-//         const res = await fetch("http://localhost:5000/api/dropdowns/statistic-groups");
-//         const data = await res.json();
-//         setStatisticGroups(data);
-//       } catch (err) {}
-//     };
-//     loadLookup();
-//   }, []);
-
-//   /* validate full form */
-//   const validateStep = () => {
-//     let newErrors = {};
-
-//     const required = requiredStepFields[step - 1];
-
-//     required.forEach((f) => {
-//       const v = formData[f];
-
-//       if (
-//         v === "" ||
-//         v === null ||
-//         v === undefined ||
-//         (typeof v === "string" && v.trim() === "")
-//       ) {
-//         newErrors[f] = "Required";
-//       }
-//     });
-
-//     setErrors(newErrors);
-//     return Object.keys(newErrors).length === 0;
-//   };
-
-//   /* change handler */
-//   const handleChange = (field) => (e) => {
-//     setFormData({ ...formData, [field]: e.target.value });
-//   };
-
-//   /* submit form to DB */
-//   const handleFinalDBSubmit = async () => {
-//     const payload = { ...formData };
-
-//     await fetch("http://localhost:5000/api/itemmaster", {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json"},
-//       body: JSON.stringify(payload)
-//     });
-
-//     alert("✔ Saved Successfully");
-
-//     localStorage.removeItem("draftItemForm");
-
-//     if (onClose) onClose();
-//     else setFormData(initialFormState);
-//   };
-
-//   /* next handler */
-//   const handleNext = async () => {
-
-//     if (!validateStep()) return;
-
-//     if (step < 3) {
-//       setStep(step + 1);
-//     } else {
-//       await handleFinalDBSubmit();  // complete submit only at final step
-//     }
-//   };
-
-//   return (
-//     <Paper sx={{ p: 2, maxWidth: 1400, mx: "auto", mt: 2 }}>
-
-//       <Stepper activeStep={step - 1} sx={{ mb: 3 }}>
-//         <Step><StepLabel>Basic</StepLabel></Step>
-//         <Step><StepLabel>Pricing</StepLabel></Step>
-//         <Step><StepLabel>Others</StepLabel></Step>
-//       </Stepper>
-
-//       <Grid container spacing={2}>
-
-//         {step === 1 && (
-//           <Grid item xs={12}>
-//             <FormRow label="Statistic Group Id:">
-//               <Select
-//                 fullWidth
-//                 size="small"
-//                 value={formData.statisticGroupId}
-//                 onChange={handleChange("statisticGroupId")}
-//               >
-//                 <MenuItem value=""><em>Select</em></MenuItem>
-//                 {statisticGroups.map(g => (
-//                   <MenuItem key={g.GroupId} value={g.GroupId}>
-//                     {g.GroupName}
-//                   </MenuItem>
-//                 ))}
-//               </Select>
-//             </FormRow>
-
-//             <FormRow label="Article No:">
-//               <TextField fullWidth size="small"
-//                 value={formData.articleNo}
-//                 onChange={handleChange("articleNo")}
-//               />
-//             </FormRow>
-//           </Grid>
-//         )}
-
-//         {step === 2 && (
-//           <Grid item xs={12}>
-//             <FormRow label="Net Price:">
-//               <TextField fullWidth size="small"
-//                 value={formData.netPrice}
-//                 onChange={handleChange("netPrice")}
-//               />
-//             </FormRow>
-
-//             <FormRow label="Value:">
-//               <TextField fullWidth size="small"
-//                 value={formData.value}
-//                 onChange={handleChange("value")}
-//               />
-//             </FormRow>
-//           </Grid>
-//         )}
-
-//         {step === 3 && (
-//           <Grid item xs={12}>
-//             <FormRow label="Comments:">
-//               <TextField fullWidth size="small"
-//                 multiline rows={3}
-//                 value={formData.comments}
-//                 onChange={handleChange("comments")}
-//               />
-//             </FormRow>
-//           </Grid>
-//         )}
-
-//         <Grid item xs={12} textAlign="center" mt={3}>
-//           <Button
-//             variant="contained"
-//             sx={{ width: 140 }}
-//             onClick={handleNext}
-//           >
-//             {step < 3 ? "Next" : "Submit"}
-//           </Button>
-//         </Grid>
-
-//       </Grid>
-
-//     </Paper>
-//   );
-// };
-
-// export default ItemForm;

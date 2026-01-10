@@ -25,5 +25,3 @@ router.get("/emp", async (req, res) => {
 });
 
 module.exports = router;
-  
-
