@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import DownloadIcon from "@mui/icons-material/Download";
 import * as XLSX from "xlsx";
+import "./ProjectFollowUpForm.css";
 import { saveAs } from "file-saver";
 import axios from "axios";
 import {
@@ -25,13 +26,11 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 
 /* ---------- Reusable Form Row ---------- */
 const FormRow = ({ label, children, error }) => (
-  <Box sx={{ display: "flex", alignItems: "center", mb: 2, gap: 2 }}>
-    <Box sx={{ width: 170, fontWeight: 600 }}>{label}</Box>
-    <Box sx={{ flexGrow: 1 }}>
+  <Box className="form-row">
+    <Box className="form-label">{label}</Box>
+    <Box style={{ flexGrow: 1 }}>
       {children}
-      {error && (
-        <Box sx={{ color: "error.main", mt: 0.5, fontSize: 12 }}>{error}</Box>
-      )}
+      {error && <Box className="form-error">{error}</Box>}
     </Box>
   </Box>
 );
@@ -288,10 +287,9 @@ const downloadExcel = () => {
   ];
 
   return (
-    <Box sx={{ p: 1 }}>
-      {/* HEADER */}
-      <Box display="flex" justifyContent="space-between">
-        <Typography fontSize={22} fontWeight="bold">
+    <Box className="project-container">
+      <Box className="project-header">
+        <Typography className="project-title">
           {isPayment ? "Payment Follow-Up Entry" : "Project Follow-Up Entry"}
         </Typography>
 
@@ -307,12 +305,8 @@ const downloadExcel = () => {
       {view === "table" ? (
   <Paper sx={{ p: 2, mt: 2 }}>
     {/* Search Bar */} 
-<Box
-  display="flex"
-  justifyContent="space-between"
-  alignItems="center"
-  mb={2}
->
+<Box className="table-toolbar">
+
   {/* LEFT: Export Button */}
   <Box>
     <IconButton
@@ -478,8 +472,8 @@ const downloadExcel = () => {
 ) : (
 
         /* FORM VIEW */
-        <Paper sx={{ p: 3, mt: 2 }}>
-          <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+        <Paper className="project-form">
+          <Box className="form-top-actions">
             <Button
               variant="contained"
               sx={{ background: "#1976d2" }}
@@ -637,21 +631,22 @@ const downloadExcel = () => {
           </Box>
 
           {/* SAVE / CANCEL / CLOSE */}
-          <Box sx={{ textAlign: "center", mt: 3 }}>
+          <Box className="form-buttons">
             {!readOnly && (
               <Button variant="contained" sx={{ mr: 2 }} onClick={handleSubmit}>
                 SAVE
               </Button>
             )}
-
+            
             <Button
-             variant="contained"
-             sx={{ background: "#d32f2f" }}   // 🔴 custom red color
-             onClick={() => {
-             setView("table");
-             setReadOnly(false);
-             }}
-            >
+  variant="contained"
+  className="cancel-btn"
+  onClick={() => {
+    setView("table");
+    setReadOnly(false);
+  }}
+>
+
              {readOnly ? "CLOSE" : "CANCEL"}
             </Button>
 

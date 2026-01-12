@@ -4,6 +4,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Checkbox from "@mui/material/Checkbox";
 import InputBase from "@mui/material/InputBase";
 import * as XLSX from "xlsx";
+import "./StateMaster.css";
 import {
   Box,
   TextField,
@@ -246,8 +247,9 @@ const exportExcel = () => {
   ===================================================== */
   if (view === "table") {
     return (
-      <Paper sx={{ p: 2 }}>
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+      <Paper className="state-container">
+        <Box className="state-header">
+
   {/* LEFT SIDE */}
   <Box display="flex" alignItems="center" gap={1}>
     <IconButton
@@ -263,20 +265,12 @@ const exportExcel = () => {
 >
   <DownloadIcon />
 </IconButton>
-    <Typography fontWeight={600}>State Master</Typography>
+    <Typography className="state-title">State Master</Typography>
   </Box>
 
   {/* RIGHT SIDE */}
   <Box display="flex" alignItems="center" gap={2}>
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        px: 1.5,
-        borderRadius: 1,
-        bgcolor: "action.hover"
-      }}
-    >
+    <Box className="search-box">
       <SearchIcon fontSize="small" sx={{ mr: 1 }} />
       <InputBase
         placeholder="Search..."
@@ -395,13 +389,8 @@ const exportExcel = () => {
      FORM VIEW
   ===================================================== */
   return (
-    <Paper sx={{ width: 420, p: 3 }}>
-       <Box
-    display="flex"
-    justifyContent="space-between"
-    alignItems="center"
-    mb={3}
-  >
+  <Paper className="state-form">
+  <Box className="form-header">
     <Typography fontWeight={600}>
       State Master
     </Typography>
@@ -452,7 +441,7 @@ const exportExcel = () => {
         />
       </FormRow>
 
-      <Stack direction="row" spacing={2} justifyContent="center" mt={3}>
+      <Box className="form-buttons">
         {!readOnly && (
           <Button variant="contained" onClick={handleSave}>
             Save
@@ -465,15 +454,16 @@ const exportExcel = () => {
         >
           {readOnly ? "Close" : "Cancel"}
         </Button>
-      </Stack>
+      </Box>
     </Paper>
   );
 }
 
 /* ===================================================== */
 const FormRow = ({ label, children }) => (
-  <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-    <Box sx={{ width: 120, fontWeight: 500 }}>{label}</Box>
-    <Box sx={{ flexGrow: 1 }}>{children}</Box>
+  <Box className="form-row">
+    <Box className="form-label">{label}</Box>
+    <Box style={{ flexGrow: 1 }}>{children}</Box>
   </Box>
 );
+

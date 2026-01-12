@@ -1,0 +1,67 @@
+/* Page container */
+.app-container {
+  width: 95%;
+  margin: auto;
+  margin-top: 24px;
+}
+
+/* Page header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.app-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* Table toolbar */
+.table-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+/* Form row */
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 16px;
+}
+
+.form-label {
+  width: 170px;
+  font-weight: 600;
+}
+
+.form-error {
+  color: #d32f2f;
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+/* Action buttons */
+
+
+.cancel-btn {
+  background-color: #d32f2f !important;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}

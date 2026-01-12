@@ -1,0 +1,63 @@
+/* ===== CONTAINER ===== */
+.state-container {
+  padding: 16px;
+}
+
+/* ===== HEADER BAR ===== */
+.state-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.state-title {
+  font-weight: 600;
+}
+
+/* ===== SEARCH BOX ===== */
+.search-box {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 6px;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* ===== FORM ===== */
+.state-form {
+  width: 420px;
+  padding: 24px;
+}
+
+/* ===== FORM HEADER ===== */
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+/* ===== FORM ROW ===== */
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.form-label {
+  width: 120px;
+  font-weight: 500;
+}
+
+/* ===== FORM BUTTONS ===== */
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.table-pagination {
+  margin-top: 8px;
+}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
+import "./CityMaster.css";
 import DownloadIcon from "@mui/icons-material/Download";
 import DescriptionIcon from "@mui/icons-material/Description"; // CSV
 import TableChartIcon from "@mui/icons-material/TableChart";   // Excel
@@ -288,10 +289,12 @@ const handleExport = () => {
   ================================================= */
   if (view === "table") {
     return (
-      <Paper sx={{ p: 2 }}>
-   <Box display="flex" justifyContent="space-between" mb={2}>
+     
+      <Paper className="city-container">
+  
+   <Box className="city-header">
     <Box display="flex" alignItems="center" gap={1}>
-    {/* 🔽 EXPORT ICON (LEFT SIDE) */}
+   
     <IconButton
       color="primary"
       onClick={openExportMenu}
@@ -301,19 +304,11 @@ const handleExport = () => {
       <DownloadIcon />
     </IconButton>
 
-    <Typography fontWeight={600}>City Master</Typography>
+    <Typography className="city-title">City Master</Typography>
   </Box>
 
   <Box display="flex" gap={2} alignItems="center">
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        px: 1.5,
-        borderRadius: 1,
-        bgcolor: "action.hover"
-      }}
-    >
+    <Box className="search-box">
       <SearchIcon fontSize="small" sx={{ mr: 1 }} />
       <InputBase
         placeholder="Search..."
@@ -440,13 +435,8 @@ const handleExport = () => {
      FORM VIEW
   ================================================= */
   return (
-    <Paper sx={{ width: 520, p: 3 }}>
-      <Box
-       display="flex"
-       justifyContent="space-between"
-       alignItems="center"
-       mb={3}
-     >
+    <Paper className="city-form">
+     <Box className="form-header">
       <Typography fontWeight={600} mb={3}>
         City Master
       </Typography>
@@ -519,7 +509,7 @@ const handleExport = () => {
         </TextField>
       </FormRow>
 
-      <Stack direction="row" spacing={2} justifyContent="center" mt={3}>
+      <Box className="form-buttons">
         {!readOnly && (
           <Button variant="contained" onClick={handleSave}>
             Save
@@ -532,14 +522,15 @@ const handleExport = () => {
         >
           {readOnly ? "Close" : "Cancel"}
         </Button>
-      </Stack>
+      </Box>
     </Paper>
   );
 }
 /* ===== REUSABLE ROW ===== */
 const FormRow = ({ label, children }) => (
-  <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-    <Box sx={{ width: 120 }}>{label}</Box>
-    <Box sx={{ flexGrow: 1 }}>{children}</Box>
+  <Box className="form-row">
+    <Box className="form-label">{label}</Box>
+    <Box style={{ flexGrow: 1 }}>{children}</Box>
   </Box>
 );
+

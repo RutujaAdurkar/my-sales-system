@@ -1,0 +1,222 @@
+/* ===================================================
+   GLOBAL ORANGE THEME (ERP STYLE)
+   Used by: Item, City, State, Project, Application Report
+=================================================== */
+
+/* ---------------- RESET ---------------- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  background-color: #fff7f0;
+  overflow-y: auto;
+}
+
+/* ---------------- COLOR VARIABLES ---------------- */
+:root {
+  --primary: #f57c00;        /* ORANGE */
+  --primary-dark: #e65100;
+  --primary-light: #fff3e0;
+
+  --border: #e0e0e0;
+  --text-main: #212121;
+  --text-muted: #616161;
+  --error: #d32f2f;
+}
+
+/* ---------------- PAGE ---------------- */
+.page-container,
+.form-wrapper {
+  width: 100%;
+  padding: 16px;
+}
+
+/* ---------------- HEADER ---------------- */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* ---------------- TOOLBAR ---------------- */
+.page-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+/* ---------------- SEARCH ---------------- */
+.search-input {
+  width: 260px;
+}
+
+/* ---------------- TABLE ---------------- */
+.table-container {
+  width: 100%;
+  border-radius: 8px;
+}
+
+/* ---------------- FORM PAPER ---------------- */
+.form-paper {
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  border: 1px solid var(--border);
+  overflow: visible;
+}
+
+/* ---------------- FORM ROW ---------------- */
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.form-label {
+  width: 130px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+  white-space: nowrap;
+}
+
+/* ---------------- 3 COLUMN FORM ---------------- */
+.form-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+/* ---------------- BUTTONS ---------------- */
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+/* ORANGE PRIMARY BUTTON */
+button.MuiButton-contained {
+  background-color: var(--primary) !important;
+  color: #fff !important;
+}
+
+button.MuiButton-contained:hover {
+  background-color: var(--primary-dark) !important;
+}
+
+/* CANCEL BUTTON */
+.btn-cancel {
+  background-color: var(--error) !important;
+  color: #fff !important;
+}
+
+.btn-cancel:hover {
+  background-color: #b71c1c !important;
+}
+
+/* ---------------- BACK BUTTON ---------------- */
+.back-btn-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+/* ---------------- INPUTS ---------------- */
+.MuiOutlinedInput-root {
+  background-color: #ffffff;
+}
+
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--primary) !important;
+}
+
+/* ---------------- SELECT ---------------- */
+.MuiSelect-select {
+  background-color: #ffffff;
+}
+
+/* ---------------- CHECKBOX ---------------- */
+.MuiCheckbox-root.Mui-checked {
+  color: var(--primary) !important;
+}
+
+/* ---------------- ICON BUTTON ---------------- */
+.MuiIconButton-root {
+  color: var(--primary);
+}
+
+/* ---------------- MENU ---------------- */
+.MuiMenuItem-root.Mui-selected {
+  background-color: var(--primary-light) !important;
+}
+
+/* ================= LIGHT MODE (DEFAULT) ================= */
+
+.MuiInputLabel-root {
+  color: var(--text-muted);
+}
+
+.MuiInputLabel-root.Mui-focused {
+  color: var(--primary);
+}
+
+.MuiInputBase-input {
+  color: var(--text-main);
+}
+
+.MuiSelect-select {
+  color: var(--text-main);
+}
+
+.form-label {
+  color: var(--text-main);
+}
+
+/* ================= DARK MODE ONLY ================= */
+
+body.dark {
+  background-color: #121212;
+}
+
+body.dark .form-paper {
+  background-color: #1e1e1e;
+  border-color: #333;
+}
+
+body.dark .MuiInputLabel-root {
+  color: #bdbdbd;
+}
+
+body.dark .MuiInputLabel-root.Mui-focused {
+  color: var(--primary);
+}
+
+body.dark .MuiInputBase-input {
+  color: #ffffff;
+}
+
+body.dark .MuiSelect-select {
+  color: #ffffff;
+}
+
+body.dark .form-label {
+  color: #f5f5f5;
+}
+
+body.dark .MuiOutlinedInput-notchedOutline {
+  border-color: #616161;
+}

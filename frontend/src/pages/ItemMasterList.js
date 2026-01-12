@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./ItemMaster.css";
 import {
   Box,
   Button,
@@ -110,7 +111,6 @@ export default function ItemMasterList() {
   // =============================
   const openViewForm = () => {
     if (!selectedRow) return;
-    // pass a readOnly/view flag to ItemForm; ItemForm honors editData.readOnly || editData.view
     setEditData({ ...selectedRow, readOnly: true, view: true });
     setOpenForm(true);
     handleMenuClose();
@@ -190,11 +190,9 @@ const handleSelectAll = (checked) => {
   // TABLE UI
   // =============================
   return (
-    <Box sx={{ width: "100%", p: 1 , mt: 10}}>
-      {/* HEADER */}
-      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-        <Typography variant="h5">Item Master</Typography>
-
+    <Box className="item-container">
+       <Box className="item-header">        
+        <Typography className="item-title">Item Master</Typography>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
@@ -204,12 +202,7 @@ const handleSelectAll = (checked) => {
         </Button>
       </Box>
 
-   <Box
-     display="flex"
-     justifyContent="space-between"
-     alignItems="center"
-     mb={2}
-    > 
+    <Box className="item-toolbar">
    {/* ⬇️ EXPORT ICON */}
      <IconButton
        color="primary"
@@ -242,16 +235,15 @@ const handleSelectAll = (checked) => {
 
     {/* 🔍 SEARCH */}
      <TextField
-       size="small"
-       placeholder="Search..."
-       value={search}
-       onChange={(e) => setSearch(e.target.value)}
-       sx={{ width: 250 }}
-     />
-    </Box>
+  size="small"
+  placeholder="Search..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  className="search-input"
+/>
 
-      {/* TABLE */}
-      <TableContainer component={Paper} sx={{ maxHeight: 600 }}>
+    </Box>
+      <TableContainer component={Paper} className="table-container">
         <Table stickyHeader>
           <TableHead>
             <TableRow>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./ItemMaster.css";
 import {
   Box,
   Grid,
@@ -11,15 +12,12 @@ import {
 } from "@mui/material";
 
 const FormRow = ({ label, children }) => (
-  <Box sx={{ display: "flex", alignItems: "center", mb: 1.5, gap: 2 }}>
-    <Box sx={{ width: { xs: '90px', sm: '110px' }, fontWeight: 600, fontSize: "13px" }}>
-      {label}
-    </Box>
-    <Box sx={{ flexGrow: 1 }}>{children}</Box>
+  <Box className="form-row">
+    <Box className="form-label">{label}</Box>
+    <Box style={{ flexGrow: 1 }}>{children}</Box>
   </Box>
 );
 
-// initial form state (for reset)
 const initialFormState = {
   statisticGroupId: "",
   articleNo: "",
@@ -450,10 +448,13 @@ const handleSubmit = async () => {
   // FORM UI (3 equal-height columns)
   // ------------------------------------------------
 return (
-  <Box sx={{ width: "100%", p: 2 }}>
-    {/* 🔙 Back To Table Button */}
+  
+  <Box className="item-form-wrapper">
+
+   
     {onClose && (
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 1 }}>
+     
+      <Box className="back-btn-wrapper">
         <Button 
         variant="contained" 
         size="small" 
@@ -465,20 +466,18 @@ return (
       </Box>
     )}
 
-    <Paper
-      sx={{
-        borderRadius: 2,
-        boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
-        bgcolor: "background.paper",
-      }}
-    >
-      {/* ... existing form code ... */}
+<Paper
+  className="form-paper"
+  // sx={{
+  //   width: "100%",
+  //   overflow: "visible",
+  //   minHeight: "auto"
+  // }}
+>
 
-      
-
-      <Grid container spacing={2} columns={12}>
-        {/* Statistic Group Id DROPDOWN (full width row) */}
-        <Grid item xs={12}>
+      {/* <Grid container spacing={2}>
+        <Grid item xs={12} lg={4}> */}
+        {/* <Paper className="form-paper"> */}
           <FormRow label="Statistic Group Id:">
             <Select
               fullWidth
@@ -504,32 +503,12 @@ return (
               <Box sx={{ color: 'error.main', fontSize: '12px', mt: 0.5 }}>{errors.statisticGroupId}</Box>
             )}
           </FormRow>
-        </Grid>
 
         {/* MAIN 3-COLUMN FORM */}
-        <Grid item xs={12} >
-          <Box
-            sx={{
-              p: 2,
-              bgcolor: 'background.default',
-              border: (theme) => `1px solid ${theme.palette.divider}`,
-            }}
-          >
-            <Grid
-              container
-              spacing={2}
-              columns={12}
-              sx={{ display: "flex", alignItems: "stretch" }}
-            >
-              {/* COLUMN 1 */}
-              <Grid
-                item
-                xs={12}
-                sm={4}
-                md={4}
-                sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-              >
-                <Box>
+     <Box className="form-columns">
+          {/* <Grid container spacing={2}>
+             <Grid item xs={12} lg={4}> */}
+                <Box className="form-column">
                   <FormRow label="Article No:">
                     <TextField
                       fullWidth
@@ -702,18 +681,12 @@ return (
                   </FormRow>
                 </Box>
 
-                <Box sx={{ flexGrow: 1 }} />
-              </Grid>
+                {/* <Box sx={{ flexGrow: 1 }} /> */}
+              {/* </Grid> */}
 
               {/* COLUMN 2 */}
-              <Grid
-                item
-                xs={12}
-                sm={4}
-                md={4}
-                sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-              >
-                <Box>
+              {/* <Grid item xs={12} lg={4} > */}
+                 <Box className="form-column">
                   <FormRow label="Reorder Level:">
                     <TextField
                       fullWidth
@@ -866,18 +839,12 @@ return (
                   </FormRow>
                 </Box>
 
-                <Box sx={{ flexGrow: 1 }} />
-              </Grid>
+                {/* <Box sx={{ flexGrow: 1 }} /> */}
+              {/* </Grid> */}
 
               {/* COLUMN 3 */}
-              <Grid
-                item
-                xs={12}
-                sm={4}
-                md={4}
-                sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-              >
-                <Box>
+              {/* <Grid item xs={12} lg={4} > */}
+                 <Box className="form-column">
                   <FormRow label="Type Selection:">
                     <Select
                       fullWidth
@@ -1028,41 +995,30 @@ return (
                     )}
                   </FormRow>
                 </Box>
-
-                <Box sx={{ flexGrow: 1 }} />
-              </Grid>
-            </Grid>
-          </Box>
-        </Grid>
-
+               </Box>
+                {/* <Box sx={{ flexGrow: 1 }} /> */}
+              {/* </Grid> */}
+      
         {/* BUTTONS */}
-        <Grid item xs={12}>
-          <Box sx={{ display: "flex", justifyContent: "center", gap: 3, mt: 3 }}>
+          <Box className="form-buttons">
             {!readOnly && (
               <Button variant="contained" sx={{ width: 120 }} onClick={handleSubmit}>
                 {editData ? "Update" : "Submit"}
               </Button>
             )}
 
-            <Button
-             variant="contained"
-             color="error"
-             sx={{
-             width: 120,
-             bgcolor: "#d32f2f",        // Red
-             color: "#fff",
-             "&:hover": {
-             bgcolor: "#b71c1c",      // Darker red on hover
-             },
-            }}
-           onClick={handleCancel}
-          >
+          <Button
+  variant="contained"
+  className="cancel-btn"
+  onClick={handleCancel}
+>
+
          {readOnly ? "Close" : "Cancel"}
         </Button>
           </Box>
-        </Grid>
-      </Grid>
-    </Paper>
+       
+      </Paper>
+
     </Box>
   );
 };

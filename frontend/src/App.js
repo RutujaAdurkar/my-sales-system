@@ -1,5 +1,7 @@
-import React, { useState, useMemo } from "react";
+// import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./styles/orange-theme.css";
 import {
   ThemeProvider,
   createTheme,
@@ -83,6 +85,16 @@ function App() {
       return next;
     });
   };
+
+  // 🔹 Sync MUI theme mode with global CSS (VERY IMPORTANT)
+useEffect(() => {
+  if (mode === "dark") {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+}, [mode]);
+
 
   return (
     <ThemeProvider theme={theme}>

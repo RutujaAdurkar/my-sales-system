@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import "./ApplicationReportEntry.css";
 import {
   Box,
   Paper,
@@ -28,13 +29,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const FormRow = ({ label, children, error }) => (
-  <Box sx={{ display: "flex", alignItems: "center", mb: 2, gap: 2 }}>
-    <Box sx={{ width: 170, fontWeight: 600 }}>{label}</Box>
-    <Box sx={{ flexGrow: 1 }}>
+  <Box className="form-row">
+    <Box className="form-label">{label}</Box>
+    <Box style={{ flexGrow: 1 }}>
       {children}
-      {error && (
-        <Box sx={{ color: "error.main", mt: 0.5, fontSize: 12 }}>{error}</Box>
-      )}
+      {error && <Box className="form-error">{error}</Box>}
     </Box>
   </Box>
 );
@@ -345,11 +344,14 @@ const handleSelectAll = (checked) => {
 
   /* ================= UI ================= */
   return (
-    <Box sx={{ width: "95%", mx: "auto", mt: 3 }}>
-      <Box display="flex" justifyContent="space-between" mb={2}>
+    <Box  className="app-container">
+      {/* <Box display="flex" justifyContent="space-between" mb={2}>
         <Box sx={{ fontSize: 20, fontWeight: 600 }}>
           Application Report Entry
-        </Box>
+        </Box> */}
+        <Box className="app-header">
+  <Box className="app-title">Application Report Entry</Box>
+
         {view === "table" ? (
           <Button variant="contained"
           startIcon={<AddIcon />}
@@ -373,14 +375,8 @@ const handleSelectAll = (checked) => {
 
       {view === "table" ? (
         <Paper sx={{ p: 2, mb: 2 }}>
-          <Box
-           sx={{
-           display: "flex",
-           justifyContent: "space-between",
-           alignItems: "center",
-           mb: 2,
-          }}
-        >
+         <Box className="table-toolbar">
+
   {/* ⬇️ EXPORT ICON (LEFT) */}
   <IconButton
     color="primary"
@@ -487,7 +483,8 @@ const handleSelectAll = (checked) => {
         </Table>
 
           {/* Pagination */}
-          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
+          <Box className="pagination">
+
             <Button
               variant="outlined"
               disabled={page === 0}
@@ -542,8 +539,20 @@ const handleSelectAll = (checked) => {
           </Menu>
         </Paper>
       ) : (
-        <Paper sx={{ p: 3, borderRadius: 2 }}>
-          <Grid container spacing={4}>
+        // <Paper sx={{ p: 3, borderRadius: 2 }}>
+        <Paper
+  sx={{
+    p: 3,
+    borderRadius: 2,
+    display: "flex",
+    flexDirection: "column",
+    minHeight: "70vh"   // 👈 IMPORTANT
+  }}
+>
+
+          {/* <Grid container spacing={4}> */}
+          <Grid container spacing={4} sx={{ flexGrow: 1 }}>
+
             {/* LEFT */}
             <Grid item xs={12} sm={6}>
               <FormRow label="Application Report No:" error={errors.reportNo}>
@@ -715,26 +724,40 @@ const handleSelectAll = (checked) => {
                 />
               </FormRow>
             </Grid>
+            
+            {/* <Grid item xs={12}> */}
+            <Grid item xs={12} sx={{ mt: "auto" }}>
 
-            {/* BUTTONS */}
-            <Grid item xs={12} textAlign="center">
-              {!readOnly && (
-                <Button variant="contained" sx={{ mr: 2 }} onClick={handleSubmit}>
-                  Save
-                </Button>
-              )}
-             <Button
-            variant="contained"
-            sx={{ background: "#d32f2f" }}   // 🔴 custom red color
-            onClick={() => {
-            setView("table");
-            setReadOnly(false);
-             }}
-            >
-         {readOnly ? "CLOSE" : "CANCEL"}
-         </Button>
+  <Box
+    className="form-buttons"
+    sx={{
+      width: "100%",
+      display: "flex",
+      justifyContent: "center",
+      gap: 2,
+      mt: 3,
+    }}
+  >
 
-            </Grid>
+    {!readOnly && (
+      <Button variant="contained" onClick={handleSubmit}>
+        Save
+      </Button>
+    )}
+
+    <Button
+      variant="contained"
+      className="cancel-btn"
+      onClick={() => {
+        setView("table");
+        setReadOnly(false);
+      }}
+    >
+      {readOnly ? "CLOSE" : "CANCEL"}
+    </Button>
+  </Box>
+</Grid>
+
           </Grid>
         </Paper>
       )}
