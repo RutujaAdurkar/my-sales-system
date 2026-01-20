@@ -1,0 +1,96 @@
+/* ===============================
+   MENU DRAWER STYLES
+================================ */
+
+/* Drawer base */
+.menu-drawer {
+  transition: width 0.3s ease;
+}
+
+/* Drawer paper */
+/* .menu-drawer-paper {
+  top: 64px;
+  height: calc(100% - 64px);
+  overflow-x: hidden;
+  transition: width 0.3s ease;
+} */
+
+/* Main menu button */
+.menu-item {
+  padding-left: 16px;
+  justify-content: flex-start;
+}
+
+/* Collapsed menu item (icons only) */
+.menu-item-collapsed {
+  justify-content: center;
+}
+
+/* Sub menu indentation */
+.submenu-item {
+  padding-left: 32px;
+}
+
+/* Icon wrapper */
+.menu-icon {
+  min-width: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Icon when drawer collapsed */
+.menu-icon-collapsed {
+  min-width: auto;
+}
+
+/* Divider */
+.menu-divider {
+  margin: 8px 0;
+  border-color: #222;
+  opacity: 1;
+}
+
+/* Tooltip fix */
+.menu-tooltip {
+  display: block;
+}
+
+
+/* ===============================
+   SAP STYLE DRAWER FIX
+================================ */
+
+/* Drawer paper */
+.menu-drawer-paper {
+  top: 64px;
+  height: calc(100% - 64px);
+  overflow-x: hidden;
+  background: #111;
+}
+
+/* 🔑 REMOVE EMPTY SPACE */
+.menu-drawer-paper ul {
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+}
+
+/* 🔑 NO SCROLLBAR IN ICON MODE */
+.menu-drawer-paper.collapsed {
+  overflow-y: hidden !important;
+}
+
+/* SHOW SCROLL ONLY WHEN EXPANDED */
+.menu-drawer-paper.expanded {
+  overflow-y: auto;
+}
+
+/* Hide scrollbar (Chrome) */
+.menu-drawer-paper::-webkit-scrollbar {
+  width: 0;
+}
+
+/* Hide scrollbar (Firefox) */
+.menu-drawer-paper {
+  scrollbar-width: none;
+}
+

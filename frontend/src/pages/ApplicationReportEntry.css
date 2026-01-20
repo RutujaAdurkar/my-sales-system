@@ -45,12 +45,7 @@
   font-size: 12px;
 }
 
-/* Action buttons */
 
-
-.cancel-btn {
-  background-color: #d32f2f !important;
-}
 
 /* Pagination */
 .pagination {
@@ -59,9 +54,42 @@
   margin-top: 16px;
 }
 
+/* .form-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+} */
+
+
 .form-buttons {
   display: flex;
   justify-content: center;
   gap: 16px;
   margin-top: 24px;
+}
+
+.cancel-btn {
+  background-color: #d32f2f !important;
+}
+
+/* ===== APPLICATION REPORT TABLE HEADER (ORANGE) ===== */
+.app-table-head {
+  background-color: #f57c00; /* ORANGE */
+}
+
+.app-table-head th {
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 13px;
+  border-bottom: none;
+}
+
+/* Header checkbox color */
+.app-table-head .MuiCheckbox-root {
+  color: #ffffff;
+}
+
+.app-table-head .MuiCheckbox-root.Mui-checked {
+  color: #ffffff;
 }

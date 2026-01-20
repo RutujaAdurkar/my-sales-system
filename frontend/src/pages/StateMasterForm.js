@@ -269,7 +269,7 @@ const exportExcel = () => {
   </Box>
 
   {/* RIGHT SIDE */}
-  <Box display="flex" alignItems="center" gap={2}>
+  {/* <Box display="flex" alignItems="center" gap={2}>
     <Box className="search-box">
       <SearchIcon fontSize="small" sx={{ mr: 1 }} />
       <InputBase
@@ -291,11 +291,58 @@ const exportExcel = () => {
     >
       Add
     </Button>
-  </Box>
+  </Box> */}
+
+  <Box
+  display="flex"
+  flexDirection="column"
+  gap={1}
+  alignItems="flex-start"
+  sx={{ width: 220 }}   // 🔑 LIMIT WIDTH HERE
+>
+
+  {/* ADD BUTTON FIRST */}
+ <Button
+  variant="contained"
+  startIcon={<AddIcon />}
+  sx={{
+    width: "100%",     // fits container (220px)
+    height: 36,        // compact height
+    fontSize: 13,
+  }}
+  onClick={() => {
+    clearForm();
+    setEditing(false);
+    setReadOnly(false);
+    setView("form");
+  }}
+>
+  Add
+</Button>
+
+
+  {/* SEARCH BELOW */}
+ <Box
+  className="search-box"
+  sx={{
+    width: "100%",
+    height: 34,
+    px: 1,
+  }}
+>
+  <SearchIcon fontSize="small" sx={{ mr: 1 }} />
+  <InputBase
+    placeholder="Search..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    sx={{ fontSize: 13, width: "100%" }}
+  />
+</Box>
+</Box>
 </Box>
 <Table>
   <TableHead>
-  <TableRow>
+ <TableRow className="state-table-head">
     <TableCell padding="checkbox">
       <Checkbox
         indeterminate={
@@ -311,7 +358,7 @@ const exportExcel = () => {
     </TableCell>
     <TableCell>State Id</TableCell>
     <TableCell>State Name</TableCell>
-    <TableCell align="right" />
+     <TableCell align="right">Actions</TableCell>
   </TableRow>
 </TableHead>
  <TableBody>

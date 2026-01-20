@@ -24,6 +24,13 @@ import ApplicationReportForm from "./pages/ApplicationReportForm";
 import ProjectFollowUpForm from "./pages/ProjectFollowUpForm";
 import CityMasterForm from "./pages/CityMasterForm";
 import StateMasterForm from "./pages/StateMasterForm";
+import SalesReturn from "./pages/SalesReturn";
+import WildCardSearch from "./pages/WildCardSearch";
+import VisitReportCustomerwise from "./pages/VisitReportCustomerwise";
+import FollowupTelephoneReportCustomerwise from "./pages/FollowupTelephoneReportCustomerwise";
+import TechnicalSupportReportCustomerwise from "./pages/TechnicalSupportReportCustomerwise";
+import VideoSalesCallReportCustomerwise from "./pages/VideoSalesCallReportCustomerwise";
+import PaymentFollowupReport from "./pages/PaymentFollowupReport";
 
 function App() {
   // 🔹 Drawer state (unchanged)
@@ -103,10 +110,10 @@ useEffect(() => {
       <Router>
         {/* 🔹 TOP APP BAR (UNCHANGED FUNCTIONALITY) */}
        
-        <AppBar
-  position="fixed"
-  sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
->
+         <AppBar
+           position="fixed"
+           sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+         >
           <Toolbar sx={{ minHeight: 64 }}>
             <IconButton
               color="inherit"
@@ -136,7 +143,7 @@ useEffect(() => {
             sx={{
               minHeight: "100vh",
               bgcolor: "background.default",
-              paddingTop: "80px", // space for AppBar
+              paddingTop: "96px", // space for AppBar
               px: 3,
             }}
           >
@@ -168,6 +175,31 @@ useEffect(() => {
               {/* STATE MASTER FORM */}
               <Route path="/state-master" element={<StateMasterForm />} />
             
+              {/* SALES RETURN */}
+               <Route path="/sales-return" element={<SalesReturn />} />
+              
+              {/* WILD CARD SEARCH */}
+              <Route path="/wildcard-search" element={<WildCardSearch />} />
+            
+              
+            {/* VISIT REPORT - CUSTOMERWISE */}
+            <Route path="/visit-report-customerwise" element={<VisitReportCustomerwise />} />
+
+            {/* FOLLOWUP TELEPHONE REPORT - CUSTOMERWISE */}
+            <Route path="/followup-telephone-report-customerwise" element={<FollowupTelephoneReportCustomerwise />} />
+            
+            {/* TECHNICAL SUPPORT REPORT - CUSTOMERWISE */}
+            <Route path="/technical-support-report-customerwise" element={<TechnicalSupportReportCustomerwise />} />
+
+
+            {/* VIDEO SALES CALL REPORT - CUSTOMERWISE */}
+            <Route path="/video-sales-call-report-customerwise" element={<VideoSalesCallReportCustomerwise />} />
+            
+            <Route
+               path="/payment-follow-up-report"
+               element={<PaymentFollowupReport />}
+           />
+
             </Routes>
           </Box>
         </DashboardLayout>

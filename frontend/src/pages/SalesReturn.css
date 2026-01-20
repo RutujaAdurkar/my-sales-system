@@ -1,0 +1,301 @@
+.sr-container {
+  padding: 12px;
+}
+
+.sr-paper {
+  padding: 12px;
+  border-radius: 4px;
+}
+
+/* TITLE */
+.sr-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* TOP GRID */
+.sr-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px 12px;
+}
+
+/* FORM ROW */
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.form-label {
+  width: 105px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* CHECKBOX */
+.checkbox-row {
+  align-items: center;
+}
+.checkbox-label {
+  font-size: 13px;
+}
+
+/* ITEM SECTION */
+.sr-item-section {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.section-label {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+/* BUTTONS */
+.btn-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+/* TABLE */
+.sr-table {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+.sr-table th {
+  background: #f57c00;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* BOTTOM */
+.sr-bottom {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 12px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  padding-top: 8px;
+}
+
+.calc-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.calc-label {
+  width: 90px;
+  font-size: 13px;
+}
+.bold {
+  font-weight: 600;
+}
+
+/* FOOTER */
+.sr-footer {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.lock-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+
+/* ================= NARRATION FIX ================= */
+
+.narration-field {
+  width: 50%;          /* 🔥 reduced width */
+}
+
+/* Invoice Cancel checkbox */
+.invoice-cancel-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.invoice-cancel-label {
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* ================= ERP BOTTOM SECTION ================= */
+
+.sr-bottom-erp {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+}
+
+/* each row */
+.erp-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+/* labels */
+.erp-label {
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* inputs */
+.small-input {
+  width: 90px;
+}
+
+.tax-input {
+  width: 70px;
+}
+
+/* narration */
+.narration-wide {
+  width: 320px;
+}
+
+/* ================= ERP BOTTOM LEFT ONLY ================= */
+
+.sr-bottom-erp {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.erp-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.erp-label {
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* INPUT SIZES */
+.narration-wide {
+  width: 380px;
+}
+
+.small-input {
+  width: 90px;
+}
+
+.tax-input {
+  width: 70px;
+}
+
+/* TOTALS (LEFT STACKED) */
+.erp-totals-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-left: 0;
+}
+
+.total-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.total-label {
+  width: 90px;
+  font-size: 13px;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+/* ================= BOTTOM WINFORMS LAYOUT ================= */
+
+.sr-bottom-win {
+  display: grid;
+  grid-template-columns: 1.4fr 2fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+}
+
+/* LEFT */
+.sr-bottom-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.narration-box {
+  width: 100%;
+}
+
+/* CENTER */
+.sr-bottom-center {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.erp-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.erp-label {
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* INPUT SIZES */
+.small-input {
+  width: 80px;
+}
+
+.tax-input {
+  width: 65px;
+}
+
+/* RIGHT TOTALS */
+.sr-bottom-right {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.total-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.total-label {
+  width: 90px;
+  font-size: 13px;
+}
+
+/* Invoice Cancel */
+.invoice-cancel-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.bold {
+  font-weight: 600;
+}

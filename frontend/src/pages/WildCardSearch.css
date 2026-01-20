@@ -1,0 +1,201 @@
+/* ============================= */
+/* PAGE WRAPPER */
+/* ============================= */
+.wildcard-container {
+  width: 100%;
+}
+
+/* ============================= */
+/* CARD */
+/* ============================= */
+.wildcard-paper {
+  padding: 20px;
+}
+
+/* ============================= */
+/* TITLE */
+/* ============================= */
+.wildcard-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+/* ============================= */
+/* SEARCH BAR */
+/* ============================= */
+.wildcard-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+/* inputs */
+.wildcard-search-bar .MuiTextField-root {
+  background-color: var(--mui-palette-background-paper);
+}
+
+/* ============================= */
+/* TABLE */
+/* ============================= */
+.wildcard-table th {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.wildcard-table td {
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+/* ============================= */
+/* TABLE HEADER - ORANGE */
+/* ============================= */
+.wildcard-table thead th {
+  background-color: #f57c00;   /* orange */
+  color: #ffffff;              /* white text */
+  font-weight: 600;
+  font-size: 13px;
+  border-bottom: none;
+}
+
+
+/* ============================= */
+/* NO DATA */
+/* ============================= */
+.wildcard-empty {
+  text-align: center;
+  padding: 12px;
+  color: gray;
+}
+
+/* ============================= */
+/* FOOTER */
+/* ============================= */
+.wildcard-footer {
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+/* ============================= */
+/* FORM ROW */
+/* ============================= */
+.wildcard-form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px; /* 🔧 uniform spacing */
+}
+
+/* label */
+.wildcard-label {
+  width: 140px;        /* 🔧 same width everywhere */
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* field */
+.wildcard-field {
+  flex: 1;
+}
+
+/* ============================= */
+/* BUTTON ROW */
+/* ============================= */
+.wildcard-button-row {
+  margin-left: 140px; /* 🔧 aligns with input fields */
+  margin-top: 10px;
+  margin-bottom: 18px; /* 🔧 SAME GAP before table */
+  display: flex;
+  gap: 12px;
+}
+
+/* ============================= */
+/* TABLE WRAPPER */
+/* ============================= */
+.wildcard-table {
+  margin-top: 0;  /* 🔧 remove extra gap */
+}
+
+/* ============================= */
+/* TABLE HEADER - ORANGE */
+/* ============================= */
+.wildcard-table thead th {
+  background-color: #f57c00;
+  color: #fff;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 8px 12px; /* 🔧 consistent height */
+}
+
+/* ============================= */
+/* TABLE BODY */
+/* ============================= */
+.wildcard-table tbody td {
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+/* ============================= */
+/* FOOTER */
+/* ============================= */
+.wildcard-footer {
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+/* ============================= */
+/* MUI SELECT FIX FOR DARK MODE */
+/* ============================= */
+
+/* Selected value inside Select box */
+body.dark .MuiSelect-select {
+  color: #ffffff !important;
+}
+
+/* Dropdown menu background */
+body.dark .MuiPaper-root.MuiMenu-paper {
+  background-color: #2b2b2b;
+}
+
+/* Dropdown menu items */
+body.dark .MuiMenuItem-root {
+  color: #ffffff;
+}
+
+/* Hover effect */
+body.dark .MuiMenuItem-root:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Selected item highlight */
+body.dark .MuiMenuItem-root.Mui-selected {
+  background-color: rgba(245, 124, 0, 0.25); /* orange tint */
+  color: #ffffff;
+}
+
+/* Selected item hover */
+body.dark .MuiMenuItem-root.Mui-selected:hover {
+  background-color: rgba(245, 124, 0, 0.35);
+}
+
+/* FORCE SELECT TEXT COLOR IN DARK MODE */
+body.dark .MuiSelect-select,
+body.dark .MuiInputBase-input {
+  color: #ffffff !important;
+}
+
+/* FORCE MENU PAPER */
+body.dark .MuiMenu-paper {
+  background-color: #2b2b2b !important;
+}
+
+/* MENU ITEMS */
+body.dark .MuiMenuItem-root {
+  color: #ffffff !important;
+}
+
+body.dark .MuiMenuItem-root.Mui-selected {
+  background-color: #f57c00 !important;
+  color: #ffffff !important;
+}

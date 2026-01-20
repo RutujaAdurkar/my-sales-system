@@ -345,14 +345,16 @@ const downloadExcel = () => {
     <TableContainer>
       <Table size="small">
  <TableHead>
-    <TableRow
+    {/* <TableRow
     sx={(theme) => ({
       backgroundColor:
         theme.palette.mode === "dark"
           ? theme.palette.grey[900]
           : theme.palette.grey[200],
     })}
-  >
+  > */}
+  <TableRow className="project-table-head">
+
 
     <TableCell padding="checkbox">
        <Checkbox

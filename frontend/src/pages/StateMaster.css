@@ -61,3 +61,24 @@
 .table-pagination {
   margin-top: 8px;
 }
+
+/* ===== STATE TABLE HEADER ORANGE ===== */
+.state-table-head {
+  background-color: #f57c00; /* ORANGE */
+}
+
+.state-table-head th {
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 13px;
+  border-bottom: none;
+}
+
+/* Checkbox color in header */
+.state-table-head .MuiCheckbox-root {
+  color: #ffffff;
+}
+
+.state-table-head .MuiCheckbox-root.Mui-checked {
+  color: #ffffff;
+}

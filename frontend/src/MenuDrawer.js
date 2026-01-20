@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "./MenuDrawer.css";
 import {
   Drawer,
   List,
@@ -9,6 +10,7 @@ import {
   Collapse,
   Divider,
   Tooltip,
+  Box, // ✅ FIX 1: REQUIRED
 } from "@mui/material";
 
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
@@ -28,7 +30,6 @@ import {
 } from "@mui/icons-material";
 
 import { useNavigate } from "react-router-dom";
-
 
 /* drawer widths */
 const DRAWER_WIDTH = 280;
@@ -61,10 +62,13 @@ const iconMap = {
   Exit: <LogoutOutlined />,
 };
 
-
 const MenuDrawer = ({ open, setOpen }) => {
   const [menuData, setMenuData] = useState([]);
   const [openItems, setOpenItems] = useState({});
+
+  // 🔹 Floating submenu state
+  const [floatingMenu, setFloatingMenu] = useState(null);
+  const [floatingAnchor, setFloatingAnchor] = useState(null);
 
   const navigate = useNavigate();
 
@@ -73,7 +77,7 @@ const MenuDrawer = ({ open, setOpen }) => {
     axios
       .get("http://localhost:5000/api/emp")
       .then((res) => setMenuData(buildTree(res.data)))
-      .catch((err) => console.log(err));
+      .catch(console.log);
   }, []);
 
   const buildTree = (list) => {
@@ -93,83 +97,119 @@ const MenuDrawer = ({ open, setOpen }) => {
     return roots;
   };
 
-
   const toggle = (id) =>
     setOpenItems((prev) => ({ ...prev, [id]: !prev[id] }));
 
-
   /* ⭐ FIXED NAVIGATION */
   const handleNavigation = (menuName) => {
+  const name = menuName.toLowerCase().trim();
 
-    if (menuName === "Item Master Entry") {
-      navigate("/item-master");
-    }
+  if (name === "item master entry") navigate("/item-master");
+  else if (name === "application report entry") navigate("/application-report");
+  else if (name === "project follow-up entry") navigate("/project-followup");
+  else if (name === "city master") navigate("/city-master");
+  else if (name === "state master") navigate("/state-master");
+  else if (name === "sales return") navigate("/sales-return");
+  else if (name === "wildcard search" || name === "wild card search")
+    navigate("/wildcard-search");
+ else if (name.includes("visit report") && name.includes("customer"))
+  navigate("/visit-report-customerwise");
+else if (name.includes("technical") &&
+    name.includes("support") &&
+    name.includes("customer")
+  )
+    navigate("/technical-support-report-customerwise");
 
-    if (menuName === "Application Report Entry") {
-      navigate("/application-report");
-    }
+  else if (name.includes("video") &&
+    name.includes("sales") &&
+    name.includes("customer")
+  )
+    navigate("/video-sales-call-report-customerwise");
 
-    if (menuName === "Project Follow-up Entry") {
-      navigate("/project-followup");
-    }
+ else if (
+    name.includes("followup") &&
+    name.includes("telephone") &&
+    name.includes("customer")
+  )
+    navigate("/followup-telephone-report-customerwise");
 
-    if (menuName === "Payment Follow-up Entry") {
-      navigate("/payment-followup");
-    }
+    else if (
+    name.includes("payment") &&
+    name.includes("follow") &&
+    name.includes("report")
+  )
+    navigate("/payment-follow-up-report");
+  
+  else if (name === "exit") navigate("/");
+  setFloatingMenu(null);
+  setOpen(false);
+};
 
-    if (menuName === "Exit") {
-      navigate("/");
-    }
+  const renderFloatingTree = (items) => (
+  <List dense>
+    {items.map((item) => (
+      <React.Fragment key={item.MenuID}>
+        <ListItemButton
+          onClick={() => {
+            handleNavigation(item.MenuName);
+           }}
 
-    if (menuName === "City Master") {
-    navigate("/city-master");
-    }
+          sx={{ pl: 2 }}
+        >
+          <ListItemText primary={item.MenuName} />
+        </ListItemButton>
 
-     if (menuName === "State Master") {
-    navigate("/state-master");
-    }
-
-    setOpen(false);
-  };
-
+        {/* 🔽 SUB-SUB MENUS */}
+        {item.children?.length > 0 && (
+          <Box sx={{ pl: 2 }}>
+            {renderFloatingTree(item.children)}
+          </Box>
+        )}
+      </React.Fragment>
+    ))}
+  </List>
+);
 
   const renderMenu = (items, isSubMenu = false, parentMenuId = null) =>
     items.map((item, index) => (
       <div key={item.MenuID}>
-
         {isSubMenu &&
           SUBMENU_DIVIDERS[parentMenuId]?.includes(index) && (
-            <Divider
-              sx={{
-                my: 1,
-                borderColor: "#222",
-                opacity: 1,
-                borderBottomWidth: 1,
-              }}
-            />
+            <Divider className="menu-divider" />
           )}
 
         <Tooltip title={!open ? item.MenuName : ""} placement="right">
           <ListItemButton
-            onClick={() =>
-              item.children.length
-                ? toggle(item.MenuID)
-                : handleNavigation(item.MenuName)
-            }
-            sx={{
-              pl: isSubMenu ? 4 : 2,
-              justifyContent: open ? "flex-start" : "center",
-            }}
-          >
+            onClick={(e) => {
+  // 🔹 COLLAPSED → OPEN FLOATING FULL MENU
+  if (!open && item.children.length > 0) {
+    setFloatingMenu(item);
+    setFloatingAnchor(e.currentTarget);
+    return;
+  }
 
-            {/* show icons ONLY for main menus */}
+  // 🔹 EXPANDED → NORMAL BEHAVIOR
+  if (open && item.children.length > 0) {
+    toggle(item.MenuID);
+    return;
+  }
+
+  handleNavigation(item.MenuName);
+}}
+
+            className={
+              isSubMenu
+                ? "menu-item submenu-item"
+                : open
+                ? "menu-item"
+                : "menu-item menu-item-collapsed"
+            }
+          >
             {!isSubMenu && (
               <ListItemIcon
-                sx={(theme) => ({
-                  color: theme.palette.text.primary,
-                  minWidth: open ? 40 : "auto",
-                  justifyContent: "center",
-                })}
+                className={
+                  open ? "menu-icon" : "menu-icon menu-icon-collapsed"
+                }
               >
                 {iconMap[item.MenuName] || <DashboardOutlined />}
               </ListItemIcon>
@@ -183,8 +223,8 @@ const MenuDrawer = ({ open, setOpen }) => {
           </ListItemButton>
         </Tooltip>
 
-
-        {item.children.length > 0 && (
+        {/* NORMAL COLLAPSE (ONLY WHEN OPEN) */}
+        {open && item.children.length > 0 && (
           <Collapse in={openItems[item.MenuID]} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               {renderMenu(item.children, true, item.MenuID)}
@@ -194,24 +234,54 @@ const MenuDrawer = ({ open, setOpen }) => {
       </div>
     ));
 
-
   return (
-    <Drawer
-      variant="permanent"
-      sx={{
-        width: open ? DRAWER_WIDTH : MINI_WIDTH,
-        "& .MuiDrawer-paper": {
+    <>
+      {!open && floatingMenu && floatingAnchor && (
+  <Box
+    sx={{
+      position: "fixed",
+      top: floatingAnchor.getBoundingClientRect().top,
+      left: MINI_WIDTH + 12,
+      width: 320,
+      maxHeight: "75vh",
+      overflowY: "auto",
+      bgcolor: "background.paper",
+      boxShadow: 8,
+      borderRadius: 2,
+      zIndex: 5000,
+      p: 1,
+    }}
+    onMouseLeave={() => setFloatingMenu(null)}
+  >
+    {renderFloatingTree(floatingMenu.children)}
+  </Box>
+)}
+
+
+      {/* 🔹 MAIN DRAWER */}
+      <Drawer
+        variant="permanent"
+        PaperProps={{
+          className: `menu-drawer-paper ${
+            open ? "expanded" : "collapsed"
+          }`,
+        }}
+        sx={{
           width: open ? DRAWER_WIDTH : MINI_WIDTH,
-          top: 64,
-          height: "calc(100% - 64px)",
-          overflowX: "hidden",
-          transition: "width 0.3s ease",
-          bgcolor: (theme) => theme.palette.background.paper,
-        },
-      }}
-    >
-      <List>{renderMenu(menuData)}</List>
-    </Drawer>
+          "& .MuiDrawer-paper": {
+            width: open ? DRAWER_WIDTH : MINI_WIDTH,
+            transition: "width 0.3s ease",
+            top: 64,
+            height: "calc(100% - 64px)",
+            overflowX: "hidden",
+          },
+        }}
+      >
+        <List sx={{ paddingTop: 0, paddingBottom: 0 }}>
+          {renderMenu(menuData)}
+        </List>
+      </Drawer>
+    </>
   );
 };
 

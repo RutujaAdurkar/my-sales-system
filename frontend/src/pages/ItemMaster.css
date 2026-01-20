@@ -130,3 +130,15 @@
   gap: 20px;
   margin-top: 24px;
 }
+/* ================= TABLE HEADER ORANGE ================= */
+.table-container thead th {
+  background-color: #ff9800 !important;  /* 🟧 Orange */
+  color: #ffffff !important;             /* White text */
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Checkbox color inside header */
+.table-container thead th .MuiCheckbox-root {
+  color: #ffffff !important;
+}

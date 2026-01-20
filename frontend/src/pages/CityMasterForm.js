@@ -307,7 +307,7 @@ const handleExport = () => {
     <Typography className="city-title">City Master</Typography>
   </Box>
 
-  <Box display="flex" gap={2} alignItems="center">
+  {/* <Box display="flex" gap={2} alignItems="center">
     <Box className="search-box">
       <SearchIcon fontSize="small" sx={{ mr: 1 }} />
       <InputBase
@@ -330,11 +330,57 @@ const handleExport = () => {
     >
       Add
     </Button>
-  </Box>
+  </Box> */}
+
+  <Box
+  display="flex"
+  flexDirection="column"
+  gap={1}
+  alignItems="flex-start"
+  sx={{ width: 220 }}   // 🔑 LIMIT WIDTH HERE
+>
+
+  {/* ADD BUTTON FIRST */}
+ <Button
+  variant="contained"
+  startIcon={<AddIcon />}
+  sx={{
+    width: "100%",     // fits container (220px)
+    height: 36,        // compact height
+    fontSize: 13,
+  }}
+  onClick={() => {
+    clearForm();
+    setEditing(false);
+    setReadOnly(false);
+    setView("form");
+  }}
+>
+  Add
+</Button>
+
+  {/* SEARCH BELOW */}
+ <Box
+  className="search-box"
+  sx={{
+    width: "100%",
+    height: 34,
+    px: 1,
+  }}
+>
+  <SearchIcon fontSize="small" sx={{ mr: 1 }} />
+  <InputBase
+    placeholder="Search..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    sx={{ fontSize: 13, width: "100%" }}
+  />
+</Box>
+</Box>
 </Box>
         <TableContainer>
           <Table size="small">
-<TableHead>
+{/* <TableHead>
   <TableRow>
     <TableCell padding="checkbox">
       <Checkbox
@@ -355,7 +401,30 @@ const handleExport = () => {
     <TableCell>State</TableCell>
     <TableCell align="right">Actions</TableCell>
   </TableRow>
+</TableHead> */}
+<TableHead>
+  <TableRow className="city-table-head">
+    <TableCell padding="checkbox">
+      <Checkbox
+        indeterminate={
+          selected.length > 0 && selected.length < filteredRows.length
+        }
+        checked={
+          filteredRows.length > 0 &&
+          selected.length === filteredRows.length
+        }
+        onChange={(e) => handleSelectAll(e.target.checked)}
+      />
+    </TableCell>
+
+    <TableCell>City Id</TableCell>
+    <TableCell>City Name</TableCell>
+    <TableCell>Area Name</TableCell>
+    <TableCell>State</TableCell>
+    <TableCell align="right">Actions</TableCell>
+  </TableRow>
 </TableHead>
+
 <TableBody>
   {filteredRows
     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

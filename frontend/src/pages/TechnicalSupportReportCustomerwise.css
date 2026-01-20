@@ -1,0 +1,116 @@
+ .report-container {
+  min-height: 100vh;        /* FULL SCREEN */
+  background-color: #0f0f0f;
+  padding: 24px;
+  box-sizing: border-box;
+}
+.report-paper {
+  background: linear-gradient(#1c1c1c, #141414);
+  border-radius: 8px;
+  padding: 20px;
+  color: #ffffff;
+}
+
+
+/* HEADER */
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+/* FORM ROW */
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.form-row label {
+  font-weight: 600;
+  min-width: 70px;
+}
+
+/* BUTTON ROW */
+.button-row {
+  display: flex;
+  gap: 8px;
+}
+
+/* TABLE */
+.table-wrapper {
+  margin-top: 12px;
+  max-height: 400px;
+  overflow: auto;
+}
+
+.MuiTableCell-head {
+  background: #f0f0f0;
+  font-weight: 600;
+}
+
+/* ================= TABLE HEADER ================= */
+.MuiTableCell-head {
+  background-color: #f57c00;   /* Orange */
+  color: #ffffff;              /* White text */
+  font-weight: 600;
+  border-right: 1px solid #ffffff;
+}
+
+/* Optional: last column border fix */
+.MuiTableCell-head:last-child {
+  border-right: none;
+}
+
+/* ================= ACTION BUTTON ROW ================= */
+.action-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+  padding-left: 70px; /* aligns with fields */
+} 
+
+/* ================= TECH SUPPORT REPORT ================= */
+
+/* LIGHT MODE (DEFAULT) */
+.tsr-page {
+  min-height: 100vh;
+  padding: 24px;
+  background-color: #fff7f0; /* same as global light */
+}
+
+/* LIGHT MODE CARD */
+.tsr-page .report-paper {
+  background-color: #ffffff;
+  color: #212121;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+/* ================= DARK MODE ONLY ================= */
+
+body.dark .tsr-page {
+  background-color: #121212;
+}
+
+body.dark .tsr-page .report-paper {
+  background: linear-gradient(#1e1e1e, #141414);
+  color: #ffffff;
+  border-color: #333;
+}
+
+
+/* ================= ALERT MESSAGE ================= */
+.error-msg {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background-color: #fdecea;
+  color: #b71c1c;
+  font-weight: 600;
+  border: 1px solid #f5c6cb;
+}
+

@@ -1,0 +1,45 @@
+/* ================= PAGE ================= */
+.followup-container {
+  padding: 16px;
+}
+
+/* ================= FORM ROW ================= */
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.form-label {
+  width: 120px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.form-field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ================= BUTTON BAR ================= */
+.button-bar {
+  margin-top: 16px;
+}
+
+.button-bar button {
+  margin-right: 8px;
+}
+
+/* ================= TABLE ================= */
+.table-container {
+  margin-top: 20px;
+  max-height: 420px;
+}
+
+/* ================= EMPTY STATE ================= */
+.empty-text {
+  margin-top: 20px;
+  color: #777;
+  font-style: italic;
+}

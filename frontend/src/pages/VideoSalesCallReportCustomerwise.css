@@ -1,0 +1,57 @@
+
+
+/* ===== FORM WRAPPER ===== */
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 650px;
+}
+
+/* ===== HORIZONTAL ROW ===== */
+.form-row-horizontal {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* ===== LEFT LABEL ===== */
+.form-label-left {
+  width: 90px;          /* FIXED label width */
+  font-size: 13px;
+  font-weight: 600;
+ color: var(--label-color);
+
+}
+
+/* ===== FIELD ===== */
+.form-field {
+  width: 260px;
+}
+
+/* ===== CUSTOMER ROW ===== */
+.customer-horizontal {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ===== CUSTOMER SELECT ===== */
+.customer-select {
+  width: 320px;
+}
+
+/* ===== ALL CHECKBOX ===== */
+.all-horizontal {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+}
+
+/* ===== BUTTON ROW ===== */
+.button-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+}

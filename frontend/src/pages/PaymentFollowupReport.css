@@ -1,0 +1,24 @@
+.page-container {
+  padding: 16px;
+}
+
+.report-form {
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.form-row label {
+  font-size: 13px;
+  min-width: 80px;
+}
+
+.table-wrapper {
+  padding: 8px;
+}

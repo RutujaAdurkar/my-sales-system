@@ -1,0 +1,46 @@
+/* PAGE WRAPPER */
+.visit-report-container {
+  padding: 16px;
+}
+
+/* PAPER */
+.visit-report-paper {
+  padding: 16px;
+}
+
+/* TITLE */
+.visit-report-title {
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+/* FORM ROW */
+.form-row {
+  margin-bottom: 8px;
+}
+
+.form-label {
+  font-weight: 600;
+}
+
+/* FIELD + CHECKBOX ALIGNMENT */
+.form-field {
+  display: flex;
+  align-items: center;
+}
+
+.form-right {
+  margin-left: 16px;
+}
+
+/* BUTTON BAR */
+.button-bar {
+  margin-top: 24px;
+  display: flex;
+  gap: 8px;
+}
+
+/* TABLE */
+.table-container {
+  margin-top: 24px;
+}

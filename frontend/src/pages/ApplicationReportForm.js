@@ -422,7 +422,7 @@ const handleSelectAll = (checked) => {
    </Box>
       <Table size="small">
         <TableHead>
-          <TableRow>
+          <TableRow className="app-table-head">
          {/* ✅ SELECT ALL CHECKBOX */}
         <TableCell padding="checkbox">
         <Checkbox
@@ -766,4 +766,3 @@ const handleSelectAll = (checked) => {
 };
 
 export default ApplicationReportEntry;
- 
