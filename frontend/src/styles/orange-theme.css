@@ -1,7 +1,50 @@
-/* ===================================================
-   GLOBAL ORANGE THEME (ERP STYLE)
-   Used by: Item, City, State, Project, Application Report
-=================================================== */
+
+body.dark .MuiMenu-paper {
+  background-color: #0f172a !important;
+}
+
+body.dark .MuiMenuItem-root.Mui-selected {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+
+
+
+
+/* Selected */
+body.dark .MuiMenuItem-root.Mui-selected {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+
+/* Kill header row pseudo-element */
+.MuiTableHead-root::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Kill header row shadow / underline */
+.MuiTableRow-root.MuiTableRow-head {
+  box-shadow: none !important;
+  border-bottom: 0 !important;
+}
+
+/* Kill cell underline (extra safety) */
+.MuiTableRow-root.MuiTableRow-head .MuiTableCell-root {
+  border-bottom: 0 !important;
+}
+
+/* Kill sticky-header generated divider */
+.MuiTable-root {
+  border-collapse: collapse !important;
+}
+
+/* Remove any remaining Paper highlight line */
+.MuiPaper-root {
+  background-image: none !important;
+}
 
 /* ---------------- RESET ---------------- */
 * {
@@ -11,20 +54,23 @@
 body {
   margin: 0;
   font-family: "Roboto", sans-serif;
-  background-color: #fff7f0;
+  background-color: #f8fafc;
   overflow-y: auto;
 }
 
 /* ---------------- COLOR VARIABLES ---------------- */
 :root {
-  --primary: #f57c00;        /* ORANGE */
-  --primary-dark: #e65100;
-  --primary-light: #fff3e0;
+  --primary: #2563eb;
+  --primary-dark: #1e40af;
+  --primary-light: #e0e7ff;
 
-  --border: #e0e0e0;
-  --text-main: #212121;
-  --text-muted: #616161;
-  --error: #d32f2f;
+  --table-head-bg: #e8eef8;
+  --table-head-text: #0f2a44;
+
+  --border: #d1d5db;
+  --text-main: #111827;
+  --text-muted: #6b7280;
+  --error: #dc2626;
 }
 
 /* ---------------- PAGE ---------------- */
@@ -48,25 +94,6 @@ body {
   color: var(--text-main);
 }
 
-/* ---------------- TOOLBAR ---------------- */
-.page-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-/* ---------------- SEARCH ---------------- */
-.search-input {
-  width: 260px;
-}
-
-/* ---------------- TABLE ---------------- */
-.table-container {
-  width: 100%;
-  border-radius: 8px;
-}
-
 /* ---------------- FORM PAPER ---------------- */
 .form-paper {
   width: 100%;
@@ -74,7 +101,6 @@ body {
   border-radius: 12px;
   background-color: #ffffff;
   border: 1px solid var(--border);
-  overflow: visible;
 }
 
 /* ---------------- FORM ROW ---------------- */
@@ -86,53 +112,25 @@ body {
 }
 
 .form-label {
-  width: 130px;
+  width: 140px;
   font-size: 13px;
   font-weight: 600;
   color: var(--text-main);
   white-space: nowrap;
 }
 
-/* ---------------- 3 COLUMN FORM ---------------- */
-.form-columns {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
 /* ---------------- BUTTONS ---------------- */
-.form-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
-  margin-top: 24px;
-}
-
-/* ORANGE PRIMARY BUTTON */
 button.MuiButton-contained {
   background-color: var(--primary) !important;
-  color: #fff !important;
+  color: #ffffff !important;
 }
 
 button.MuiButton-contained:hover {
   background-color: var(--primary-dark) !important;
 }
 
-/* CANCEL BUTTON */
 .btn-cancel {
   background-color: var(--error) !important;
-  color: #fff !important;
-}
-
-.btn-cancel:hover {
-  background-color: #b71c1c !important;
-}
-
-/* ---------------- BACK BUTTON ---------------- */
-.back-btn-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 8px;
 }
 
 /* ---------------- INPUTS ---------------- */
@@ -140,31 +138,10 @@ button.MuiButton-contained:hover {
   background-color: #ffffff;
 }
 
-.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+.MuiOutlinedInput-root.Mui-focused
+  .MuiOutlinedInput-notchedOutline {
   border-color: var(--primary) !important;
 }
-
-/* ---------------- SELECT ---------------- */
-.MuiSelect-select {
-  background-color: #ffffff;
-}
-
-/* ---------------- CHECKBOX ---------------- */
-.MuiCheckbox-root.Mui-checked {
-  color: var(--primary) !important;
-}
-
-/* ---------------- ICON BUTTON ---------------- */
-.MuiIconButton-root {
-  color: var(--primary);
-}
-
-/* ---------------- MENU ---------------- */
-.MuiMenuItem-root.Mui-selected {
-  background-color: var(--primary-light) !important;
-}
-
-/* ================= LIGHT MODE (DEFAULT) ================= */
 
 .MuiInputLabel-root {
   color: var(--text-muted);
@@ -174,49 +151,565 @@ button.MuiButton-contained:hover {
   color: var(--primary);
 }
 
-.MuiInputBase-input {
-  color: var(--text-main);
+/* ---------------- CHECKBOX ---------------- */
+.MuiCheckbox-root.Mui-checked {
+  color: var(--primary) !important;
 }
 
-.MuiSelect-select {
-  color: var(--text-main);
+/* ===================================================
+   TABLE – LIGHT MODE
+=================================================== */
+
+body:not(.dark) .MuiTableHead-root {
+  background-color: var(--table-head-bg) !important;
 }
 
-.form-label {
-  color: var(--text-main);
+body:not(.dark) .MuiTableHead-root .MuiTableCell-root {
+  background-color: transparent !important;
+  color: var(--table-head-text) !important;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 12px 14px;
+  border-right: 1px solid #dbeafe;
 }
 
-/* ================= DARK MODE ONLY ================= */
+body:not(.dark)
+  .MuiTableHead-root
+  .MuiTableCell-root:last-child {
+  border-right: none;
+}
+
+body:not(.dark)
+  .MuiTableHead-root
+  .MuiCheckbox-root {
+  color: var(--primary) !important;
+}
+
+/* ===================================================
+   TABLE – DARK MODE
+=================================================== */
 
 body.dark {
-  background-color: #121212;
+  background-color: #0f172a;
 }
 
 body.dark .form-paper {
-  background-color: #1e1e1e;
-  border-color: #333;
+  background-color: #111827;
+  border-color: #334155;
 }
 
-body.dark .MuiInputLabel-root {
-  color: #bdbdbd;
+body.dark .MuiTableHead-root {
+  background-color: #1e293b !important;
+}
+
+body.dark .MuiTableHead-root .MuiTableCell-root {
+  color: #e5e7eb !important;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 12px 14px;
+  border-right: 1px solid #334155;
+}
+
+body.dark
+  .MuiTableHead-root
+  .MuiTableCell-root:last-child {
+  border-right: none;
+}
+
+body.dark
+  .MuiTableHead-root
+  .MuiCheckbox-root {
+  color: #93c5fd !important;
+}
+
+/* ===================================================
+   TABLE BODY
+=================================================== */
+
+body.dark
+  .MuiTableBody-root
+  .MuiTableRow-root:hover {
+  background-color: rgba(147, 197, 253, 0.08);
+}
+
+/* ===================================================
+   🔥 FINAL GLOBAL FIX – REMOVE HEADER LINE COMPLETELY
+=================================================== */
+
+/* Remove ALL MUI cell bottom borders */
+.MuiTableCell-root {
+  border-bottom: 0 !important;
+}
+
+/* Remove header bottom divider */
+.MuiTableHead-root,
+.MuiTableHead-root .MuiTableCell-root {
+  border-bottom: 0 !important;
+}
+
+/* Remove sticky header shadow/line */
+.MuiTableCell-stickyHeader {
+  border-bottom: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Remove TableContainer artifacts */
+.MuiTableContainer-root {
+  box-shadow: none !important;
+}
+
+.MuiTableContainer-root::after {
+  display: none !important;
+}
+
+/* Remove first-row top border safety */
+.MuiTableBody-root
+  .MuiTableRow-root:first-of-type
+  > .MuiTableCell-root {
+  border-top: 0 !important;
+}
+
+/* Remove Paper highlight effect */
+.MuiPaper-root {
+  background-image: none !important;
+}
+/* ===================================================
+   DARK MODE – REMOVE ORANGE / PRIMARY ACCENTS
+   ERP NEUTRAL STYLE
+=================================================== */
+
+body.dark {
+  --primary: #94a3b8;        /* slate */
+  --primary-dark: #64748b;
+  --primary-light: #1e293b;
+}
+
+/* ---------------- INPUTS ---------------- */
+body.dark .MuiOutlinedInput-root {
+  background-color: #020617;
+}
+
+body.dark .MuiOutlinedInput-root.Mui-focused
+  .MuiOutlinedInput-notchedOutline {
+  border-color: #64748b !important; /* neutral */
 }
 
 body.dark .MuiInputLabel-root.Mui-focused {
-  color: var(--primary);
+  color: #cbd5f5 !important;
 }
 
-body.dark .MuiInputBase-input {
-  color: #ffffff;
+/* ---------------- BUTTONS ---------------- */
+body.dark button.MuiButton-contained {
+  background-color: #334155 !important;
+  color: #e5e7eb !important;
 }
 
-body.dark .MuiSelect-select {
-  color: #ffffff;
+body.dark button.MuiButton-contained:hover {
+  background-color: #475569 !important;
 }
 
-body.dark .form-label {
-  color: #f5f5f5;
+/* ---------------- CHECKBOX ---------------- */
+body.dark .MuiCheckbox-root.Mui-checked {
+  color: #94a3b8 !important;
+}
+
+/* ---------------- TABLE HOVER ---------------- */
+body.dark .MuiTableBody-root .MuiTableRow-root:hover {
+  background-color: rgba(148, 163, 184, 0.12) !important;
+}
+
+/* ===================================================
+   🌙 DARK MODE – ERP BLUE/GRAY THEME
+   (MATCHES IMAGE #2)
+=================================================== */
+
+body.dark {
+  /* ---- Base surfaces ---- */
+  background-color: #0b1220;
+
+  /* ---- Neutral ERP palette ---- */
+  --primary: #2563eb;          /* ERP blue */
+  --primary-dark: #1e40af;
+  --primary-light: #1e293b;
+
+  --border: #1f2a44;
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+
+  --table-head-bg: #1f3a8a;    /* BLUE HEADER */
+  --table-head-text: #e0e7ff;
+}
+
+/* ===============================
+   FORM (Paper)
+================================ */
+
+body.dark .form-paper,
+body.dark .MuiPaper-root {
+  background-color: #0f172a !important;
+  border: 1px solid #1f2a44 !important;
+  color: var(--text-main);
+}
+
+/* ===============================
+   INPUTS
+================================ */
+
+body.dark .MuiOutlinedInput-root {
+  background-color: #020617;
+  color: var(--text-main);
 }
 
 body.dark .MuiOutlinedInput-notchedOutline {
-  border-color: #616161;
+  border-color: #1f2a44 !important;
+}
+
+body.dark .MuiOutlinedInput-root.Mui-focused
+  .MuiOutlinedInput-notchedOutline {
+  border-color: #2563eb !important;
+}
+
+body.dark .MuiInputLabel-root {
+  color: var(--text-muted);
+}
+
+body.dark .MuiInputLabel-root.Mui-focused {
+  color: #93c5fd;
+}
+
+/* ===============================
+   TABLE HEADER (IMPORTANT)
+================================ */
+
+body.dark .MuiTableHead-root {
+  background-color: var(--table-head-bg) !important;
+}
+
+body.dark .MuiTableHead-root .MuiTableCell-root {
+  background-color: transparent !important;
+  color: var(--table-head-text) !important;
+  font-weight: 600;
+  border-right: 1px solid #1f2a44;
+}
+
+/* ===============================
+   TABLE BODY
+================================ */
+
+body.dark .MuiTableBody-root .MuiTableRow-root {
+  background-color: #0f172a;
+}
+
+body.dark .MuiTableBody-root .MuiTableRow-root:hover {
+  background-color: rgba(37, 99, 235, 0.15);
+}
+
+body.dark .MuiTableCell-root {
+  color: var(--text-main);
+}
+
+/* ===============================
+   BUTTONS
+================================ */
+
+body.dark button.MuiButton-contained {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+body.dark button.MuiButton-contained:hover {
+  background-color: #1e40af !important;
+}
+
+/* ===============================
+   CHECKBOX
+================================ */
+
+body.dark .MuiCheckbox-root {
+  color: #93c5fd !important;
+}
+
+body.dark .MuiCheckbox-root.Mui-checked {
+  color: #60a5fa !important;
+}
+
+
+/* Base menu items */
+body.dark .MuiMenuItem-root {
+  background-color: transparent !important;
+  color: #e5e7eb !important;
+}
+
+
+
+
+
+/* =========================================
+   FIX ORANGE PLACEHOLDER MENU ITEM
+========================================= */
+
+body.dark .MuiMenuItem-root.Mui-disabled {
+  color: #9ca3af !important;           /* gray text */
+  background-color: transparent !important;
+  opacity: 1 !important;
+}
+
+/* If placeholder gets selected */
+body.dark .MuiMenuItem-root.Mui-disabled.Mui-selected {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+/* =========================================
+   REMOVE ORANGE FROM SELECTED DROPDOWN ITEM
+========================================= */
+
+/* Selected item */
+body.dark .MuiMenuItem-root.Mui-selected {
+  background-color: #2563eb !important;   /* BLUE */
+  color: #ffffff !important;
+}
+
+
+
+/* =========================================
+   🔒 DARK MODE DROPDOWN – NO HOVER EFFECT
+   (ALWAYS LIKE IMAGE 1)
+========================================= */
+
+body.dark .MuiMenuItem-root {
+  background-color: transparent !important;
+  transition: none !important;
+}
+
+
+/* ===================================================
+   🔒 FINAL DARK MODE DROPDOWN LOCK
+   NO HOVER • NO ORANGE • IMAGE-1 ONLY
+=================================================== */
+
+/* Menu background */
+body.dark .MuiMenu-paper {
+  background-color: #0f172a !important;
+}
+
+/* Base menu item (no hover effect) */
+body.dark .MuiMenuItem-root {
+  background-color: transparent !important;
+  color: #e5e7eb !important;
+  transition: none !important;
+}
+
+/* Disable hover completely */
+body.dark .MuiMenuItem-root:hover {
+  background-color: transparent !important;
+}
+
+/* ONLY selected item is blue */
+body.dark .MuiMenuItem-root.Mui-selected,
+body.dark .MuiMenuItem-root[aria-selected="true"] {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+/* Disabled placeholder */
+body.dark .MuiMenuItem-root.Mui-disabled {
+  background-color: transparent !important;
+  color: #9ca3af !important;
+  opacity: 1 !important;
+}
+
+/* ===================================================
+   🔵 FORCE ALL DROPDOWNS TO STAY BLUE ONLY
+   NO ORANGE ANYWHERE
+=================================================== */
+
+/* Select field container */
+body.dark .MuiSelect-root {
+  color: #e5e7eb !important;
+}
+
+/* Select field when opened */
+body.dark .MuiSelect-root.Mui-focused {
+  color: #e5e7eb !important;
+}
+
+/* Select input text */
+body.dark .MuiSelect-select {
+  color: #e5e7eb !important;
+}
+
+/* Select input text when focused */
+body.dark .MuiSelect-select.Mui-focused {
+  background-color: #020617 !important;
+  color: #e5e7eb !important;
+}
+
+/* Select icon color */
+body.dark .MuiSelect-icon {
+  color: #2563eb !important;
+}
+
+/* Outlined Input for Select */
+body.dark .MuiSelect-outlined {
+  color: #e5e7eb !important;
+}
+
+/* Outlined notched outline */
+body.dark .MuiSelect-outlined.Mui-focused ~ .MuiOutlinedInput-notchedOutline {
+  border-color: #2563eb !important;
+}
+
+/* Menu Paper background - ALL BLUE */
+body.dark .MuiMenu-paper,
+body.dark .MuiPaper-root.MuiMenu-paper,
+body.dark .MuiPopover-paper {
+  background-color: #0f172a !important;
+  box-shadow: 0 0 0 1px #2563eb !important;
+}
+
+/* All menu items - base state */
+body.dark .MuiMenu-list .MuiMenuItem-root {
+  background-color: transparent !important;
+  color: #e5e7eb !important;
+}
+
+/* Menu item hover - KEEP BLUE, NO ORANGE */
+body.dark .MuiMenu-list .MuiMenuItem-root:hover {
+  background-color: #1e40af !important;
+  color: #ffffff !important;
+}
+
+/* Menu item selected - BLUE ONLY */
+body.dark .MuiMenu-list .MuiMenuItem-root.Mui-selected {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+/* Menu item selected + hover - KEEP BLUE */
+body.dark .MuiMenu-list .MuiMenuItem-root.Mui-selected:hover {
+  background-color: #1e40af !important;
+  color: #ffffff !important;
+}
+
+/* Disabled items in menu */
+body.dark .MuiMenu-list .MuiMenuItem-root.Mui-disabled {
+  background-color: transparent !important;
+  color: #9ca3af !important;
+}
+
+/* Focused menu items - BLUE, NO ORANGE */
+body.dark .MuiMenu-list .MuiMenuItem-root:focus {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+/* Active menu items - BLUE, NO ORANGE */
+body.dark .MuiMenu-list .MuiMenuItem-root[aria-selected="true"] {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+/* ===================================================
+   🔵 DRAWER ICONS - GLOBAL BLUE THEME (BOTH MODES)
+=================================================== */
+
+/* All SVG icons - LIGHT & DARK MODE */
+.MuiListItemIcon-root svg {
+  color: #2563eb !important;
+}
+
+/* MUI icon components - LIGHT & DARK MODE */
+.MuiSvgIcon-root {
+  color: #2563eb !important;
+}
+
+/* Icons inside list items - LIGHT & DARK MODE */
+.MuiListItem-root .MuiSvgIcon-root {
+  color: #2563eb !important;
+}
+
+/* Drawer list item icons - LIGHT & DARK MODE */
+.menu-icon svg {
+  color: #2563eb !important;
+  fill: #2563eb !important;
+}
+
+/* Expand/collapse icons - LIGHT & DARK MODE */
+.MuiCollapse-root .MuiSvgIcon-root {
+  color: #2563eb !important;
+}
+
+/* Hover state - icons stay blue - LIGHT & DARK MODE */
+.MuiListItemButton-root:hover .MuiSvgIcon-root {
+  color: #60a5fa !important;
+}
+
+/* Selected state - icons stay blue - LIGHT & DARK MODE */
+.MuiListItemButton-root.Mui-selected .MuiSvgIcon-root {
+  color: #93c5fd !important;
+}
+
+/* Focus state - icons stay blue - LIGHT & DARK MODE */
+.MuiListItemButton-root:focus .MuiSvgIcon-root {
+  color: #2563eb !important;
+}
+
+/* Top bar icons - LIGHT & DARK MODE */
+.MuiAppBar-root .MuiSvgIcon-root {
+  color: #2563eb !important;
+}
+
+/* Button icons - LIGHT & DARK MODE */
+.MuiButton-root .MuiSvgIcon-root {
+  color: #2563eb !important;
+}
+
+/* Icon button icons - LIGHT & DARK MODE */
+.MuiIconButton-root .MuiSvgIcon-root {
+  color: #2563eb !important;
+}
+
+/* Table action icons - LIGHT & DARK MODE */
+.MuiTableBody-root .MuiSvgIcon-root {
+  color: #2563eb !important;
+}
+
+/* Expand more/less icons - LIGHT & DARK MODE */
+.ExpandMore,
+.ExpandLess {
+  color: #2563eb !important;
+}
+
+/* ===================================================
+   🔵 ADDITIONAL DARK MODE ICON OVERRIDES
+=================================================== */
+
+/* Dark mode: Keep dark mode icons blue */
+body.dark .MuiAppBar-root .MuiIconButton-root svg {
+  color: #2563eb !important;
+}
+
+/* ===================================================
+   ⚪ TOPBAR ICONS - LIGHT MODE (WHITE)
+   DARK MODE (BLUE)
+=================================================== */
+
+/* Light mode: TopBar icons stay WHITE */
+body:not(.dark) .MuiAppBar-root .MuiIconButton-root svg {
+  color: #ffffff !important;
+}
+
+/* Light mode: TopBar icon buttons inherit white */
+body:not(.dark) .MuiAppBar-root .MuiIconButton-root {
+  color: #ffffff !important;
+}
+
+/* Dark mode: TopBar icons stay BLUE */
+body.dark .MuiAppBar-root .MuiIconButton-root svg {
+  color: #2563eb !important;
+}
+
+/* Dark mode: TopBar icon buttons inherit blue */
+body.dark .MuiAppBar-root .MuiIconButton-root {
+  color: #2563eb !important;
 }

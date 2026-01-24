@@ -61,23 +61,4 @@
   margin-top: 8px;
 }
 
-/* ===== TABLE HEADER ORANGE ===== */
-.city-table-head {
-  background-color: #f57c00; /* ORANGE */
-}
 
-.city-table-head th {
-  color: #ffffff !important;   /* White text */
-  font-weight: 600;
-  font-size: 13px;
-  border-bottom: none;
-}
-
-/* Checkbox color in header */
-.city-table-head .MuiCheckbox-root {
-  color: #ffffff;
-}
-
-.city-table-head .MuiCheckbox-root.Mui-checked {
-  color: #ffffff;
-}

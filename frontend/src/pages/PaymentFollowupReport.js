@@ -36,11 +36,12 @@ export default function PaymentFollowupReport() {
 const [alertOpen, setAlertOpen] = useState(false);
 
   const [filters, setFilters] = useState({
-    fromDate: "2019-04-01",
-    toDate: "2026-01-13",
-    customer: "ALL",
-    all: true
-  });
+  fromDate: "",
+  toDate: "",
+  customer: "",
+  all: false
+});
+
 
   const handleChange = (e) => {
     const { name, value, checked, type } = e.target;
@@ -70,15 +71,25 @@ const [alertOpen, setAlertOpen] = useState(false);
   setShowTable(true);
 };
 
+  // const handleClose = () => {
+  //   setShowTable(false);
+  //   setFilters({
+  //     fromDate: "",
+  //     toDate: "",
+  //     customer: "ALL",
+  //     all: false
+  //   });
+  // };
+
   const handleClose = () => {
-    setShowTable(false);
-    setFilters({
-      fromDate: "",
-      toDate: "",
-      customer: "ALL",
-      all: false
-    });
-  };
+  setShowTable(false);
+  setFilters({
+    fromDate: "",
+    toDate: "",
+    customer: "",
+    all: false
+  });
+};
 
   return (
     <Box className="page-container">

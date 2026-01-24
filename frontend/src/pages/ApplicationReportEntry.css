@@ -73,23 +73,32 @@
   background-color: #d32f2f !important;
 }
 
-/* ===== APPLICATION REPORT TABLE HEADER (ORANGE) ===== */
-.app-table-head {
-  background-color: #f57c00; /* ORANGE */
+/* =========================================
+   REMOVE STICKY HEADER LINE / SHADOW (FINAL)
+========================================= */
+
+/* Remove sticky header shadow */
+.MuiTableCell-stickyHeader {
+  box-shadow: none !important;
 }
 
-.app-table-head th {
-  color: #ffffff !important;
-  font-weight: 600;
-  font-size: 13px;
-  border-bottom: none;
+/* Extra safety: remove any bottom border */
+.MuiTableCell-stickyHeader {
+  border-bottom: none !important;
 }
 
-/* Header checkbox color */
-.app-table-head .MuiCheckbox-root {
-  color: #ffffff;
+/* Remove table head divider completely */
+.MuiTableHead-root,
+.MuiTableHead-root .MuiTableCell-root {
+  border-bottom: none !important;
 }
 
-.app-table-head .MuiCheckbox-root.Mui-checked {
-  color: #ffffff;
+/* If TableContainer is used anywhere */
+.MuiTableContainer-root::after {
+  display: none !important;
 }
+
+
+
+
+

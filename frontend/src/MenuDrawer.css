@@ -1,5 +1,6 @@
 /* ===============================
    MENU DRAWER STYLES
+   (GLOBAL THEME COMPATIBLE)
 ================================ */
 
 /* Drawer base */
@@ -8,78 +9,84 @@
 }
 
 /* Drawer paper */
-/* .menu-drawer-paper {
-  top: 64px;
-  height: calc(100% - 64px);
-  overflow-x: hidden;
-  transition: width 0.3s ease;
-} */
-
-/* Main menu button */
-.menu-item {
-  padding-left: 16px;
-  justify-content: flex-start;
-}
-
-/* Collapsed menu item (icons only) */
-.menu-item-collapsed {
-  justify-content: center;
-}
-
-/* Sub menu indentation */
-.submenu-item {
-  padding-left: 32px;
-}
-
-/* Icon wrapper */
-.menu-icon {
-  min-width: 40px;
-  display: flex;
-  justify-content: center;
-}
-
-/* Icon when drawer collapsed */
-.menu-icon-collapsed {
-  min-width: auto;
-}
-
-/* Divider */
-.menu-divider {
-  margin: 8px 0;
-  border-color: #222;
-  opacity: 1;
-}
-
-/* Tooltip fix */
-.menu-tooltip {
-  display: block;
-}
-
-
-/* ===============================
-   SAP STYLE DRAWER FIX
-================================ */
-
-/* Drawer paper */
 .menu-drawer-paper {
   top: 64px;
   height: calc(100% - 64px);
   overflow-x: hidden;
-  background: #111;
+  transition: width 0.3s ease;
+
+  /* ✅ GLOBAL THEME COLORS */
+  background-color: var(--primary-light);
+  color: var(--text-main);
 }
 
-/* 🔑 REMOVE EMPTY SPACE */
+/* ===============================
+   MENU ITEMS
+================================ */
+
+.menu-item {
+  padding-left: 16px;
+  justify-content: flex-start;
+  color: inherit;
+}
+
+.menu-item-collapsed {
+  justify-content: center;
+}
+
+.submenu-item {
+  padding-left: 32px;
+}
+
+/* ===============================
+   ICONS
+================================ */
+
+.menu-icon {
+  min-width: 40px;
+  display: flex;
+  justify-content: center;
+  color: inherit;
+}
+
+.menu-icon-collapsed {
+  min-width: auto;
+}
+
+/* ===============================
+   DIVIDER
+================================ */
+
+.menu-divider {
+  margin: 8px 0;
+  border-color: var(--border);
+  opacity: 1;
+}
+
+/* ===============================
+   TOOLTIP
+================================ */
+
+.menu-tooltip {
+  display: block;
+}
+
+/* ===============================
+   SCROLL BEHAVIOR
+================================ */
+
+/* Remove empty space */
 .menu-drawer-paper ul {
   padding-top: 4px !important;
   padding-bottom: 4px !important;
 }
 
-/* 🔑 NO SCROLLBAR IN ICON MODE */
+/* No scrollbar in collapsed mode */
 .menu-drawer-paper.collapsed {
   overflow-y: hidden !important;
 }
 
-/* SHOW SCROLL ONLY WHEN EXPANDED */
+/* Scroll only when expanded */
 .menu-drawer-paper.expanded {
   overflow-y: auto;
 }
@@ -94,3 +101,38 @@
   scrollbar-width: none;
 }
 
+/* ===============================
+   ACTIVE / HOVER STATES
+   (ERP STYLE)
+================================ */
+
+.menu-item:hover {
+  background-color: var(--primary-light);
+}
+
+.menu-item.Mui-selected {
+  background-color: var(--primary) !important;
+  color: #ffffff !important;
+}
+
+.menu-item.Mui-selected .menu-icon {
+  color: #ffffff !important;
+}
+
+/* ===============================
+   DARK MODE SUPPORT
+   (USING body.dark)
+================================ */
+
+body.dark .menu-drawer-paper {
+  background-color: #111827;   /* same as form-paper */
+  color: #e5e7eb;
+}
+
+body.dark .menu-item:hover {
+  background-color: rgba(37, 99, 235, 0.15);
+}
+
+body.dark .menu-divider {
+  border-color: #334155;
+}

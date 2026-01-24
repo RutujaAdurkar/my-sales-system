@@ -9,7 +9,7 @@
   justify-content: space-between;
   align-items: center;
 }
-
+a
 .project-title {
   font-size: 22px;
   font-weight: bold;
@@ -65,25 +65,5 @@
 
 .cancel-btn {
   background-color: #d32f2f !important;
-}
-
-/* ===== PROJECT TABLE HEADER ORANGE ===== */
-.project-table-head {
-  background-color: #f57c00;
-}
-
-.project-table-head th {
-  color: #ffffff !important;
-  font-weight: 600;
-  font-size: 13px;
-  border-bottom: none;
-}
-
-.project-table-head .MuiCheckbox-root {
-  color: #ffffff;
-}
-
-.project-table-head .MuiCheckbox-root.Mui-checked {
-  color: #ffffff;
 }
 

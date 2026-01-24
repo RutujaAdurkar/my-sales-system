@@ -50,10 +50,10 @@
 }
 
 /* ============================= */
-/* TABLE HEADER - ORANGE */
+/* TABLE HEADER */
 /* ============================= */
 .wildcard-table thead th {
-  background-color: #f57c00;   /* orange */
+  background-color: #1f3a8a;   /* blue */
   color: #ffffff;              /* white text */
   font-weight: 600;
   font-size: 13px;
@@ -118,10 +118,10 @@
 }
 
 /* ============================= */
-/* TABLE HEADER - ORANGE */
+/* TABLE HEADER */
 /* ============================= */
 .wildcard-table thead th {
-  background-color: #f57c00;
+  background-color: #1f3a8a;
   color: #fff;
   font-weight: 600;
   font-size: 13px;
@@ -170,13 +170,13 @@ body.dark .MuiMenuItem-root:hover {
 
 /* Selected item highlight */
 body.dark .MuiMenuItem-root.Mui-selected {
-  background-color: rgba(245, 124, 0, 0.25); /* orange tint */
+  background-color: #2563eb !important; /* blue */
   color: #ffffff;
 }
 
 /* Selected item hover */
 body.dark .MuiMenuItem-root.Mui-selected:hover {
-  background-color: rgba(245, 124, 0, 0.35);
+  background-color: #2563eb !important;
 }
 
 /* FORCE SELECT TEXT COLOR IN DARK MODE */

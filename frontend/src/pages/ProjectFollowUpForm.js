@@ -353,7 +353,7 @@ const downloadExcel = () => {
           : theme.palette.grey[200],
     })}
   > */}
-  <TableRow className="project-table-head">
+  <TableRow>
 
 
     <TableCell padding="checkbox">
@@ -658,5 +658,4 @@ const downloadExcel = () => {
     </Box>
   );
 };
-
 export default ProjectFollowUpForm;

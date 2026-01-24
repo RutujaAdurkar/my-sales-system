@@ -44,45 +44,58 @@ function App() {
   );
 
   // 🔹 Theme creation (unchanged logic)
+  // const theme = useMemo(
+  //   () =>
+  //     createTheme({
+  //       palette: {
+  //         mode,
+  //       },
+  //       components: {
+  //         MuiOutlinedInput: {
+  //           styleOverrides: {
+  //             root: ({ theme }) => ({
+  //               backgroundColor: theme.palette.background.paper,
+  //             }),
+  //           },
+  //         },
+  //         MuiFilledInput: {
+  //           styleOverrides: {
+  //             root: ({ theme }) => ({
+  //               backgroundColor: theme.palette.background.paper,
+  //             }),
+  //           },
+  //         },
+  //         MuiInputBase: {
+  //           styleOverrides: {
+  //             root: ({ theme }) => ({
+  //               backgroundColor: theme.palette.background.paper,
+  //             }),
+  //           },
+  //         },
+  //         MuiPaper: {
+  //           styleOverrides: {
+  //             root: ({ theme }) => ({
+  //               backgroundColor: theme.palette.background.paper,
+  //             }),
+  //           },
+  //         },
+  //       },
+  //     }),
+  //   [mode]
+  // );
   const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode,
+  () =>
+    createTheme({
+      palette: {
+        mode,
+        primary: {
+          main: "#2563eb", // BLUE
         },
-        components: {
-          MuiOutlinedInput: {
-            styleOverrides: {
-              root: ({ theme }) => ({
-                backgroundColor: theme.palette.background.paper,
-              }),
-            },
-          },
-          MuiFilledInput: {
-            styleOverrides: {
-              root: ({ theme }) => ({
-                backgroundColor: theme.palette.background.paper,
-              }),
-            },
-          },
-          MuiInputBase: {
-            styleOverrides: {
-              root: ({ theme }) => ({
-                backgroundColor: theme.palette.background.paper,
-              }),
-            },
-          },
-          MuiPaper: {
-            styleOverrides: {
-              root: ({ theme }) => ({
-                backgroundColor: theme.palette.background.paper,
-              }),
-            },
-          },
-        },
-      }),
-    [mode]
-  );
+      },
+    }),
+  [mode]
+);
+
 
   // 🔹 Theme toggle (unchanged)
   const toggleMode = () => {

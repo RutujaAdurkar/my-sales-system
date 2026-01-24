@@ -361,7 +361,7 @@ const handleSelectAll = (checked) => {
         ) : (
           <Button
             variant="contained"
-            sx={{ background: "#1976d2" }}
+        
             onClick={() => {
               setView("table");
               setEditingId(null);
@@ -422,7 +422,7 @@ const handleSelectAll = (checked) => {
    </Box>
       <Table size="small">
         <TableHead>
-          <TableRow className="app-table-head">
+          <TableRow>
          {/* ✅ SELECT ALL CHECKBOX */}
         <TableCell padding="checkbox">
         <Checkbox
@@ -567,7 +567,8 @@ const handleSelectAll = (checked) => {
               </FormRow>
 
               <FormRow label="Customer:" error={errors.customer}>
-                <TextField
+                <TextField  
+                
                   select
                   size="small"
                   fullWidth
@@ -575,7 +576,11 @@ const handleSelectAll = (checked) => {
                   onChange={handleChange("customer")}
                   disabled={readOnly}
                 >
-                  <MenuItem value="">Select Customer</MenuItem>
+                  {/* <MenuItem value="">Select Customer</MenuItem> */}
+                  <MenuItem value="" disabled>
+                     Select Customer
+                  </MenuItem>
+
                   {customers.map((c) => (
                     <MenuItem key={c.CustomerID} value={c.CustomerName}>
                       {c.CustomerName}
