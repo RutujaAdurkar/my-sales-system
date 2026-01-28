@@ -1,36 +1,15 @@
 import React, { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 import "./CityMaster.css";
-import DownloadIcon from "@mui/icons-material/Download";
-import DescriptionIcon from "@mui/icons-material/Description"; // CSV
-import TableChartIcon from "@mui/icons-material/TableChart";   // Excel
 import {
   Box,
   TextField,
   Button,
   MenuItem,
-  Typography,
-  Stack,
-  IconButton,
-  Menu,
-  Paper,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Checkbox,
-  TableContainer,
-  TablePagination,
-  InputBase
+  Paper
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import AddIcon from "@mui/icons-material/Add";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import axios from "axios";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import StandardTable from "../components/StandardTable";
 
 
 /* ================================================= */
@@ -39,11 +18,10 @@ export default function CityMaster() {
   const [view, setView] = useState("table"); // table | form
   const [readOnly, setReadOnly] = useState(false);
   const [editing, setEditing] = useState(false);
-/* ===== EXPORT MENU ===== */
-const [exportAnchorEl, setExportAnchorEl] = useState(null);
 
   /* ===== TABLE DATA ===== */
   const [rows, setRows] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
 
   /* ===== STATE DROPDOWN ===== */
   const [states, setStates] = useState([]);
@@ -57,15 +35,7 @@ const [exportAnchorEl, setExportAnchorEl] = useState(null);
   });
 
   const [errors, setErrors] = useState({});
-
-  /* ===== MENU ===== */
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedRow, setSelectedRow] = useState(null);
-
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [search, setSearch] = useState("");
-  const [selected, setSelected] = useState([]);
 
   /* =================================================
      LOAD DATA
@@ -147,356 +117,133 @@ const [exportAnchorEl, setExportAnchorEl] = useState(null);
      DELETE
   ================================================= */
   const handleDelete = async () => {
+    if (!window.confirm("Are you sure you want to delete this city?")) return;
     await axios.delete(
-      `http://localhost:5000/api/citymaster/delete/${selectedRow.cityId}`
+      `http://localhost:5000/api/citymaster/delete/${form.cityId}`
     );
     loadCities();
-    setAnchorEl(null);
+    setView("table");
+    clearForm();
   };
 
-  const handleRowSelect = (cityId) => {
-  setSelected(prev =>
-    prev.includes(cityId)
-      ? prev.filter(id => id !== cityId)
-      : [...prev, cityId]
-  );
-};
+  /* =================================================
+     EXPORT HANDLERS
+  ================================================= */
+  const exportCSV = () => {
+    const exportData = rows
+      .filter(r => selectedRows.includes(r.cityId))
+      .map(r => ({
+        "City Id": r.cityId,
+        "City Name": r.cityName,
+        "Area Name": r.areaName,
+        "State": r.state
+      }));
 
-const handleSelectAll = (checked) => {
-  if (checked) {
-    setSelected(filteredRows.map(r => r.cityId));
-  } else {
-    setSelected([]);
-  }
-};
-/* =================================================
-   EXPORT HANDLERS
-================================================= */
-const openExportMenu = (e) => {
-  if (selected.length === 0) {
-    alert("Please select at least one row");
-    return;
-  }
-  setExportAnchorEl(e.currentTarget);
-};
+    if (exportData.length === 0) {
+      alert("No rows selected");
+      return;
+    }
 
-const closeExportMenu = () => setExportAnchorEl(null);
+    const headers = Object.keys(exportData[0]).join(",");
+    const csvRows = exportData.map(r =>
+      Object.values(r).map(v => `"${v}"`).join(",")
+    );
 
-/* ----- CSV EXPORT ----- */
-const exportCSV = () => {
-  const exportData = rows
-    .filter(r => selected.includes(r.cityId))
-    .map(r => ({
-      "City Id": r.cityId,
-      "City Name": r.cityName,
-      "Area Name": r.areaName,
-      "State": r.state
-    }));
+    const csv = [headers, ...csvRows].join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
 
-  const headers = Object.keys(exportData[0]).join(",");
-  const csvRows = exportData.map(r =>
-    Object.values(r).map(v => `"${v}"`).join(",")
-  );
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "CityMaster.csv";
+    link.click();
+  };
 
-  const csv = [headers, ...csvRows].join("\n");
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const exportExcel = () => {
+    const exportData = rows
+      .filter(r => selectedRows.includes(r.cityId))
+      .map(r => ({
+        "City Id": r.cityId,
+        "City Name": r.cityName,
+        "Area Name": r.areaName,
+        "State": r.state
+      }));
 
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "CityMaster.csv";
-  link.click();
+    if (exportData.length === 0) {
+      alert("No rows selected");
+      return;
+    }
 
-  closeExportMenu();
-};
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "CityMaster");
 
-/* ----- EXCEL EXPORT ----- */
-const exportExcel = () => {
-  const exportData = rows
-    .filter(r => selected.includes(r.cityId))
-    .map(r => ({
-      "City Id": r.cityId,
-      "City Name": r.cityName,
-      "Area Name": r.areaName,
-      "State": r.state
-    }));
+    XLSX.writeFile(workbook, "CityMaster.xlsx");
+  };
 
-  const worksheet = XLSX.utils.json_to_sheet(exportData);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "CityMaster");
-
-  XLSX.writeFile(workbook, "CityMaster.xlsx");
-  closeExportMenu();
-};
-
-/* =================================================
-   EXPORT SELECTED
-================================================= */
-const handleExport = () => {
-  if (selected.length === 0) {
-    alert("Please select at least one row");
-    return;
-  }
-
-  const exportData = rows
-    .filter(r => selected.includes(r.cityId))
-    .map(r => ({
-      "City Id": r.cityId,
-      "City Name": r.cityName,
-      "Area Name": r.areaName,
-      "State": r.state
-    }));
-
-  const worksheet = XLSX.utils.json_to_sheet(exportData);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "CityMaster");
-
-  XLSX.writeFile(workbook, "CityMaster.xlsx");
-};
+  const handleExport = () => {
+    if (selectedRows.length === 0) {
+      alert("Please select at least one row");
+      return;
+    }
+    exportExcel();
+  };
 
 
   /* =================================================
      MENU ACTIONS
   ================================================= */
-  const openMenu = (e, row) => {
-    setAnchorEl(e.currentTarget);
-    setSelectedRow(row);
-  };
-
-  const handleEdit = () => {
-    setForm(selectedRow);
+  const handleEdit = (row) => {
+    setForm(row);
     setReadOnly(false);
     setEditing(true);  
     setView("form");
-    setAnchorEl(null);
   };
 
-  const handleView = () => {
-    setForm(selectedRow);
+  const handleView = (row) => {
+    setForm(row);
     setReadOnly(true);
     setView("form");
-    setAnchorEl(null);
   };
-  
+
   const filteredRows = rows.filter(row =>
-  Object.values(row)
-    .join(" ")
-    .toLowerCase()
-    .includes(search.toLowerCase())
-);
+    Object.values(row)
+      .join(" ")
+      .toLowerCase()
+      .includes(search.toLowerCase())
+  );
+
+  const columns = [
+    { field: "cityId", headerName: "City Id", width: 100 },
+    { field: "cityName", headerName: "City Name", width: 150 },
+    { field: "areaName", headerName: "Area Name", width: 150 },
+    { field: "state", headerName: "State", width: 150 }
+  ];
 
   /* =================================================
      TABLE VIEW
   ================================================= */
   if (view === "table") {
     return (
-     
-      <Paper className="city-container">
-  
-   <Box className="city-header">
-    <Box display="flex" alignItems="center" gap={1}>
-   
-    <IconButton
-      color="primary"
-      onClick={openExportMenu}
-      disabled={selected.length === 0}
-      title="Export"
-    >
-      <DownloadIcon />
-    </IconButton>
-
-    <Typography className="city-title">City Master</Typography>
-  </Box>
-
-  {/* <Box display="flex" gap={2} alignItems="center">
-    <Box className="search-box">
-      <SearchIcon fontSize="small" sx={{ mr: 1 }} />
-      <InputBase
-        placeholder="Search..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        sx={{ fontSize: 14 }}
+      <StandardTable
+        title="City Master"
+        columns={columns}
+        rows={rows}
+        search={search}
+        setSearch={setSearch}
+        selectedRows={selectedRows}
+        setSelectedRows={setSelectedRows}
+        onAdd={() => {
+          clearForm();
+          setEditing(false);
+          setReadOnly(false);
+          setView("form");
+        }}
+        onExport={handleExport}
+        onEdit={handleEdit}
+        onView={handleView}
+        onDelete={handleDelete}
+        pageSize={10}
       />
-    </Box>
-    
-     <Button
-      variant="contained"
-      startIcon={<AddIcon />}
-      onClick={() => {
-        clearForm();
-        setEditing(false);
-        setReadOnly(false);
-        setView("form");
-      }}
-    >
-      Add
-    </Button>
-  </Box> */}
-
-  <Box
-  display="flex"
-  flexDirection="column"
-  gap={1}
-  alignItems="flex-start"
-  sx={{ width: 220 }}   // 🔑 LIMIT WIDTH HERE
->
-
-  {/* ADD BUTTON FIRST */}
- <Button
-  variant="contained"
-  startIcon={<AddIcon />}
-  sx={{
-    width: "100%",     // fits container (220px)
-    height: 36,        // compact height
-    fontSize: 13,
-  }}
-  onClick={() => {
-    clearForm();
-    setEditing(false);
-    setReadOnly(false);
-    setView("form");
-  }}
->
-  Add
-</Button>
-
-  {/* SEARCH BELOW */}
- <Box
-  className="search-box"
-  sx={{
-    width: "100%",
-    height: 34,
-    px: 1,
-  }}
->
-  <SearchIcon fontSize="small" sx={{ mr: 1 }} />
-  <InputBase
-    placeholder="Search..."
-    value={search}
-    onChange={(e) => setSearch(e.target.value)}
-    sx={{ fontSize: 13, width: "100%" }}
-  />
-</Box>
-</Box>
-</Box>
-        <TableContainer>
-          <Table size="small">
-{/* <TableHead>
-  <TableRow>
-    <TableCell padding="checkbox">
-      <Checkbox
-        indeterminate={
-          selected.length > 0 && selected.length < filteredRows.length
-        }
-        checked={
-          filteredRows.length > 0 &&
-          selected.length === filteredRows.length
-        }
-        onChange={(e) => handleSelectAll(e.target.checked)}
-      />
-    </TableCell>
-
-    <TableCell>City Id</TableCell>
-    <TableCell>City Name</TableCell>
-    <TableCell>Area Name</TableCell>
-    <TableCell>State</TableCell>
-    <TableCell align="right">Actions</TableCell>
-  </TableRow>
-</TableHead> */}
-<TableHead>
-  <TableRow className="city-table-head">
-    <TableCell padding="checkbox">
-      <Checkbox
-        indeterminate={
-          selected.length > 0 && selected.length < filteredRows.length
-        }
-        checked={
-          filteredRows.length > 0 &&
-          selected.length === filteredRows.length
-        }
-        onChange={(e) => handleSelectAll(e.target.checked)}
-      />
-    </TableCell>
-
-    <TableCell>City Id</TableCell>
-    <TableCell>City Name</TableCell>
-    <TableCell>Area Name</TableCell>
-    <TableCell>State</TableCell>
-    <TableCell align="right">Actions</TableCell>
-  </TableRow>
-</TableHead>
-
-<TableBody>
-  {filteredRows
-    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-    .map(row => (
-      <TableRow key={row.cityId}>
-        {/* ✅ CHECKBOX COLUMN */}
-        <TableCell padding="checkbox">
-          <Checkbox
-            checked={selected.includes(row.cityId)}
-            onChange={() => handleRowSelect(row.cityId)}
-          />
-        </TableCell>
-
-        <TableCell>{row.cityId}</TableCell>
-        <TableCell>{row.cityName}</TableCell>
-        <TableCell>{row.areaName}</TableCell>
-        <TableCell>{row.state}</TableCell>
-
-        <TableCell align="right">
-          <IconButton onClick={(e) => openMenu(e, row)}>
-            <MoreVertIcon />
-          </IconButton>
-        </TableCell>
-      </TableRow>
-    ))}
-</TableBody>
-
-        </Table>
-      </TableContainer>
-
-      <TablePagination
-        component="div"
-  count={filteredRows.length}
-  page={page}
-  onPageChange={(e, newPage) => setPage(newPage)}
-  rowsPerPage={rowsPerPage}
-  onRowsPerPageChange={(e) => {
-    setRowsPerPage(parseInt(e.target.value, 10));
-    setPage(0);
-  }}
-/>
-{/* ===== EXPORT MENU ===== */}
-<Menu
-  anchorEl={exportAnchorEl}
-  open={Boolean(exportAnchorEl)}
-  onClose={closeExportMenu}
->
-  <MenuItem onClick={exportCSV}>
-    <DescriptionIcon fontSize="small" sx={{ mr: 1 }} />
-    Export CSV
-  </MenuItem>
-
-  <MenuItem onClick={exportExcel}>
-    <TableChartIcon fontSize="small" sx={{ mr: 1 }} />
-    Export Excel
-  </MenuItem>
-</Menu>
-        <Menu anchorEl={anchorEl} open={!!anchorEl} onClose={() => setAnchorEl(null)}>
-          <MenuItem onClick={handleView}>
-            <VisibilityIcon fontSize="small" style={{ marginRight: 8 }} />
-            View
-          </MenuItem>
-          <MenuItem onClick={handleEdit}>
-            <EditIcon fontSize="small" style={{ marginRight: 8 }} />
-            Edit
-          </MenuItem>
-          <MenuItem onClick={handleDelete} sx={{ color: "red" }}>
-            <DeleteIcon fontSize="small" style={{ marginRight: 8 }} />
-            Delete
-          </MenuItem>
-        </Menu>
-      </Paper>
     );
   }
 
@@ -505,24 +252,20 @@ const handleExport = () => {
   ================================================= */
   return (
     <Paper className="city-form">
-     <Box className="form-header">
-      <Typography fontWeight={600} mb={3}>
-        City Master
-      </Typography>
-
+      <Box className="form-header">
         <Button
-        variant="outlined"
-        size="small"
-        onClick={() => {
-        setView("table");
-        setReadOnly(false);
-        setEditing(false);
-        clearForm();
-       }}
-     >
-      Back to Table
-    </Button>
-   </Box>
+          variant="outlined"
+          size="small"
+          onClick={() => {
+            setView("table");
+            setReadOnly(false);
+            setEditing(false);
+            clearForm();
+          }}
+        >
+          Back to Table
+        </Button>
+      </Box>
 
       <FormRow label="City Id">
         <TextField
@@ -580,13 +323,13 @@ const handleExport = () => {
 
       <Box className="form-buttons">
         {!readOnly && (
-          <Button variant="contained" onClick={handleSave}>
+          <Button variant="contained" className="save-btn" onClick={handleSave}>
             Save
           </Button>
         )}
         <Button
           variant="contained"
-          color="error"
+          className="cancel-btn"
           onClick={() => setView("table")}
         >
           {readOnly ? "Close" : "Cancel"}
@@ -595,6 +338,7 @@ const handleExport = () => {
     </Paper>
   );
 }
+
 /* ===== REUSABLE ROW ===== */
 const FormRow = ({ label, children }) => (
   <Box className="form-row">

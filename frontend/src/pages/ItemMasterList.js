@@ -2,46 +2,20 @@ import React, { useEffect, useState } from "react";
 import "./ItemMaster.css";
 import {
   Box,
-  Button,
-  IconButton,
-  Menu,
-  MenuItem,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer, 
-  TableHead,
-  TableRow,
-  Typography,
-  TablePagination,
-  TextField
+  Button
 } from "@mui/material";
 
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AddIcon from "@mui/icons-material/Add";
 import ItemForm from "./ItemForm";
-
-import DownloadIcon from "@mui/icons-material/Download";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 
-import Checkbox from "@mui/material/Checkbox";
+import StandardTable from "../components/StandardTable";
 
 export default function ItemMasterList() {
   const [items, setItems] = useState([]);
   const [search, setSearch] = useState("");
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedRow, setSelectedRow] = useState(null);
   const [selectedRows, setSelectedRows] = useState([]);
-  const [exportAnchorEl, setExportAnchorEl] = useState(null);
-  const filteredRows = items.filter((row) => {
-  const values = Object.values(row).join(" ").toLowerCase();
-  return values.includes(search.toLowerCase());
-});
-  // FORM CONTROL
   const [openForm, setOpenForm] = useState(false);
   const [editData, setEditData] = useState(null);
 
@@ -56,26 +30,16 @@ export default function ItemMasterList() {
     loadData();
   }, []);
 
-  // 3 DOT MENU OPEN
-  const handleMenuOpen = (event, row) => {
-    setAnchorEl(event.currentTarget);
-    setSelectedRow(row);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
   // =============================
   // DELETE RECORD
   // =============================
-  const handleDelete = async () => {
-    if (!selectedRow?.ID) return;
+  const handleDelete = async (row) => {
+    if (!row?.ID) return;
 
     if (!window.confirm("Are you sure you want to delete this item?")) return;
 
     const res = await fetch(
-      `http://localhost:5000/api/itemmaster/${selectedRow.ID}`,
+      `http://localhost:5000/api/itemmaster/${row.ID}`,
       { method: "DELETE" }
     );
 
@@ -85,8 +49,6 @@ export default function ItemMasterList() {
     } else {
       alert("Failed to delete");
     }
-
-    handleMenuClose();
   };
 
   // =============================
@@ -100,84 +62,89 @@ export default function ItemMasterList() {
   // =============================
   // OPEN EDIT FORM
   // =============================
-  const openEditForm = () => {
-    setEditData(selectedRow);
+  const openEditForm = (row) => {
+    setEditData(row);
     setOpenForm(true);
-    handleMenuClose();
   };
 
   // =============================
   // OPEN VIEW (read-only) FORM
   // =============================
-  const openViewForm = () => {
-    if (!selectedRow) return;
-    setEditData({ ...selectedRow, readOnly: true, view: true });
+  const openViewForm = (row) => {
+    if (!row) return;
+    setEditData({ ...row, readOnly: true, view: true });
     setOpenForm(true);
-    handleMenuClose();
   };
 
   // =============================
-// EXPORT FUNCTIONS
-// =============================
-const exportCSV = () => {
-  if (!filteredRows.length) {
-    alert("No data to export");
-    return;
-  }
+  // EXPORT FUNCTIONS
+  // =============================
+  const exportCSV = () => {
+    if (selectedRows.length === 0) {
+      alert("Please select at least one row");
+      return;
+    }
 
-  const headers = Object.keys(filteredRows[0]);
-  const csvData = [
-    headers.join(","),
-    ...filteredRows.map(row =>
-      headers.map(h => `"${row[h] ?? ""}"`).join(",")
-    )
-  ].join("\n");
+    const exportData = items.filter(r => selectedRows.includes(r.ID));
+    const headers = Object.keys(exportData[0]);
+    const csvData = [
+      headers.join(","),
+      ...exportData.map(row =>
+        headers.map(h => `"${row[h] ?? ""}"`).join(",")
+      )
+    ].join("\n");
 
-  const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
-  saveAs(blob, "item_master.csv");
-};
+    const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+    saveAs(blob, "item_master.csv");
+  };
 
-const exportExcel = () => {
-  if (!filteredRows.length) {
-    alert("No data to export");
-    return;
-  }
+  const exportExcel = () => {
+    if (selectedRows.length === 0) {
+      alert("Please select at least one row");
+      return;
+    }
 
-  const worksheet = XLSX.utils.json_to_sheet(filteredRows);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Items");
+    const exportData = items.filter(r => selectedRows.includes(r.ID));
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Items");
 
-  const buffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
-  const blob = new Blob([buffer], {
-    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  });
-
-  saveAs(blob, "item_master.xlsx");
-};
+    XLSX.writeFile(workbook, "item_master.xlsx");
+  };
 
   // CLOSE FORM
   const closeForm = () => {
     setOpenForm(false);
     setEditData(null);
     loadData();
-  }; 
+  };
 
-const isSelected = (id) => selectedRows.includes(id);
-const handleSelectRow = (id) => {
-  setSelectedRows((prev) =>
-    prev.includes(id)
-      ? prev.filter((x) => x !== id)
-      : [...prev, id]
-  );
-};
+  const handleExport = () => {
+    if (selectedRows.length === 0) {
+      alert("Please select at least one row");
+      return;
+    }
+    exportExcel();
+  };
 
-const handleSelectAll = (checked) => {
-  if (checked) {
-    setSelectedRows(filteredRows.map((r) => r.ID));
-  } else {
-    setSelectedRows([]);
-  }
-};
+  const filteredRows = items.filter((row) => {
+    if (!search) return true;
+    const searchLower = search.toLowerCase();
+    return Object.values(row).some(
+      (val) =>
+        val &&
+        val.toString().toLowerCase().includes(searchLower)
+    );
+  });
+
+  const columns = [
+    { field: "ArticleNo", headerName: "Article No", width: 120 },
+    { field: "TypeDesignation", headerName: "Type Designation", width: 150 },
+    { field: "MasterId", headerName: "Master ID", width: 100 },
+    { field: "StoreLocation", headerName: "Store Location", width: 150 },
+    { field: "NetPrice", headerName: "Net Price", width: 100 },
+    { field: "HSNCode", headerName: "HSN Code", width: 120 }
+  ];
 
   // =============================
   // RENDER LIST OR FORM
@@ -190,138 +157,20 @@ const handleSelectAll = (checked) => {
   // TABLE UI
   // =============================
   return (
-    <Box className="item-container">
-       <Box className="item-header">        
-        <Typography className="item-title">Item Master</Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={openAddForm}
-        >
-          Add 
-        </Button>
-      </Box>
-
-    <Box className="item-toolbar">
-   {/* ⬇️ EXPORT ICON */}
-     <IconButton
-       color="primary"
-        onClick={(e) => setExportAnchorEl(e.currentTarget)}
-      >
-      <DownloadIcon />
-    </IconButton>
-     <Menu
-       anchorEl={exportAnchorEl}
-       open={Boolean(exportAnchorEl)}
-       onClose={() => setExportAnchorEl(null)}
-     >
-    <MenuItem
-      onClick={() => {
-       exportCSV();
-       setExportAnchorEl(null);
-      }}
-     >
-      Export CSV
-    </MenuItem>
-    <MenuItem
-      onClick={() => {
-        exportExcel();
-        setExportAnchorEl(null);
-      }}
-    >
-      Export Excel
-    </MenuItem>
-  </Menu>
-
-    {/* 🔍 SEARCH */}
-     <TextField
-  size="small"
-  placeholder="Search..."
-  value={search}
-  onChange={(e) => setSearch(e.target.value)}
-  className="search-input"
-/>
-
-    </Box>
-      <TableContainer component={Paper} className="table-container">
-        <Table stickyHeader>
-          <TableHead>
-            <TableRow>
-              {/* ✅ SELECT ALL CHECKBOX */}
-              <TableCell padding="checkbox">
-                 <Checkbox
-                   indeterminate={
-                   selectedRows.length > 0 &&
-                   selectedRows.length < filteredRows.length
-                 }
-                checked={
-                filteredRows.length > 0 &&
-                selectedRows.length === filteredRows.length
-              }
-               onChange={(e) => handleSelectAll(e.target.checked)}
-              />
-            </TableCell>
-             <TableCell>Article No</TableCell>
-             <TableCell>Type Designation</TableCell>
-             <TableCell>Master ID</TableCell>
-             <TableCell>Store Location</TableCell>
-             <TableCell>Net Price</TableCell>
-             <TableCell>HSN Code</TableCell>
-             <TableCell align="center">Action</TableCell>
-           </TableRow>
-          </TableHead>
-        <TableBody>
-         {filteredRows
-           .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-           .map((row) => (
-            <TableRow key={row.ID} 
-              hover
-              selected={isSelected(row.ID)}
-            >
-            <TableCell padding="checkbox">
-             <Checkbox
-               checked={isSelected(row.ID)}
-               onChange={() => handleSelectRow(row.ID)}
-            />
-            </TableCell>
-              <TableCell>{row.ArticleNo}</TableCell>
-              <TableCell>{row.TypeDesignation}</TableCell>
-              <TableCell>{row.MasterId}</TableCell>
-              <TableCell>{row.StoreLocation}</TableCell>
-              <TableCell>{row.NetPrice}</TableCell>
-              <TableCell>{row.HSNCode}</TableCell>
-
-              <TableCell align="center">
-                <IconButton onClick={(e) => handleMenuOpen(e, row)}>
-                  <MoreVertIcon />
-                </IconButton>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={filteredRows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={(e, newPage) => setPage(newPage)}
-        onRowsPerPageChange={(e) => {
-        setRowsPerPage(parseInt(e.target.value, 10));
-        setPage(0);
-      }}
+    <StandardTable
+      title="Item Master"
+      columns={columns}
+      rows={items}
+      search={search}
+      setSearch={setSearch}
+      selectedRows={selectedRows}
+      setSelectedRows={setSelectedRows}
+      onAdd={openAddForm}
+      onExport={handleExport}
+      onEdit={openEditForm}
+      onView={openViewForm}
+      onDelete={handleDelete}
+      pageSize={10}
     />
-      {/* 3 DOT MENU */}
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-        <MenuItem onClick={openViewForm}>View</MenuItem>
-        <MenuItem onClick={openEditForm}>Edit</MenuItem>
-        <MenuItem onClick={handleDelete} sx={{ color: "red" }}>
-          Delete
-        </MenuItem>
-      </Menu>
-    </Box>
   );
 }

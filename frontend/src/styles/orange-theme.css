@@ -713,3 +713,113 @@ body.dark .MuiAppBar-root .MuiIconButton-root svg {
 body.dark .MuiAppBar-root .MuiIconButton-root {
   color: #2563eb !important;
 }
+
+/* ===================================================
+   🟢 SAVE BUTTON - GREEN (LIGHT & DARK MODE)
+=================================================== */
+
+.save-btn,
+button.save-btn.MuiButton-contained {
+  background-color: #16a34a !important;
+  color: #ffffff !important;
+}
+
+.save-btn:hover,
+button.save-btn.MuiButton-contained:hover {
+  background-color: #15803d !important;
+}
+
+/* Dark mode save button */
+body.dark .save-btn,
+body.dark button.save-btn.MuiButton-contained {
+  background-color: #16a34a !important;
+  color: #ffffff !important;
+}
+
+body.dark .save-btn:hover,
+body.dark button.save-btn.MuiButton-contained:hover {
+  background-color: #15803d !important;
+}
+
+/* ===================================================
+   🔴 CANCEL BUTTON - RED (LIGHT & DARK MODE)
+=================================================== */
+
+.cancel-btn,
+button.cancel-btn.MuiButton-contained {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+}
+
+.cancel-btn:hover,
+button.cancel-btn.MuiButton-contained:hover {
+  background-color: #b91c1c !important;
+}
+
+/* Dark mode cancel button */
+body.dark .cancel-btn,
+body.dark button.cancel-btn.MuiButton-contained {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+}
+
+body.dark .cancel-btn:hover,
+body.dark button.cancel-btn.MuiButton-contained:hover {
+  background-color: #b91c1c !important;
+}
+
+/* ===================================================
+   🎯 CENTER ALL FORM BUTTONS
+=================================================== */
+
+.form-buttons {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 16px !important;
+  flex-wrap: wrap !important;
+}
+
+/* SalesReturn footer buttons */
+.sr-footer {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 12px !important;
+  flex-wrap: wrap !important;
+}
+
+/* ===================================================
+   🔵 SHOW BUTTON - BLUE (LIGHT & DARK MODE)
+=================================================== */
+
+.show-btn,
+button.show-btn.MuiButton-contained,
+button.show-btn.MuiButton-outlined {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+  border-color: #2563eb !important;
+}
+
+.show-btn:hover,
+button.show-btn.MuiButton-contained:hover,
+button.show-btn.MuiButton-outlined:hover {
+  background-color: #1e40af !important;
+  border-color: #1e40af !important;
+}
+
+/* Dark mode show button */
+body.dark .show-btn,
+body.dark button.show-btn.MuiButton-contained,
+body.dark button.show-btn.MuiButton-outlined {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+  border-color: #2563eb !important;
+}
+
+body.dark .show-btn:hover,
+body.dark button.show-btn.MuiButton-contained:hover,
+body.dark button.show-btn.MuiButton-outlined:hover {
+  background-color: #1e40af !important;
+  border-color: #1e40af !important;
+}

@@ -149,11 +149,11 @@ const [alertOpen, setAlertOpen] = useState(false);
 
         {/* -------- ROW 3 : BUTTONS -------- */}
         <Box className="form-row buttons-row">
-          <Button variant="outlined" onClick={handleShow}>
+          <Button variant="contained" className="show-btn" onClick={handleShow}>
             Show
           </Button>
           <Button variant="outlined">Print</Button>
-          <Button variant="outlined" onClick={handleClose}>
+          <Button variant="outlined" className="cancel-btn" onClick={handleClose}>
             Close
           </Button>
         </Box>

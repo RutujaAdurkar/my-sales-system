@@ -238,7 +238,7 @@ export default function TechnicalSupportReport() {
 
         {/* ===== SHOW / PRINT / CLOSE ===== */}
         <Box className="action-row">
-          <Button variant="contained" onClick={handleShow}>
+          <Button variant="contained" className="show-btn" onClick={handleShow}>
             Show
           </Button>
 
@@ -247,7 +247,7 @@ export default function TechnicalSupportReport() {
             Print
           </Button>
 
-          <Button variant="outlined" color="error" onClick={() => setShowTable(false)}>
+          <Button variant="outlined" className="cancel-btn" onClick={() => setShowTable(false)}>
             Close
           </Button>
         </Box>

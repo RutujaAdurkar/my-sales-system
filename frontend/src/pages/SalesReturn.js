@@ -611,6 +611,7 @@ const showToast = (message, severity = "success") => {
         <Box className="sr-footer">
          <Button
           variant="contained"
+          className="save-btn"
           size="small"
           onClick={handleSave}
           disabled={isSaved}
@@ -620,7 +621,8 @@ const showToast = (message, severity = "success") => {
 
 
           <Button
-            variant="outlined"
+            variant="contained"
+            className="cancel-btn"
             size="small"
             onClick={handleCancel}
           >

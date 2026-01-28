@@ -5,14 +5,15 @@
 
 /* ===== HEADER ===== */
 .project-header {
-  display: flex;
+ display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 16px;
 }
-a
+
 .project-title {
-  font-size: 22px;
-  font-weight: bold;
+  font-size: 20px;
+  font-weight: 600;
 }
 
 /* ===== TABLE SEARCH BAR ===== */
@@ -65,5 +66,114 @@ a
 
 .cancel-btn {
   background-color: #d32f2f !important;
+}
+
+/* =========================================
+   TABLE STYLING - LIGHT MODE (DEFAULT)
+========================================= */
+
+/* Table Header Styling */
+.MuiTableHead-root .MuiTableRow-root {
+  background-color: #e3f2fd;
+}
+
+.MuiTableHead-root .MuiTableCell-root {
+  background-color: #e3f2fd !important;
+  color: #0d47a1;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 12px 8px !important;
+}
+
+/* Table Body Row Styling */
+.MuiTableBody-root .MuiTableRow-root {
+  transition: background-color 0.2s ease;
+}
+
+.MuiTableBody-root .MuiTableRow-root:nth-of-type(odd) {
+  background-color: #fafafa;
+}
+
+.MuiTableBody-root .MuiTableRow-root:nth-of-type(even) {
+  background-color: #ffffff;
+}
+
+.MuiTableBody-root .MuiTableRow-root:hover {
+  background-color: #e3f2fd !important;
+}
+
+/* Table Cell Padding */
+.MuiTableBody-root .MuiTableCell-root {
+  padding: 10px 8px !important;
+  font-size: 13px;
+  color: #212121;
+}
+
+/* Table Container Styling */
+.MuiTableContainer-root {
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: #ffffff;
+}
+
+/* Pagination Styling */
+.MuiTablePagination-root {
+  background-color: #fafafa;
+  border-top: 1px solid #e0e0e0;
+}
+
+/* =========================================
+   TABLE STYLING - DARK MODE
+========================================= */
+body.dark .MuiTableHead-root .MuiTableRow-root {
+  background-color: #1e3a8a;
+}
+
+body.dark .MuiTableHead-root .MuiTableCell-root {
+  background-color: #1e3a8a !important;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 12px 8px !important;
+}
+
+body.dark .MuiTableBody-root .MuiTableRow-root {
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid #333333;
+}
+
+body.dark .MuiTableBody-root .MuiTableRow-root:nth-of-type(odd) {
+  background-color: #1a1a2e;
+}
+
+body.dark .MuiTableBody-root .MuiTableRow-root:nth-of-type(even) {
+  background-color: #0f0f1e;
+}
+
+body.dark .MuiTableBody-root .MuiTableRow-root:hover {
+  background-color: #2a4a9a !important;
+}
+
+body.dark .MuiTableBody-root .MuiTableCell-root {
+  padding: 10px 8px !important;
+  font-size: 13px;
+  color: #ffffff;
+}
+
+body.dark .MuiTableContainer-root {
+  border: 1px solid #333333;
+  border-radius: 4px;
+  background-color: #0a0a14;
+}
+
+body.dark .MuiTablePagination-root {
+  background-color: #1a1a2e;
+  border-top: 1px solid #333333;
+  color: #ffffff;
+}
+
+/* Checkbox Styling */
+.MuiTableCell-paddingCheckbox {
+  width: 50px;
 }
 

@@ -1,32 +1,14 @@
 import React, { useEffect, useState } from "react";
-import DownloadIcon from "@mui/icons-material/Download";
-import SearchIcon from "@mui/icons-material/Search";
-import Checkbox from "@mui/material/Checkbox";
-import InputBase from "@mui/material/InputBase";
 import * as XLSX from "xlsx";
 import "./StateMaster.css";
 import {
   Box,
   TextField,
   Button,
-  Typography,
-  Stack,
-  IconButton,
-  Menu,
-  MenuItem,
-  Paper,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody
+  Paper
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import axios from "axios";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import StandardTable from "../components/StandardTable";
 
 /* ===================================================== */
 export default function StateMaster() {
@@ -41,11 +23,8 @@ export default function StateMaster() {
   const [rows, setRows] = useState([]);
 
   /* ===== SELECTION & SEARCH ===== */
-const [selected, setSelected] = useState([]);
-const [search, setSearch] = useState("");
-
-/* ===== EXPORT MENU ===== */
-const [exportAnchorEl, setExportAnchorEl] = useState(null);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [search, setSearch] = useState("");
 
   /* ===== FORM ===== */
   const [form, setForm] = useState({
@@ -54,10 +33,6 @@ const [exportAnchorEl, setExportAnchorEl] = useState(null);
   });
 
   const [errors, setErrors] = useState({});
-
-  /* ===== MENU ===== */
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedRow, setSelectedRow] = useState(null);
 
   /* =====================================================
      LOAD STATES
@@ -141,294 +116,124 @@ const [exportAnchorEl, setExportAnchorEl] = useState(null);
   /* =====================================================
      DELETE
   ===================================================== */
-  const handleDelete = async () => {
+  const handleDelete = async (row) => {
+    if (!window.confirm("Are you sure you want to delete this state?")) return;
     await axios.delete(
-      `http://localhost:5000/api/statemaster/delete/${selectedRow.StateId}`
+      `http://localhost:5000/api/statemaster/delete/${row.StateId}`
     );
     loadStates();
-    setAnchorEl(null);
+    setView("table");
   };
 
   /* =====================================================
      MENU ACTIONS
   ===================================================== */
-  const openMenu = (e, row) => {
-    setAnchorEl(e.currentTarget);
-    setSelectedRow(row);
-  };
-
-  const handleView = () => {
-    setForm(selectedRow);
+  const handleView = (row) => {
+    setForm(row);
     setReadOnly(true);
     setView("form");
-    setAnchorEl(null);
   };
 
-  const handleEdit = () => {
-    setForm(selectedRow);
+  const handleEdit = (row) => {
+    setForm(row);
     setEditing(true); 
     setReadOnly(false);
     setView("form");
-    setAnchorEl(null);
   };
 
-  const handleRowSelect = (id) => {
-  setSelected(prev =>
-    prev.includes(id)
-      ? prev.filter(x => x !== id)
-      : [...prev, id]
-  );
-};
+  const exportCSV = () => {
+    if (selectedRows.length === 0) {
+      alert("Please select at least one row");
+      return;
+    }
 
-const handleSelectAll = (checked) => {
-  if (checked) {
-    setSelected(filteredRows.map(r => r.StateId));
-  } else {
-    setSelected([]);
-  }
-};
+    const exportData = rows
+      .filter(r => selectedRows.includes(r.StateId))
+      .map(r => ({
+        "State Id": r.StateId,
+        "State Name": r.StateName
+      }));
 
-const exportCSV = () => {
-  if (selected.length === 0) {
-    alert("Please select at least one row");
-    return;
-  }
+    if (exportData.length === 0) return;
 
-  const exportData = rows
-    .filter(r => selected.includes(r.StateId))
-    .map(r => ({
-      "State Id": r.StateId,
-      "State Name": r.StateName
-    }));
+    const headers = Object.keys(exportData[0]).join(",");
+    const csvRows = exportData.map(row =>
+      Object.values(row).map(v => `"${v}"`).join(",")
+    );
 
-  if (exportData.length === 0) return;
+    const csv = [headers, ...csvRows].join("\n");
 
-  const headers = Object.keys(exportData[0]).join(",");
-  const csvRows = exportData.map(row =>
-    Object.values(row).map(v => `"${v}"`).join(",")
-  );
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "StateMaster.csv";
+    link.click();
+  };
 
-  const csv = [headers, ...csvRows].join("\n");
+  const exportExcel = () => {
+    if (selectedRows.length === 0) {
+      alert("Please select at least one row");
+      return;
+    }
 
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "StateMaster.csv";
-  link.click();
-};
+    const exportData = rows
+      .filter(r => selectedRows.includes(r.StateId))
+      .map(r => ({
+        "State Id": r.StateId,
+        "State Name": r.StateName
+      }));
 
-const exportExcel = () => {
-  if (selected.length === 0) {
-    alert("Please select at least one row");
-    return;
-  }
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "StateMaster");
 
-  const exportData = rows
-    .filter(r => selected.includes(r.StateId))
-    .map(r => ({
-      "State Id": r.StateId,
-      "State Name": r.StateName
-    }));
+    XLSX.writeFile(workbook, "StateMaster.xlsx");
+  };
 
-  const worksheet = XLSX.utils.json_to_sheet(exportData);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "StateMaster");
+  const handleExport = () => {
+    if (selectedRows.length === 0) {
+      alert("Please select at least one row");
+      return;
+    }
+    exportExcel();
+  };
 
-  XLSX.writeFile(workbook, "StateMaster.xlsx");
-};
   const filteredRows = rows.filter(row =>
-  Object.values(row)
-    .join(" ")
-    .toLowerCase()
-    .includes(search.toLowerCase())
-);
+    Object.values(row)
+      .join(" ")
+      .toLowerCase()
+      .includes(search.toLowerCase())
+  );
+
+  const columns = [
+    { field: "StateId", headerName: "State Id", width: 100 },
+    { field: "StateName", headerName: "State Name", width: 200 }
+  ];
   /* =====================================================
      TABLE VIEW
   ===================================================== */
   if (view === "table") {
     return (
-      <Paper className="state-container">
-        <Box className="state-header">
-
-  {/* LEFT SIDE */}
-  <Box display="flex" alignItems="center" gap={1}>
-    <IconButton
-  color="primary"
-  onClick={(e) => {
-    if (selected.length === 0) {
-      alert("Please select at least one row");
-      return;
-    }
-    setExportAnchorEl(e.currentTarget);
-  }}
-  title="Export"
->
-  <DownloadIcon />
-</IconButton>
-    <Typography className="state-title">State Master</Typography>
-  </Box>
-
-  {/* RIGHT SIDE */}
-  {/* <Box display="flex" alignItems="center" gap={2}>
-    <Box className="search-box">
-      <SearchIcon fontSize="small" sx={{ mr: 1 }} />
-      <InputBase
-        placeholder="Search..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        sx={{ fontSize: 14 }}
+      <StandardTable
+        title="State Master"
+        columns={columns}
+        rows={rows}
+        search={search}
+        setSearch={setSearch}
+        selectedRows={selectedRows}
+        setSelectedRows={setSelectedRows}
+        onAdd={() => {
+          clearForm();
+          setEditing(false);
+          setReadOnly(false);
+          setView("form");
+        }}
+        onExport={handleExport}
+        onEdit={handleEdit}
+        onView={handleView}
+        onDelete={handleDelete}
+        pageSize={10}
       />
-    </Box>
-
-    <Button
-      variant="contained"
-      startIcon={<AddIcon />}
-      onClick={() => {
-        clearForm();
-        setReadOnly(false);
-        setView("form");
-      }}
-    >
-      Add
-    </Button>
-  </Box> */}
-
-  <Box
-  display="flex"
-  flexDirection="column"
-  gap={1}
-  alignItems="flex-start"
-  sx={{ width: 220 }}   // 🔑 LIMIT WIDTH HERE
->
-
-  {/* ADD BUTTON FIRST */}
- <Button
-  variant="contained"
-  startIcon={<AddIcon />}
-  sx={{
-    width: "100%",     // fits container (220px)
-    height: 36,        // compact height
-    fontSize: 13,
-  }}
-  onClick={() => {
-    clearForm();
-    setEditing(false);
-    setReadOnly(false);
-    setView("form");
-  }}
->
-  Add
-</Button>
-
-
-  {/* SEARCH BELOW */}
- <Box
-  className="search-box"
-  sx={{
-    width: "100%",
-    height: 34,
-    px: 1,
-  }}
->
-  <SearchIcon fontSize="small" sx={{ mr: 1 }} />
-  <InputBase
-    placeholder="Search..."
-    value={search}
-    onChange={(e) => setSearch(e.target.value)}
-    sx={{ fontSize: 13, width: "100%" }}
-  />
-</Box>
-</Box>
-</Box>
-<Table>
-  <TableHead>
- <TableRow className="state-table-head">
-    <TableCell padding="checkbox">
-      <Checkbox
-        indeterminate={
-          selected.length > 0 &&
-          selected.length < filteredRows.length
-        }
-        checked={
-          filteredRows.length > 0 &&
-          selected.length === filteredRows.length
-        }
-        onChange={(e) => handleSelectAll(e.target.checked)}
-      />
-    </TableCell>
-    <TableCell>State Id</TableCell>
-    <TableCell>State Name</TableCell>
-     <TableCell align="right">Actions</TableCell>
-  </TableRow>
-</TableHead>
- <TableBody>
-  {filteredRows.map(row => (
-    <TableRow key={row.StateId}>
-      <TableCell padding="checkbox">
-        <Checkbox
-          checked={selected.includes(row.StateId)}
-          onChange={() => handleRowSelect(row.StateId)}
-        />
-      </TableCell>
-
-      <TableCell>{row.StateId}</TableCell>
-      <TableCell>{row.StateName}</TableCell>
-
-      <TableCell align="right">
-        <IconButton onClick={(e) => openMenu(e, row)}>
-          <MoreVertIcon />
-        </IconButton>
-      </TableCell>
-    </TableRow>
-  ))}
-</TableBody>
-
-        </Table>
-
-        <Menu
-  anchorEl={exportAnchorEl}
-  open={Boolean(exportAnchorEl)}
-  onClose={() => setExportAnchorEl(null)}
->
-  <MenuItem
-    onClick={() => {
-      exportCSV();
-      setExportAnchorEl(null);
-    }}
-  >
-    Export CSV
-  </MenuItem>
-
-  <MenuItem
-    onClick={() => {
-      exportExcel();
-      setExportAnchorEl(null);
-    }}
-  >
-    Export Excel
-  </MenuItem>
-</Menu>
-
-
-        <Menu
-          anchorEl={anchorEl}
-          open={!!anchorEl}
-          onClose={() => setAnchorEl(null)}
-        >
-          <MenuItem onClick={handleView}>
-            <VisibilityIcon fontSize="small" style={{ marginRight: 8 }} />
-             View
-          </MenuItem>
-          <MenuItem onClick={handleEdit}>
-            <EditIcon fontSize="small" style={{ marginRight: 8 }} />
-            Edit
-          </MenuItem>
-          <MenuItem onClick={handleDelete} sx={{ color: "red" }}>
-            <DeleteIcon fontSize="small" style={{ marginRight: 8 }} />
-            Delete
-          </MenuItem>
-        </Menu>
-      </Paper>
     );
   }
 
@@ -436,33 +241,21 @@ const exportExcel = () => {
      FORM VIEW
   ===================================================== */
   return (
-  <Paper className="state-form">
-  <Box className="form-header">
-    <Typography fontWeight={600}>
-      State Master
-    </Typography>
-
-    <Button
-      variant="outlined"
-      size="small"
-      sx={{
-    color: "#1976d2",
-    borderColor: "#1976d2",
-    "&:hover": {
-      backgroundColor: "#e3f2fd",
-      borderColor: "#115293"
-    }
-  }}
-      onClick={() => {
-        setView("table");
-        setReadOnly(false);
-        setEditing(false);
-        clearForm();
-      }}
-    >
-      Back to Table
-    </Button>
-  </Box>
+    <Paper className="state-form">
+      <Box className="form-header">
+        <Button
+          variant="outlined"
+          size="small"
+          onClick={() => {
+            setView("table");
+            setReadOnly(false);
+            setEditing(false);
+            clearForm();
+          }}
+        >
+          Back to Table
+        </Button>
+      </Box>
 
       <FormRow label="State Id :">
         <TextField
@@ -490,13 +283,13 @@ const exportExcel = () => {
 
       <Box className="form-buttons">
         {!readOnly && (
-          <Button variant="contained" onClick={handleSave}>
+          <Button variant="contained" className="save-btn" onClick={handleSave}>
             Save
           </Button>
         )}
         <Button
           variant="contained"
-          color="error"
+          className="cancel-btn"
           onClick={() => setView("table")}
         >
           {readOnly ? "Close" : "Cancel"}

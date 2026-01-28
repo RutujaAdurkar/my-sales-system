@@ -289,10 +289,10 @@ const handleClose = () => {
 
         {/* BUTTON BAR */}
        <Box className="button-bar">
-          <Button variant="contained" onClick={handleShow}>
+          <Button variant="contained" className="show-btn" onClick={handleShow}>
             Show
           </Button>
-          <Button variant="outlined" color="error" onClick={handleClose}>
+          <Button variant="outlined" className="cancel-btn" onClick={handleClose}>
             Close
           </Button>
           <Button variant="outlined" onClick={exportToPDF}>

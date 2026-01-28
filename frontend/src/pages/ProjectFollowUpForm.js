@@ -4,6 +4,7 @@ import * as XLSX from "xlsx";
 import "./ProjectFollowUpForm.css";
 import { saveAs } from "file-saver";
 import axios from "axios";
+import StandardTable from "../components/StandardTable";
 import {
   Box,
   TextField,
@@ -288,190 +289,30 @@ const downloadExcel = () => {
 
   return (
     <Box className="project-container">
-      <Box className="project-header">
-        <Typography className="project-title">
-          {isPayment ? "Payment Follow-Up Entry" : "Project Follow-Up Entry"}
-        </Typography>
+      
 
-        {view === "table" && (
-          <Button variant="contained" 
-          startIcon={<AddIcon />}
-          onClick={openAddForm}>
-            ADD
-          </Button>
-        )}
-      </Box>
+     {view === "table" ? (
+  <StandardTable
+    title="Payment Followups"
+    columns={columns}
+    rows={rows}
+    search={search}
+    setSearch={setSearch}
+    selectedRows={selectedRows}
+    setSelectedRows={setSelectedRows}
 
-      {view === "table" ? (
-  <Paper sx={{ p: 2, mt: 2 }}>
-    {/* Search Bar */} 
-<Box className="table-toolbar">
+    onAdd={openAddForm}
+    onEdit={openEditForm}
+    onView={openViewForm}
+    onDelete={(row) => handleDelete(row.Id)}
 
-  {/* LEFT: Export Button */}
-  <Box>
-    <IconButton
-      onClick={(e) => setDownloadAnchorEl(e.currentTarget)}
-      sx={{ color: "#1976d2" }}
-    >
-      <DownloadIcon />
-    </IconButton>
-
-    <Menu
-      anchorEl={downloadAnchorEl}
-      open={Boolean(downloadAnchorEl)}
-      onClose={() => setDownloadAnchorEl(null)}
-    >
-      <MenuItem onClick={() => { downloadCSV(); setDownloadAnchorEl(null); }}>
-        Download CSV
-      </MenuItem>
-      <MenuItem onClick={() => { downloadExcel(); setDownloadAnchorEl(null); }}>
-        Download Excel
-      </MenuItem>
-    </Menu>
-  </Box>
-
-  {/* RIGHT: Search */}
-  <TextField
-    size="small"
-    placeholder="Search..."
-    value={search}
-    onChange={(e) => setSearch(e.target.value)}
-    sx={{ width: 250 }}
-  />
-</Box>
-
-
-    {/* Table */}
-    <TableContainer>
-      <Table size="small">
- <TableHead>
-    {/* <TableRow
-    sx={(theme) => ({
-      backgroundColor:
-        theme.palette.mode === "dark"
-          ? theme.palette.grey[900]
-          : theme.palette.grey[200],
-    })}
-  > */}
-  <TableRow>
-
-
-    <TableCell padding="checkbox">
-       <Checkbox
-    indeterminate={
-      selectedRows.length > 0 &&
-      selectedRows.length < filteredRows.length
-    }
-    checked={
-      filteredRows.length > 0 &&
-      selectedRows.length === filteredRows.length
-    }
-    onChange={(e) => {
-      if (e.target.checked) {
-        setSelectedRows(filteredRows); // ✅ select all
-      } else {
-        setSelectedRows([]); // ❌ deselect all
-      }
+    onExport={() => {
+      // default: export selected
+      downloadExcel();
     }}
   />
-    </TableCell>
-
-    <TableCell>{labels.id}</TableCell>
-    <TableCell>{labels.date}</TableCell>
-    <TableCell>Customer</TableCell>
-    <TableCell>{labels.entity}</TableCell>
-    <TableCell>{labels.createdBy}</TableCell>
-    <TableCell>{labels.follow1}</TableCell>
-    <TableCell>{labels.follow2}</TableCell>
-    <TableCell>{labels.followUpDate}</TableCell>
-    <TableCell>Actions</TableCell>
-  </TableRow>
-</TableHead>
-
-   <TableBody>
-        {filteredRows
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((row) => (
-            <TableRow key={row.Id} hover>
-              <TableCell padding="checkbox">
-                <Checkbox
-                  checked={selectedRows.some((r) => r.Id === row.Id)}
-                  onChange={() => handleRowSelect(row)}
-                />
-              </TableCell>
-              <TableCell>{row.ProjectNo}</TableCell>
-              <TableCell>{row.ProjectDate?.substr(0, 10)}</TableCell>
-              <TableCell>{row.CustomerName}</TableCell>
-              <TableCell>{row.ProjectName}</TableCell>
-              <TableCell>{row.CreatedBy}</TableCell>
-              <TableCell>{row.FollowBy1}</TableCell>
-              <TableCell>{row.FollowBy2}</TableCell>
-              <TableCell>{row.FollowUpDate?.substr(0, 10)}</TableCell>
-              <TableCell>
-                <IconButton
-                  onClick={(e) => {
-                    setAnchorEl(e.currentTarget);
-                    setMenuRow(row);
-                   }}
-                 >
-                  <MoreVertIcon />
-                </IconButton>
-              </TableCell>
-            </TableRow>
-          ))}
-      </TableBody>
-    </Table>
-  </TableContainer>
-
-    {/* Pagination */}
-    <TablePagination
-      component="div"
-      count={filteredRows.length}
-      page={page}
-      rowsPerPage={rowsPerPage}
-      onPageChange={(e, newPage) => setPage(newPage)}
-      onRowsPerPageChange={(e) => {
-        setRowsPerPage(parseInt(e.target.value, 10));
-        setPage(0);
-      }}
-    />
-
-    {/* Action Menu */}
-    <Menu
-      anchorEl={anchorEl}
-      open={!!anchorEl}
-      onClose={() => setAnchorEl(null)}
-    >
-      <MUIMenuItem
-        onClick={() => {
-          setAnchorEl(null);
-          openViewForm(menuRow);
-        }}
-      >
-        <VisibilityIcon fontSize="small" style={{ marginRight: 8 }} />
-        View
-      </MUIMenuItem>
-      <MUIMenuItem
-        onClick={() => {
-          setAnchorEl(null);
-          openEditForm(menuRow);
-        }}
-      >
-        <EditIcon fontSize="small" style={{ marginRight: 8 }} />
-        Edit
-      </MUIMenuItem>
-      <MUIMenuItem
-        onClick={() => {
-          setAnchorEl(null);
-          handleDelete(menuRow.Id);
-        }}
-      >
-        <DeleteIcon fontSize="small" style={{ marginRight: 8 }} />
-        Delete
-      </MUIMenuItem>
-    </Menu>
-  </Paper>
 ) : (
+
 
         /* FORM VIEW */
         <Paper className="project-form">
@@ -635,7 +476,7 @@ const downloadExcel = () => {
           {/* SAVE / CANCEL / CLOSE */}
           <Box className="form-buttons">
             {!readOnly && (
-              <Button variant="contained" sx={{ mr: 2 }} onClick={handleSubmit}>
+              <Button variant="contained" className="save-btn" sx={{ mr: 2 }} onClick={handleSubmit}>
                 SAVE
               </Button>
             )}

@@ -237,7 +237,7 @@ const handleShow = () => {
   {/* BUTTONS */}
   <Box className="button-row">
    
-<Button variant="contained" onClick={handleShow}>
+<Button variant="contained" className="show-btn" onClick={handleShow}>
   Show
 </Button>
 
@@ -260,7 +260,9 @@ const handleShow = () => {
   Export To Excel
 </Button>
  
-    <Button variant="outlined" color="error" onClick={handleClose}>Close</Button>
+    <Button variant="outlined" className="cancel-btn" onClick={handleClose}>
+      Close
+      </Button>
   </Box>
 
 </Box>

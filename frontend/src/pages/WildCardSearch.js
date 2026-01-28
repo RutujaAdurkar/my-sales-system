@@ -76,6 +76,11 @@ export default function WildCardSearch() {
           Wild Card Search
         </Typography>
 
+        {/* <Box className="app-header">
+               <Box className="app-title">
+                  Application Report Entry
+                </Box> */}
+
         {/* SEARCH BY */}
         <Box className="wildcard-form-row">
           <Box className="wildcard-label">Search By</Box>
@@ -110,14 +115,13 @@ export default function WildCardSearch() {
         {/* BUTTONS */}
         <Box className="wildcard-button-row">
           <Button
-            variant="contained"
-            onClick={handleSearch}
+            variant="contained"            className="show-btn"            onClick={handleSearch}
             disabled={!searchText.trim()}
           >
             Show
           </Button>
 
-          <Button variant="outlined" onClick={handleClear}>
+          <Button variant="outlined"  className="cancel-btn" onClick={handleClear}>
             Clear
           </Button>
         </Box>

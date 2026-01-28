@@ -475,9 +475,6 @@ return (
   // }}
 >
 
-      {/* <Grid container spacing={2}>
-        <Grid item xs={12} lg={4}> */}
-        {/* <Paper className="form-paper"> */}
           <FormRow label="Statistic Group Id:">
             <Select
               fullWidth
@@ -681,11 +678,7 @@ return (
                   </FormRow>
                 </Box>
 
-                {/* <Box sx={{ flexGrow: 1 }} /> */}
-              {/* </Grid> */}
-
               {/* COLUMN 2 */}
-              {/* <Grid item xs={12} lg={4} > */}
                  <Box className="form-column">
                   <FormRow label="Reorder Level:">
                     <TextField
@@ -1002,7 +995,7 @@ return (
         {/* BUTTONS */}
           <Box className="form-buttons">
             {!readOnly && (
-              <Button variant="contained" sx={{ width: 120 }} onClick={handleSubmit}>
+              <Button variant="contained" className="save-btn" sx={{ width: 120 }} onClick={handleSubmit}>
                 {editData ? "Update" : "Submit"}
               </Button>
             )}

@@ -16,6 +16,8 @@ import {
   Menu,
   MenuItem as MUIMenuItem
 } from "@mui/material";
+import StandardTable from "../components/StandardTable";
+
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 import DownloadIcon from "@mui/icons-material/Download";
@@ -340,206 +342,67 @@ const handleSelectAll = (checked) => {
     setSelectedRows([]);
   }
 };
+const columns = [
+  { field: "ReportNo", headerName: "Report No", width: 120 },
+  { field: "Date", headerName: "Date", width: 140 },
+  { field: "Customer", headerName: "Customer", width: 180 },
+  { field: "QuotationNo", headerName: "Quotation No", width: 150 },
+  { field: "Quantity", headerName: "Quantity", width: 100 },
+];
 
 
   /* ================= UI ================= */
   return (
     <Box  className="app-container">
-      {/* <Box display="flex" justifyContent="space-between" mb={2}>
-        <Box sx={{ fontSize: 20, fontWeight: 600 }}>
-          Application Report Entry
-        </Box> */}
-        <Box className="app-header">
-  <Box className="app-title">Application Report Entry</Box>
-
-        {view === "table" ? (
-          <Button variant="contained"
-          startIcon={<AddIcon />}
-           onClick={openAddForm}>
-            Add
-          </Button>
-        ) : (
-          <Button
-            variant="contained"
-        
-            onClick={() => {
-              setView("table");
-              setEditingId(null);
-              setReadOnly(false);
-            }}
-          >
-            Back to Table
-          </Button>
-        )}
-      </Box>
+   
+<Box className="app-header">
+  {view !== "table" && (
+    <Button
+      variant="contained"
+      onClick={() => {
+        setView("table");
+        setEditingId(null);
+        setReadOnly(false);
+      }}
+    >
+      Back to Table
+    </Button>
+  )}
+</Box>
 
       {view === "table" ? (
-        <Paper sx={{ p: 2, mb: 2 }}>
-         <Box className="table-toolbar">
-
-  {/* ⬇️ EXPORT ICON (LEFT) */}
-  <IconButton
-    color="primary"
-    onClick={(e) => setExportAnchorEl(e.currentTarget)}
-  >
-    <DownloadIcon />
-  </IconButton>
-
-  <Menu
-    anchorEl={exportAnchorEl}
-    open={Boolean(exportAnchorEl)}
-    onClose={() => setExportAnchorEl(null)}
-  >
-    <MenuItem
-      onClick={() => {
-        exportCSV();
-        setExportAnchorEl(null);
-      }}
-    >
-      Export CSV
-    </MenuItem>
-    <MenuItem
-      onClick={() => {
-        exportExcel();
-        setExportAnchorEl(null);
-      }}
-    >
-      Export Excel
-    </MenuItem>
-  </Menu>
-
-  {/* 🔍 SEARCH (RIGHT) */}
-  <TextField
-    size="small"
-    placeholder="Search..."
-    sx={{ width: 260 }}
-    value={search}
-    onChange={(e) => {
-      setSearch(e.target.value);
-      setPage(0);
+  <StandardTable
+    title="Application Report Entry"
+    columns={columns}
+    rows={filteredRows}
+    search={search}
+    setSearch={setSearch}
+    selectedRows={selectedRows}
+    setSelectedRows={setSelectedRows}
+    onAdd={openAddForm}
+    onView={(row) => {
+      fillForm(row);
+      setEditingId(row.Id);
+      setReadOnly(true);
+      setView("form");
     }}
-    />
-   </Box>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-         {/* ✅ SELECT ALL CHECKBOX */}
-        <TableCell padding="checkbox">
-        <Checkbox
-        indeterminate={
-          selectedRows.length > 0 &&
-          selectedRows.length < filteredRows.length
-        }
-        checked={
-          filteredRows.length > 0 &&
-          selectedRows.length === filteredRows.length
-        }
-        onChange={(e) => handleSelectAll(e.target.checked)}
-      />
-    </TableCell>
+    onEdit={(row) => {
+      fillForm(row);
+      setEditingId(row.Id);
+      setReadOnly(false);
+      setView("form");
+    }}
+    onDelete={(row) => {
+      menuRowRef.current = row;
+      handleDelete();
+    }}
+    onExport={() => {
+      exportExcel(); // or exportCSV
+    }}
+  />
+) : (
 
-    <TableCell>Report No</TableCell>
-    <TableCell>Date</TableCell>
-    <TableCell>Customer</TableCell>
-    <TableCell>Quotation No</TableCell>
-    <TableCell>Quantity</TableCell>
-    <TableCell>Actions</TableCell>
-  </TableRow>
-</TableHead>
-
-            <TableBody>
-              {filteredRows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, idx) => (
-                  <TableRow
-                    key={row.Id || idx}
-                    hover
-                    selected={isSelected(row.Id)}
-                  >
-                <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={isSelected(row.Id)}
-                    onChange={() => handleSelectRow(row.Id)}
-                  />
-                </TableCell>
-                  <TableCell>{row.ReportNo}</TableCell>
-                  <TableCell>
-                    {row.Date?.toString().substring(0, 10)}
-                  </TableCell>
-                  <TableCell>{row.Customer}</TableCell>
-                  <TableCell>{row.QuotationNo}</TableCell>
-                  <TableCell>{row.Quantity}</TableCell>
-                  <TableCell>
-                    <IconButton
-                      size="small"
-                      onClick={(e) => handleMenuOpen(e, row)}
-                    >
-                      <MoreVertIcon />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-
-          {/* Pagination */}
-          <Box className="pagination">
-
-            <Button
-              variant="outlined"
-              disabled={page === 0}
-              onClick={() => setPage(page - 1)}
-            >
-              Prev
-            </Button>
-            <Box>
-              Page {page + 1} /{" "}
-              {Math.ceil(filteredRows.length / rowsPerPage) || 1}
-            </Box>
-            <Button
-              variant="outlined"
-              disabled={
-                page + 1 >= Math.ceil(filteredRows.length / rowsPerPage)
-              }
-              onClick={() => setPage(page + 1)}
-            >
-              Next
-            </Button>
-          </Box>
-
-          {/* Action Menu */}
-          <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-            <MUIMenuItem
-              onClick={() => {
-                handleMenuClose();
-                openViewForm();
-              }}
-            >
-              <VisibilityIcon fontSize="small" style={{ marginRight: 8 }} />
-              View
-            </MUIMenuItem>
-            <MUIMenuItem
-              onClick={() => {
-                handleMenuClose();
-                openEditForm();
-              }}
-            >
-              <EditIcon fontSize="small" style={{ marginRight: 8 }} />
-              Edit
-            </MUIMenuItem>
-            <MUIMenuItem
-              onClick={() => {
-                handleMenuClose();
-                handleDelete();
-              }}
-            >
-              <DeleteIcon fontSize="small" style={{ marginRight: 8 }} />
-              Delete
-            </MUIMenuItem>
-          </Menu>
-        </Paper>
-      ) : (
-        // <Paper sx={{ p: 3, borderRadius: 2 }}>
+        
         <Paper
   sx={{
     p: 3,
@@ -550,7 +413,7 @@ const handleSelectAll = (checked) => {
   }}
 >
 
-          {/* <Grid container spacing={4}> */}
+        
           <Grid container spacing={4} sx={{ flexGrow: 1 }}>
 
             {/* LEFT */}
@@ -559,16 +422,16 @@ const handleSelectAll = (checked) => {
                 <TextField
                   size="small"
                   fullWidth
-                  value={formData.reportNo}
+                  value={formData.reportNo}    
                   onChange={handleNumericOnly("reportNo")}
                   error={!!errors.reportNo}
-                  disabled={readOnly}
+                  disabled={readOnly}    
                 />
               </FormRow>
 
               <FormRow label="Customer:" error={errors.customer}>
                 <TextField  
-                
+
                   select
                   size="small"
                   fullWidth
@@ -576,7 +439,6 @@ const handleSelectAll = (checked) => {
                   onChange={handleChange("customer")}
                   disabled={readOnly}
                 >
-                  {/* <MenuItem value="">Select Customer</MenuItem> */}
                   <MenuItem value="" disabled>
                      Select Customer
                   </MenuItem>
@@ -730,7 +592,6 @@ const handleSelectAll = (checked) => {
               </FormRow>
             </Grid>
             
-            {/* <Grid item xs={12}> */}
             <Grid item xs={12} sx={{ mt: "auto" }}>
 
   <Box
@@ -745,7 +606,7 @@ const handleSelectAll = (checked) => {
   >
 
     {!readOnly && (
-      <Button variant="contained" onClick={handleSubmit}>
+      <Button variant="contained" className="save-btn" onClick={handleSubmit}>
         Save
       </Button>
     )}
