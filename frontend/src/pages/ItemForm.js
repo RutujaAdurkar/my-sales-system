@@ -19,36 +19,38 @@ const FormRow = ({ label, children }) => (
 );
 
 const initialFormState = {
+  uom: "",
   statisticGroupId: "",
-  articleNo: "",
+  openingStock: "",
+  itemName: "",
   typeDesignation: "",
+  itemCode: "",
   masterId: "",
+  currentStock: "",
   ffhw: "",
   validity: "",
   basicPrice: "",
   storeLocation: "",
-  openingQty: "",
   reorderLevel: "",
   minLevel: "",
   maxLevel: "",
-  custReorder: "",
+  make: "",
   factor: "",
   hsnCode: "",
   cgst: "",
   sgst: "",
-  typeSelection: "Component",
-  selectionCode: "",
-  units: "Nos",
-  netPrice: "",
-  value: "",
+  salesPrice: "",
+  openingValue: "",
+  deliveryCode: "",
   comments: "",
   substituteItem: "",
   exciseHeadNo: "",
   quotationFor: "Rs",
   transitDays: "",
   customDuty: "",
-  productFocus: "",
+  details: "",
   igst: "",
+  isBom: false,
 };
 
 // ✅ ItemForm can work alone OR receive editData + onClose from list page
@@ -118,9 +120,12 @@ const ItemForm = ({ editData = null, onClose }) => {
 
     // Map DB field names to form fields (adjust if your column names differ)
     const mapped = {
+      uom: editData.UOM || "",
       statisticGroupId: editData.StatisticGroupId || "",
-      articleNo: editData.ArticleNo || "",
+      openingStock: editData.OpeningStock || "",
+      itemName: editData.ItemName || "",
       typeDesignation: editData.TypeDesignation || "",
+      itemCode: editData.ItemCode || "",
       masterId: editData.MasterId || "",
       ffhw: editData.FF_HW || "",
       validity: editData.DateOfValidity
@@ -128,28 +133,27 @@ const ItemForm = ({ editData = null, onClose }) => {
         : "",
       basicPrice: editData.BasicPrice?.toString() || "",
       storeLocation: editData.StoreLocation || "",
-      openingQty: editData.OpeningQty?.toString() || "",
+      deliveryCode: editData.DeliveryCode?.toString() || "",
       reorderLevel: editData.ReorderLevel?.toString() || "",
       minLevel: editData.MinLevel?.toString() || "",
       maxLevel: editData.MaxLevel?.toString() || "",
-      custReorder: editData.CustReorder?.toString() || "",
+      make: editData.Make || "",
       factor: editData.Factor?.toString() || "",
       hsnCode: editData.HSNCode?.toString() || "",
       cgst: editData.CGST?.toString() || "",
       sgst: editData.SGST?.toString() || "",
-      typeSelection: editData.TypeSelection || "Component",
-      selectionCode: editData.SelectionCode || "",
-      units: editData.Units || "Nos",
-      netPrice: editData.NetPrice?.toString() || "",
-      value: editData.Value?.toString() || "",
+      currentStock: editData.CurrentStock?.toString() || "",
+      salesPrice: editData.SalesPrice?.toString() || "",
+      openingValue: editData.OpeningValue?.toString() || "",
       comments: editData.Comments || "",
       substituteItem: editData.SubstituteItem || "",
       exciseHeadNo: editData.ExciseHeadNo || "",
       quotationFor: editData.QuotationFor || "Rs",
       transitDays: editData.TransitDays?.toString() || "",
       customDuty: editData.CustomDuty?.toString() || "",
-      productFocus: editData.ProductInFocus || "",
+      details: editData.Details || "",
       igst: editData.IGST?.toString() || "",
+      isBom: editData.ISBOM === 1 || false,
     };
 
     setFormData({ ...initialFormState, ...mapped });
@@ -213,25 +217,26 @@ const ItemForm = ({ editData = null, onClose }) => {
     switch (field) {
       case "statisticGroupId":
       case "masterId":
-      case "articleNo":
+      case "openingStock":
+      case "itemName":
+      case "itemCode":
       case "typeDesignation":
-      case "typeSelection":
-      case "units":
       case "quotationFor":
         // already checked for empty above
         break;
 
       case "basicPrice":
-      case "netPrice":
-      case "value":
-      case "openingQty":
+      case "salesPrice":
+      case "openingValue":
+      case "deliveryCode":
       case "reorderLevel":
       case "minLevel":
       case "maxLevel":
-      case "custReorder":
+      case "make":
       case "transitDays":
       case "customDuty":
       case "factor":
+      case "currentStock":
         if (v === "" || v === null || v === undefined) break; // allow empty unless required
         if (v.toString().trim() === "") break;
         if (!/^\d+(\.\d+)?$/.test(v)) msg = "Must be a non-negative number";
@@ -254,7 +259,7 @@ const ItemForm = ({ editData = null, onClose }) => {
         if (v && !/^\d{4}-\d{2}-\d{2}$/.test(v)) msg = "Invalid date";
         break;
 
-      case "selectionCode":
+      case "itemCode":
       case "exciseHeadNo":
       case "storeLocation":
       case "ffhw":
@@ -285,20 +290,21 @@ const ItemForm = ({ editData = null, onClose }) => {
   
 const requiredFields = [
   "statisticGroupId",
-  "articleNo",
+  "openingStock",
+  "itemName",
+  "itemCode",
   "typeDesignation",
   "masterId",
-  "typeSelection",
-  "units",
+  "currentStock",
   "basicPrice",
-  "netPrice",
-  "value",
+  "salesPrice",
+  "openingValue",
   "storeLocation",
-  "openingQty",
+  "deliveryCode",
   "reorderLevel",
   "minLevel",
   "maxLevel",
-  "productFocus"
+  "make"
 ];
 
   const validateForm = () => {
@@ -314,10 +320,10 @@ const requiredFields = [
 
   // NUMERIC FIELDS
   const numericFields = [
-    "basicPrice","netPrice","value",
-    "openingQty","reorderLevel",
-    "minLevel","maxLevel","custReorder",
-    "transitDays","customDuty","factor"
+    "basicPrice","salesPrice","openingValue",
+    "deliveryCode","reorderLevel",
+    "minLevel","maxLevel","make",
+    "transitDays","customDuty","factor","currentStock","uom"
   ];
 
   numericFields.forEach((f) => {
@@ -368,25 +374,25 @@ const handleSubmit = async () => {
   }
 
   const payload = {
-  MenuID: 1,
+  UOM: formData.uom || 1,
   StatisticGroupId: formData.statisticGroupId,
-  ArticleNo: formData.articleNo,
-  TypeSelection: formData.typeSelection,
+  OpeningStock: formData.openingStock,
+  ItemName: formData.itemName,
   TypeDesignation: formData.typeDesignation,
-  SelectionCode: formData.selectionCode,
+  ItemCode: formData.itemCode,
   MasterId: formData.masterId,
-  Units: formData.units,
+  CurrentStock: Number(formData.currentStock),
   FF_HW: formData.ffhw,
-  NetPrice: Number(formData.netPrice),
+  SalesPrice: Number(formData.salesPrice),
   DateOfValidity: formData.validity,
   BasicPrice: Number(formData.basicPrice),
-  Value: Number(formData.value),
+  OpeningValue: Number(formData.openingValue),
   StoreLocation: formData.storeLocation,
-  OpeningQty: Number(formData.openingQty),
+  DeliveryCode: Number(formData.deliveryCode),
   ReorderLevel: Number(formData.reorderLevel),
   MinLevel: Number(formData.minLevel),
   MaxLevel: Number(formData.maxLevel),
-  CustReorder: Number(formData.custReorder),
+  Make: formData.make,
   Factor: Number(formData.factor),
   HSNCode: Number(formData.hsnCode),
   CGST: Number(formData.cgst),
@@ -398,7 +404,8 @@ const handleSubmit = async () => {
   QuotationFor: formData.quotationFor,
   TransitDays: Number(formData.transitDays),
   CustomDuty: Number(formData.customDuty),
-  ProductInFocus: formData.productFocus   // FIXED
+  Details: formData.details,
+  ISBOM: formData.isBom ? 1 : 0
 };
 
   const recordId = editData?.ItemID || editData?.ID;
@@ -506,15 +513,43 @@ return (
           {/* <Grid container spacing={2}>
              <Grid item xs={12} lg={4}> */}
                 <Box className="form-column">
-                  <FormRow label="Article No:">
+                  <FormRow label="Opening Stock:">
                     <TextField
                       fullWidth
                       size="small"
-                      value={formData.articleNo ?? ""}
-                      onChange={handleAlphaNumeric("articleNo")}
-                      onBlur={() => validateField("articleNo")}
-                      error={!!errors.articleNo}
-                      helperText={errors.articleNo}
+                      value={formData.openingStock ?? ""}
+                      onChange={handleAlphaNumeric("openingStock")}
+                      onBlur={() => validateField("openingStock")}
+                      error={!!errors.openingStock}
+                      helperText={errors.openingStock}
+                      sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
+                    />
+                  </FormRow>
+
+                  <FormRow label="Item Name:">
+                    <TextField
+                      fullWidth
+                      size="small"
+                      value={formData.itemName ?? ""}
+                      onChange={handleTextChange("itemName")}
+                      onBlur={() => validateField("itemName")}
+                      error={!!errors.itemName}
+                      helperText={errors.itemName}
+                      sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
+                    />
+                  </FormRow>
+
+                  <FormRow label="Item Code:">
+                    <TextField
+                      fullWidth
+                      size="small"
+                      value={formData.itemCode ?? ""}
+                      onChange={handleAlphaNumeric("itemCode")}
+                      onBlur={() => validateField("itemCode")}
+                      error={!!errors.itemCode}
+                      helperText={errors.itemCode}
                       sx={{ backgroundColor: 'background.paper' }}
                       disabled={readOnly}
                     />
@@ -618,15 +653,15 @@ return (
                     />
                   </FormRow>
 
-                  <FormRow label="Opening Qty:">
+                  <FormRow label="Delivery Code:">
                     <TextField
                       fullWidth
                       size="small"
-                      value={formData.openingQty ?? ""}
-                      onChange={handleNumberChange("openingQty")}
-                      onBlur={() => validateField("openingQty")}
-                      error={!!errors.openingQty}
-                      helperText={errors.openingQty}
+                      value={formData.deliveryCode ?? ""}
+                      onChange={handleNumberChange("deliveryCode")}
+                      onBlur={() => validateField("deliveryCode")}
+                      error={!!errors.deliveryCode}
+                      helperText={errors.deliveryCode}
                       sx={{ backgroundColor: 'background.paper' }}
                       disabled={readOnly}
                     />
@@ -722,15 +757,15 @@ return (
                     />
                   </FormRow>
 
-                  <FormRow label="Cust. Reorder:">
+                  <FormRow label="Make:">
                     <TextField
                       fullWidth
                       size="small"
-                      value={formData.custReorder ?? ""}
-                      onChange={handleNumberChange("custReorder")}
-                      onBlur={() => validateField("custReorder")}
-                      error={!!errors.custReorder}
-                      helperText={errors.custReorder}
+                      value={formData.make ?? ""}
+                      onChange={handleNumberChange("make")}
+                      onBlur={() => validateField("make")}
+                      error={!!errors.make}
+                      helperText={errors.make}
                       sx={{ backgroundColor: 'background.paper' }}
                       disabled={readOnly}
                     />
@@ -792,30 +827,21 @@ return (
                     />
                   </FormRow>
 
-                <FormRow label="Product In Focus:">
-                  <Select
+                <FormRow label="Details:">
+                  <TextField
                     fullWidth
                     size="small"
-                    value={formData.productFocus ?? ""}
-                    onChange={handleChange("productFocus")}
-                    displayEmpty
+                    multiline
+                    rows={2}
+                    value={formData.details ?? ""}
+                    onChange={handleTextChange("details")}
+                    onBlur={() => validateField("details")}
+                    error={!!errors.details}
+                    helperText={errors.details}
+                    sx={{ backgroundColor: 'background.paper' }}
                     disabled={readOnly}
-                  >
-
-                 <MenuItem value="">
-                   <em>Select Focus</em>
-                 </MenuItem>
-
-                {productFocusOptions.map((p) => (
-                  <MenuItem
-                    key={p.ItemCode}
-                     value={p.ItemCode}   // number
-                  >
-                   {p.ItemCode}
-                  </MenuItem>
-               ))}
-              </Select>
-            </FormRow>
+                  />
+                </FormRow>
 
                   <FormRow label="IGST:">
                     <TextField
@@ -832,94 +858,61 @@ return (
                   </FormRow>
                 </Box>
 
-                {/* <Box sx={{ flexGrow: 1 }} /> */}
-              {/* </Grid> */}
+            
 
               {/* COLUMN 3 */}
-              {/* <Grid item xs={12} lg={4} > */}
                  <Box className="form-column">
-                  <FormRow label="Type Selection:">
-                    <Select
-                      fullWidth
-                      size="small"
-                      value={formData.typeSelection ?? ""}
-                      onChange={handleChange("typeSelection")}
-                      displayEmpty
-                      disabled={readOnly}
-                    >
-                    <MenuItem value="" >
-                      <em>Select Type</em>
-                    </MenuItem>
-
-                    {typeSelections.map((t) => (
-                       <MenuItem key={t.TypeId} value={t.TypeName}>
-                          {t.TypeName}
-                       </MenuItem>
-                    ))}
-                    </Select>
-                    {errors.typeSelection && (
-                      <Box sx={{ color: 'error.main', fontSize: '12px', mt: 0.5 }}>{errors.typeSelection}</Box>
-                    )}
-                  </FormRow>
-
-                  <FormRow label="Selection Code:">
+                  <FormRow label="UOM:">
                     <TextField
                       fullWidth
                       size="small"
-                      value={formData.selectionCode ?? ""}
-                      onChange={handleAlphaNumeric("selectionCode")}
-                      onBlur={() => validateField("selectionCode")}
-                      error={!!errors.selectionCode}
-                      helperText={errors.selectionCode}
+                      value={formData.uom ?? ""}
+                      onChange={handleNumberChange("uom")}
+                      onBlur={() => validateField("uom")}
+                      error={!!errors.uom}
+                      helperText={errors.uom}
                       sx={{ backgroundColor: 'background.paper' }}
                       disabled={readOnly}
                     />
                   </FormRow>
 
-                  <FormRow label="Units:">
-                    <Select
-                      fullWidth
-                      size="small"
-                      value={formData.units ?? ""}
-                      onChange={handleChange("units")}
-                      onBlur={() => validateField("units")}
-                      error={!!errors.units}
-                      sx={{ backgroundColor: 'background.paper' }}
-                      disabled={readOnly}
-                    >
-                      <MenuItem value="Nos">Nos</MenuItem>
-                      <MenuItem value="Set">Set</MenuItem>
-                      <MenuItem value="Kg">Kg</MenuItem>
-                    </Select>
-                    {errors.units && (
-                      <Box sx={{ color: 'error.main', fontSize: '12px', mt: 0.5 }}>{errors.units}
-                      </Box>
-                    )}
-                  </FormRow>
-
-                  <FormRow label="Net Price:">
+                  <FormRow label="Current Stock:">
                     <TextField
                       fullWidth
                       size="small"
-                      value={formData.netPrice ?? ""}
-                      onChange={handleDecimalChange("netPrice")}
-                      onBlur={() => validateField("netPrice")}
-                      error={!!errors.netPrice}
-                      helperText={errors.netPrice}
+                      value={formData.currentStock ?? ""}
+                      onChange={handleNumberChange("currentStock")}
+                      onBlur={() => validateField("currentStock")}
+                      error={!!errors.currentStock}
+                      helperText={errors.currentStock}
                       sx={{ backgroundColor: 'background.paper' }}
                       disabled={readOnly}
                     />
                   </FormRow>
 
-                  <FormRow label="Value:">
+                  <FormRow label="Sales Price:">
                     <TextField
                       fullWidth
                       size="small"
-                      value={formData.value ?? ""}
-                      onChange={handleDecimalChange("value")}
-                      onBlur={() => validateField("value")}
-                      error={!!errors.value}
-                      helperText={errors.value}
+                      value={formData.salesPrice ?? ""}
+                      onChange={handleDecimalChange("salesPrice")}
+                      onBlur={() => validateField("salesPrice")}
+                      error={!!errors.salesPrice}
+                      helperText={errors.salesPrice}
+                      sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
+                    />
+                  </FormRow>
+
+                  <FormRow label="Opening Value:">
+                    <TextField
+                      fullWidth
+                      size="small"
+                      value={formData.openingValue ?? ""}
+                      onChange={handleDecimalChange("openingValue")}
+                      onBlur={() => validateField("openingValue")}
+                      error={!!errors.openingValue}
+                      helperText={errors.openingValue}
                       sx={{ backgroundColor: 'background.paper' }}
                       disabled={readOnly}
                     />
@@ -987,10 +980,23 @@ return (
                       <Box sx={{ color: 'error.main', fontSize: '12px', mt: 0.5 }}>{errors.quotationFor}</Box>
                     )}
                   </FormRow>
+
+                  <FormRow label="Is BOM:">
+                    <Select
+                      fullWidth
+                      size="small"
+                      value={formData.isBom ? "1" : "0"}
+                      onChange={(e) => setFormData({...formData, isBom: e.target.value === "1"})}
+                      sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
+                    >
+                      <MenuItem value="0">No</MenuItem>
+                      <MenuItem value="1">Yes</MenuItem>
+                    </Select>
+                  </FormRow>
                 </Box>
                </Box>
-                {/* <Box sx={{ flexGrow: 1 }} /> */}
-              {/* </Grid> */}
+                
       
         {/* BUTTONS */}
           <Box className="form-buttons">
@@ -1015,4 +1021,4 @@ return (
     </Box>
   );
 };
-export default ItemForm;
+export default ItemForm; 

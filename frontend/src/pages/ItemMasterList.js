@@ -138,11 +138,11 @@ export default function ItemMasterList() {
   });
 
   const columns = [
-    { field: "ArticleNo", headerName: "Article No", width: 120 },
+    { field: "ItemName", headerName: "Item Name", width: 120 },
     { field: "TypeDesignation", headerName: "Type Designation", width: 150 },
     { field: "MasterId", headerName: "Master ID", width: 100 },
     { field: "StoreLocation", headerName: "Store Location", width: 150 },
-    { field: "NetPrice", headerName: "Net Price", width: 100 },
+    { field: "SalesPrice", headerName: "Sales Price", width: 100 },
     { field: "HSNCode", headerName: "HSN Code", width: 120 }
   ];
 
