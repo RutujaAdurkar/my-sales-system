@@ -4,7 +4,7 @@ module.exports = {
   getStatisticGroups: async () => {
     const pool = await poolPromise;
     const result = await pool.request().query(
-      "SELECT GroupId, GroupName FROM StatisticGroup ORDER BY GroupName"
+      "SELECT GroupId, GroupCode FROM StatisticGroup ORDER BY GroupId"
     );
     return result.recordset;
   },

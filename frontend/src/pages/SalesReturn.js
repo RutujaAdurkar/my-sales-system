@@ -437,8 +437,6 @@ const showToast = (message, severity = "success") => {
                }}
                onKeyDown={(e) => e.key === "Enter" && addItemToTable()}
               />
-
-
             </FormRow>
           </Box>
         </Box>

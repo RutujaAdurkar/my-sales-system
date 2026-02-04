@@ -61,12 +61,12 @@ const ProjectFollowUpForm = ({ mode = "project" }) => {
   const [menuRow, setMenuRow] = useState(null);
   const [errors, setErrors] = useState({});
   const [readOnly, setReadOnly] = useState(false);
-const [search, setSearch] = useState("");
-const [page, setPage] = useState(0);
-const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
-const [selectedRows, setSelectedRows] = useState([]);
-const [downloadAnchorEl, setDownloadAnchorEl] = useState(null);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [downloadAnchorEl, setDownloadAnchorEl] = useState(null);
 
 
 const filteredRows = rows.filter((x) =>
@@ -80,7 +80,7 @@ const filteredRows = rows.filter((x) =>
     entity: isPayment ? "Amount" : "Project Name",
     createdBy: isPayment ? "Payment Created By" : "Project Created By",
     follow1: "Follow By (1)",
-    follow2: "Follow By (2)",
+    follow2: "Follow By (2)",           
     followUpDate: "Follow-Up Date",
   };
 
@@ -93,7 +93,7 @@ const fetchLists = () => {
   axios
     .get("http://localhost:5000/api/dropdown/customers")
     .then((res) => {
-      console.log("Customers Response:", res.data);   // 👈 log response
+      console.log("Customers Response:", res.data);   
       setCustomers(res.data);
     })
     .catch((err) => console.error("Customers Error:", err));

@@ -13,9 +13,7 @@ import {
   TableBody,
   MenuItem
 } from "@mui/material";
-
 import "./PaymentFollowupReport.css";
-
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
@@ -53,8 +51,7 @@ const [alertOpen, setAlertOpen] = useState(false);
     }));
   };
 
-  //const handleShow = () => setShowTable(true);
-
+  
   const handleShow = () => {
   // check if all fields are empty
   const isNothingFilled =
@@ -70,16 +67,6 @@ const [alertOpen, setAlertOpen] = useState(false);
 
   setShowTable(true);
 };
-
-  // const handleClose = () => {
-  //   setShowTable(false);
-  //   setFilters({
-  //     fromDate: "",
-  //     toDate: "",
-  //     customer: "ALL",
-  //     all: false
-  //   });
-  // };
 
   const handleClose = () => {
   setShowTable(false);
@@ -191,11 +178,11 @@ const [alertOpen, setAlertOpen] = useState(false);
     
       )}
       <Snackbar
-  open={alertOpen}
-  autoHideDuration={3000}
-  onClose={() => setAlertOpen(false)}
-  anchorOrigin={{ vertical: "top", horizontal: "center" }}
->
+       open={alertOpen}
+       autoHideDuration={3000}
+       onClose={() => setAlertOpen(false)}
+       anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
   <MuiAlert
     onClose={() => setAlertOpen(false)}
     severity="warning"
@@ -204,7 +191,6 @@ const [alertOpen, setAlertOpen] = useState(false);
     Please select at least one filter before clicking Show
   </MuiAlert>
 </Snackbar>
-
-    </Box>
+</Box>
   );
 }

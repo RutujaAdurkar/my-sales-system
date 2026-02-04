@@ -67,24 +67,6 @@ export default function TechnicalSupportReport() {
 };
 
   /* ================= EXCEL EXPORT ================= */
-  // const exportExcel = () => {
-  //   const ws = XLSX.utils.json_to_sheet(DATA);
-  //   const wb = XLSX.utils.book_new();
-  //   XLSX.utils.book_append_sheet(wb, ws, "Tech Support Report");
-
-  //   const excelBuffer = XLSX.write(wb, {
-  //     bookType: "xlsx",
-  //     type: "array"
-  //   });
-
-  //   const file = new Blob([excelBuffer], {
-  //     type:
-  //       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-  //   });
-
-  //   saveAs(file, "TechnicalSupportReport.xlsx");
-  // };
-
   const exportExcel = () => {
   if (!isFilterSelected()) {
     setErrorMsg("Please select at least one filter before exporting.");
@@ -112,38 +94,6 @@ export default function TechnicalSupportReport() {
 };
 
   /* ================= PDF EXPORT ================= */
-  // const exportPDF = () => {
-  //   const doc = new jsPDF();
-
-  //   doc.text("Technical Support Report", 14, 15);
-
-  //   autoTable(doc, {
-  //     startY: 20,
-  //     head: [[
-  //       "Tech No",
-  //       "Date",
-  //       "Customer",
-  //       "Salesman",
-  //       "Visit With",
-  //       "Follow-up",
-  //       "Project",
-  //       "Notes"
-  //     ]],
-  //     body: DATA.map(row => [
-  //       row.no,
-  //       row.date,
-  //       row.customer,
-  //       row.salesman,
-  //       row.visitWith,
-  //       row.followup,
-  //       row.project,
-  //       row.notes
-  //     ])
-  //   });
-
-  //   doc.save("TechnicalSupportReport.pdf");
-  // };
-
   const exportPDF = () => {
   if (!isFilterSelected()) {
     setErrorMsg("Please select at least one filter before exporting.");

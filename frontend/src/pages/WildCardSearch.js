@@ -76,11 +76,6 @@ export default function WildCardSearch() {
           Wild Card Search
         </Typography>
 
-        {/* <Box className="app-header">
-               <Box className="app-title">
-                  Application Report Entry
-                </Box> */}
-
         {/* SEARCH BY */}
         <Box className="wildcard-form-row">
           <Box className="wildcard-label">Search By</Box>

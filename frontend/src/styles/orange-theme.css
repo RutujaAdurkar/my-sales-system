@@ -8,16 +8,11 @@ body.dark .MuiMenuItem-root.Mui-selected {
   color: #ffffff !important;
 }
 
-
-
-
-
 /* Selected */
 body.dark .MuiMenuItem-root.Mui-selected {
   background-color: #2563eb !important;
   color: #ffffff !important;
 }
-
 
 /* Kill header row pseudo-element */
 .MuiTableHead-root::after {

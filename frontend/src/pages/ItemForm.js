@@ -4,7 +4,7 @@ import {
   Box,
   Grid,
   TextField,
-  MenuItem,
+  MenuItem, 
   Select,
   Paper,
   Button,
@@ -20,7 +20,7 @@ const FormRow = ({ label, children }) => (
 
 const initialFormState = {
   uom: "",
-  statisticGroupId: "",
+  groupId: "",
   openingStock: "",
   itemName: "",
   typeDesignation: "",
@@ -30,12 +30,12 @@ const initialFormState = {
   ffhw: "",
   validity: "",
   basicPrice: "",
-  storeLocation: "",
+  location: "",
   reorderLevel: "",
   minLevel: "",
   maxLevel: "",
   make: "",
-  factor: "",
+  stockFactor: "",
   hsnCode: "",
   cgst: "",
   sgst: "",
@@ -44,8 +44,7 @@ const initialFormState = {
   deliveryCode: "",
   comments: "",
   substituteItem: "",
-  exciseHeadNo: "",
-  quotationFor: "Rs",
+  quotationCurrency: "Rs",
   transitDays: "",
   customDuty: "",
   details: "",
@@ -69,14 +68,10 @@ const ItemForm = ({ editData = null, onClose }) => {
   // read-only view mode (for "View" action)
   const [readOnly, setReadOnly] = useState(false);
 
-   
-
   // ------------------------------------------------
   // LOAD DROPDOWN OPTIONS FROM BACKEND
   // ------------------------------------------------
   useEffect(() => {
-
-
     const loadLookups = async () => {
       try {
         const [sgRes, mRes, pfRes, subRes, tsRes] = await Promise.all([
@@ -121,7 +116,7 @@ const ItemForm = ({ editData = null, onClose }) => {
     // Map DB field names to form fields (adjust if your column names differ)
     const mapped = {
       uom: editData.UOM || "",
-      statisticGroupId: editData.StatisticGroupId || "",
+      groupId: editData.GroupId || "",
       openingStock: editData.OpeningStock || "",
       itemName: editData.ItemName || "",
       typeDesignation: editData.TypeDesignation || "",
@@ -132,14 +127,14 @@ const ItemForm = ({ editData = null, onClose }) => {
         ? editData.DateOfValidity.slice(0, 10)
         : "",
       basicPrice: editData.BasicPrice?.toString() || "",
-      storeLocation: editData.StoreLocation || "",
+      location: editData.Location || "",
       deliveryCode: editData.DeliveryCode?.toString() || "",
       reorderLevel: editData.ReorderLevel?.toString() || "",
       minLevel: editData.MinLevel?.toString() || "",
       maxLevel: editData.MaxLevel?.toString() || "",
       make: editData.Make || "",
-      factor: editData.Factor?.toString() || "",
-      hsnCode: editData.HSNCode?.toString() || "",
+      stockFactor: editData.StockFactor?.toString() || "",
+      hsnCode: editData.HSNCode || "",
       cgst: editData.CGST?.toString() || "",
       sgst: editData.SGST?.toString() || "",
       currentStock: editData.CurrentStock?.toString() || "",
@@ -147,8 +142,7 @@ const ItemForm = ({ editData = null, onClose }) => {
       openingValue: editData.OpeningValue?.toString() || "",
       comments: editData.Comments || "",
       substituteItem: editData.SubstituteItem || "",
-      exciseHeadNo: editData.ExciseHeadNo || "",
-      quotationFor: editData.QuotationFor || "Rs",
+      quotationCurrency: editData.QuotationCurrency || "Rs",
       transitDays: editData.TransitDays?.toString() || "",
       customDuty: editData.CustomDuty?.toString() || "",
       details: editData.Details || "",
@@ -171,7 +165,7 @@ const ItemForm = ({ editData = null, onClose }) => {
 
   const handleNumberChange = (field) => (e) => {
     const v = e.target.value;
-    if (/^\d*$/.test(v)) {
+    if (/^\d*$/.test(v) || v === "") {
       setFormData({ ...formData, [field]: v });
       if (errors[field]) setErrors(prev => ({ ...prev, [field]: "" }));
     }
@@ -208,66 +202,87 @@ const ItemForm = ({ editData = null, onClose }) => {
     let msg = "";
     const v = formData[field];
 
-    // All fields are required
-    if (v === "" || v === null || v === undefined || (typeof v === "string" && v.trim() === "")) {
-      setErrors(prev => ({ ...prev, [field]: "Required" }));
-      return false;
+    // Required check for fields listed in requiredFields
+    if (requiredFields.includes(field)) {
+      if (v === "" || v === null || v === undefined || (typeof v === "string" && v.trim() === "")) {
+        setErrors(prev => ({ ...prev, [field]: "Required" }));
+        return false;
+      }
     }
 
+    // Type-specific validation
     switch (field) {
-      case "statisticGroupId":
+      // Integer fields
+      case "groupId":
       case "masterId":
-      case "openingStock":
-      case "itemName":
-      case "itemCode":
-      case "typeDesignation":
-      case "quotationFor":
-        // already checked for empty above
+      case "deliveryCode":
+      case "transitDays":
+        if (v !== "" && v !== null && v !== undefined) {
+          if (!/^\d+$/.test(v.toString())) msg = "Must be an integer";
+        }
         break;
 
-      case "basicPrice":
+      // Decimal fields
+      case "openingStock":
+      case "currentStock":
       case "salesPrice":
+      case "basicPrice":
       case "openingValue":
-      case "deliveryCode":
       case "reorderLevel":
       case "minLevel":
       case "maxLevel":
-      case "make":
-      case "transitDays":
+      case "stockFactor":
       case "customDuty":
-      case "factor":
-      case "currentStock":
-        if (v === "" || v === null || v === undefined) break; // allow empty unless required
-        if (v.toString().trim() === "") break;
-        if (!/^\d+(\.\d+)?$/.test(v)) msg = "Must be a non-negative number";
+        if (v !== "" && v !== null && v !== undefined) {
+          if (!/^\d+(\.\d+)?$/.test(v.toString())) msg = "Must be a non-negative number";
+        }
         break;
 
-      case "hsnCode":
-        if (v === "" || v === null || v === undefined) break;
-        if (!/^\d+$/.test(v)) msg = "Must be numeric";
-        break;
-
+      // Tax percent 0-100
       case "cgst":
       case "sgst":
       case "igst":
-        if (v === "" || v === null || v === undefined) break;
-        if (!/^\d+(\.\d+)?$/.test(v)) msg = "Must be a number";
-        else if (Number(v) < 0 || Number(v) > 100) msg = "Enter 0 - 100";
+        if (v !== "" && v !== null && v !== undefined) {
+          if (!/^\d+(\.\d+)?$/.test(v.toString())) msg = "Must be a number";
+          else if (Number(v) < 0 || Number(v) > 100) msg = "Enter 0 - 100";
+        }
         break;
 
+      // Date
       case "validity":
         if (v && !/^\d{4}-\d{2}-\d{2}$/.test(v)) msg = "Invalid date";
         break;
 
-      case "itemCode":
-      case "exciseHeadNo":
-      case "storeLocation":
-      case "ffhw":
-        // allow alphanumeric; nothing to do here unless specific rule needed
+      // String length checks (NVARCHAR limits from DB schema)
+      case "itemName":
+        if (v && v.length > 100) msg = "Max 100 chars";
         break;
-
+      case "itemCode":
+        if (v && v.length > 20) msg = "Max 20 chars";
+        break;
+      case "location":
+        if (v && v.length > 50) msg = "Max 50 chars";
+        break;
+      case "make":
+        if (v && v.length > 50) msg = "Max 50 chars";
+        break;
+      case "hsnCode":
+        if (v && v.length > 15) msg = "Max 15 chars";
+        break;
       case "comments":
         if (v && v.length > 500) msg = "Max 500 chars";
+        break;
+      case "substituteItem":
+        if (v && v.length > 20) msg = "Max 20 chars";
+        break;
+      case "details":
+        if (v && v.length > 400) msg = "Max 400 chars";
+        break;
+      case "quotationCurrency":
+        if (v && v.length > 3) msg = "Max 3 chars";
+        break;
+      case "ffhw":
+        if (v && v.length > 4) msg = "Max 4 chars";
         break;
 
       default:
@@ -289,7 +304,7 @@ const ItemForm = ({ editData = null, onClose }) => {
   };
   
 const requiredFields = [
-  "statisticGroupId",
+  "groupId",
   "openingStock",
   "itemName",
   "itemCode",
@@ -299,7 +314,7 @@ const requiredFields = [
   "basicPrice",
   "salesPrice",
   "openingValue",
-  "storeLocation",
+  "location",
   "deliveryCode",
   "reorderLevel",
   "minLevel",
@@ -319,18 +334,27 @@ const requiredFields = [
   });
 
   // NUMERIC FIELDS
-  const numericFields = [
-    "basicPrice","salesPrice","openingValue",
-    "deliveryCode","reorderLevel",
-    "minLevel","maxLevel","make",
-    "transitDays","customDuty","factor","currentStock","uom"
+  const decimalFields = [
+    "openingStock","currentStock","salesPrice","basicPrice","openingValue",
+    "reorderLevel","minLevel","maxLevel","stockFactor","customDuty",
+    "cgst","sgst","igst"
   ];
 
-  numericFields.forEach((f) => {
+  decimalFields.forEach((f) => {
     const v = formData[f];
     if (v !== "" && v !== null && v !== undefined) {
-      if (!/^\d+(\.\d+)?$/.test(v)) {
+      if (!/^\d+(\.\d+)?$/.test(v.toString())) {
         newErrors[f] = "Must be a non-negative number";
+      }
+    }
+  });
+
+  const integerFields = ["groupId","masterId","deliveryCode","transitDays"];
+  integerFields.forEach((f) => {
+    const v = formData[f];
+    if (v !== "" && v !== null && v !== undefined) {
+      if (!/^\d+$/.test(v.toString())) {
+        newErrors[f] = "Must be an integer";
       }
     }
   });
@@ -351,6 +375,27 @@ const requiredFields = [
   if (formData.validity && !/^\d{4}-\d{2}-\d{2}$/.test(formData.validity)) {
     newErrors.validity = "Invalid date";
   }
+
+  // STRING LENGTH LIMITS (DB NVARCHAR sizes)
+  const stringLimits = {
+    itemName: 100,
+    itemCode: 20,
+    location: 50,
+    make: 50,
+    hsnCode: 15,
+    comments: 500,
+    substituteItem: 20,
+    details: 400,
+    quotationCurrency: 3,
+    ffhw: 4,
+    uom: 6
+  };
+
+  Object.keys(stringLimits).forEach((k) => {
+    const v = formData[k];
+    const max = stringLimits[k];
+    if (v && v.length > max) newErrors[k] = `Max ${max} chars`;
+  });
 
   // MIN / MAX CHECK
   if (
@@ -374,36 +419,36 @@ const handleSubmit = async () => {
   }
 
   const payload = {
-  UOM: formData.uom || 1,
-  StatisticGroupId: formData.statisticGroupId,
-  OpeningStock: formData.openingStock,
+  ID: editData?.ID || 0,
+  UOM: formData.uom || "",
+  GroupId: formData.groupId ? parseInt(formData.groupId) : 0,
+  OpeningStock: formData.openingStock ? parseFloat(formData.openingStock) : 0,
   ItemName: formData.itemName,
   TypeDesignation: formData.typeDesignation,
   ItemCode: formData.itemCode,
-  MasterId: formData.masterId,
-  CurrentStock: Number(formData.currentStock),
+  MasterId: formData.masterId ? parseInt(formData.masterId) : 0,
+  CurrentStock: formData.currentStock ? parseFloat(formData.currentStock) : 0,
   FF_HW: formData.ffhw,
-  SalesPrice: Number(formData.salesPrice),
+  SalesPrice: formData.salesPrice ? parseFloat(formData.salesPrice) : 0,
   DateOfValidity: formData.validity,
-  BasicPrice: Number(formData.basicPrice),
-  OpeningValue: Number(formData.openingValue),
-  StoreLocation: formData.storeLocation,
-  DeliveryCode: Number(formData.deliveryCode),
-  ReorderLevel: Number(formData.reorderLevel),
-  MinLevel: Number(formData.minLevel),
-  MaxLevel: Number(formData.maxLevel),
+  BasicPrice: formData.basicPrice ? parseFloat(formData.basicPrice) : 0,
+  OpeningValue: formData.openingValue ? parseFloat(formData.openingValue) : 0,
+  Location: formData.location,
+  DeliveryCode: formData.deliveryCode || "",
+  ReorderLevel: formData.reorderLevel ? parseFloat(formData.reorderLevel) : 0,
+  MinLevel: formData.minLevel ? parseFloat(formData.minLevel) : 0,
+  MaxLevel: formData.maxLevel ? parseFloat(formData.maxLevel) : 0,
   Make: formData.make,
-  Factor: Number(formData.factor),
-  HSNCode: Number(formData.hsnCode),
-  CGST: Number(formData.cgst),
-  SGST: Number(formData.sgst),
-  IGST: Number(formData.igst),
+  StockFactor: formData.stockFactor ? parseFloat(formData.stockFactor) : 0,
+  HSNCode: formData.hsnCode,
+  CGST: formData.cgst ? parseFloat(formData.cgst) : 0,
+  SGST: formData.sgst ? parseFloat(formData.sgst) : 0,
+  IGST: formData.igst ? parseFloat(formData.igst) : 0,
   Comments: formData.comments,
   SubstituteItem: formData.substituteItem,
-  ExciseHeadNo: formData.exciseHeadNo,
-  QuotationFor: formData.quotationFor,
-  TransitDays: Number(formData.transitDays),
-  CustomDuty: Number(formData.customDuty),
+  QuotationCurrency: formData.quotationCurrency,
+  TransitDays: formData.transitDays ? parseInt(formData.transitDays) : 0,
+  CustomDuty: formData.customDuty ? parseFloat(formData.customDuty) : 0,
   Details: formData.details,
   ISBOM: formData.isBom ? 1 : 0
 };
@@ -423,22 +468,34 @@ const handleSubmit = async () => {
       body: JSON.stringify(payload),
     });
 
-    const data = await res.json();
+    let dataText = "";
+    try {
+      dataText = await res.text();
+    } catch (e) {
+      // ignore
+    }
+
+    let data;
+    try {
+      data = dataText ? JSON.parse(dataText) : null;
+    } catch (e) {
+      data = null;
+    }
 
     if (res.ok) {
       alert(recordId ? "✔ Item updated successfully!" : "✔ Item saved successfully!");
-       
       if (onClose) onClose();
       else setFormData(initialFormState);
     } else {
-      alert("❌ Failed: " + (data.error || "Unknown error"));
+      console.error("Save failed", res.status, dataText, data);
+      const serverMsg = (data && (data.error || data.message)) || dataText || "Unknown error";
+      alert("Failed: " + serverMsg);
     }
   } catch (err) {
     console.error("❌ API Error:", err);
     alert("❌ API Error");
   }
 };
-
 
   // ------------------------------------------------
   // CANCEL → close in modal OR clear when used alone
@@ -454,13 +511,9 @@ const handleSubmit = async () => {
   // ------------------------------------------------
   // FORM UI (3 equal-height columns)
   // ------------------------------------------------
-return (
-  
+return (  
   <Box className="item-form-wrapper">
-
-   
     {onClose && (
-     
       <Box className="back-btn-wrapper">
         <Button 
         variant="contained" 
@@ -473,23 +526,16 @@ return (
       </Box>
     )}
 
-<Paper
-  className="form-paper"
-  // sx={{
-  //   width: "100%",
-  //   overflow: "visible",
-  //   minHeight: "auto"
-  // }}
->
-
-          <FormRow label="Statistic Group Id:">
+       <Paper
+         className="form-paper">
+          <FormRow label="Group Id:">
             <Select
               fullWidth
               size="small"
-              value={formData.statisticGroupId || ""}
-              onChange={handleChange("statisticGroupId")}
-              onBlur={() => validateField("statisticGroupId")}
-              error={!!errors.statisticGroupId}
+              value={formData.groupId || ""}
+              onChange={handleChange("groupId")}
+              onBlur={() => validateField("groupId")}
+              error={!!errors.groupId}
               sx={{ backgroundColor: 'background.paper' }}
               displayEmpty
               disabled={readOnly}
@@ -499,19 +545,17 @@ return (
               </MenuItem>
               {statisticGroups.map((g) => (
                  <MenuItem key={g.GroupId} value={g.GroupId}>
-                   {g.GroupName}
+                   {g.GroupCode}
                  </MenuItem>
               ))}
             </Select>
-            {errors.statisticGroupId && (
-              <Box sx={{ color: 'error.main', fontSize: '12px', mt: 0.5 }}>{errors.statisticGroupId}</Box>
+            {errors.groupId && (
+              <Box sx={{ color: 'error.main', fontSize: '12px', mt: 0.5 }}>{errors.groupId}</Box>
             )}
           </FormRow>
 
         {/* MAIN 3-COLUMN FORM */}
-     <Box className="form-columns">
-          {/* <Grid container spacing={2}>
-             <Grid item xs={12} lg={4}> */}
+            <Box className="form-columns">
                 <Box className="form-column">
                   <FormRow label="Opening Stock:">
                     <TextField
@@ -643,11 +687,11 @@ return (
                     <TextField
                       fullWidth
                       size="small"
-                      value={formData.storeLocation ?? ""}
-                      onChange={handleAlphaNumeric("storeLocation")}
-                      onBlur={() => validateField("storeLocation")}
-                      error={!!errors.storeLocation}
-                      helperText={errors.storeLocation}
+                      value={formData.location ?? ""}
+                      onChange={handleAlphaNumeric("location")}
+                      onBlur={() => validateField("location")}
+                      error={!!errors.location}
+                      helperText={errors.location}
                       sx={{ backgroundColor: 'background.paper' }}
                       disabled={readOnly}
                     />
@@ -662,34 +706,6 @@ return (
                       onBlur={() => validateField("deliveryCode")}
                       error={!!errors.deliveryCode}
                       helperText={errors.deliveryCode}
-                      sx={{ backgroundColor: 'background.paper' }}
-                      disabled={readOnly}
-                    />
-                  </FormRow>
-
-                  <FormRow label="Transit Days:">
-                    <TextField
-                      fullWidth
-                      size="small"
-                      value={formData.transitDays ?? ""}
-                      onChange={handleNumberChange("transitDays")}
-                      onBlur={() => validateField("transitDays")}
-                      error={!!errors.transitDays}
-                      helperText={errors.transitDays}
-                      sx={{ backgroundColor: 'background.paper' }}
-                      disabled={readOnly}
-                    />
-                  </FormRow>
-
-                  <FormRow label="Custom Duty:">
-                    <TextField
-                      fullWidth
-                      size="small"
-                      value={formData.customDuty ?? ""}
-                      onChange={handleDecimalChange("customDuty")}
-                      onBlur={() => validateField("customDuty")}
-                      error={!!errors.customDuty}
-                      helperText={errors.customDuty}
                       sx={{ backgroundColor: 'background.paper' }}
                       disabled={readOnly}
                     />
@@ -762,7 +778,7 @@ return (
                       fullWidth
                       size="small"
                       value={formData.make ?? ""}
-                      onChange={handleNumberChange("make")}
+                      onChange={handleAlphaNumeric("make")}
                       onBlur={() => validateField("make")}
                       error={!!errors.make}
                       helperText={errors.make}
@@ -771,15 +787,15 @@ return (
                     />
                   </FormRow>
 
-                  <FormRow label="Factor:">
+                  <FormRow label="Stock Factor:">
                     <TextField
                       fullWidth
                       size="small"
-                      value={formData.factor ?? ""}
-                      onChange={handleDecimalChange("factor")}
-                      onBlur={() => validateField("factor")}
-                      error={!!errors.factor}
-                      helperText={errors.factor}
+                      value={formData.stockFactor ?? ""}
+                      onChange={handleDecimalChange("stockFactor")}
+                      onBlur={() => validateField("stockFactor")}
+                      error={!!errors.stockFactor}
+                      helperText={errors.stockFactor}
                       sx={{ backgroundColor: 'background.paper' }}
                       disabled={readOnly}
                     />
@@ -790,7 +806,7 @@ return (
                       fullWidth
                       size="small"
                       value={formData.hsnCode ?? ""}
-                      onChange={handleNumberChange("hsnCode")}
+                      onChange={handleAlphaNumeric("hsnCode")}
                       onBlur={() => validateField("hsnCode")}
                       error={!!errors.hsnCode}
                       helperText={errors.hsnCode}
@@ -858,16 +874,42 @@ return (
                   </FormRow>
                 </Box>
 
-            
-
               {/* COLUMN 3 */}
                  <Box className="form-column">
+                  <FormRow label="Transit Days:">
+                    <TextField
+                      fullWidth
+                      size="small"
+                      value={formData.transitDays ?? ""}
+                      onChange={handleNumberChange("transitDays")}
+                      onBlur={() => validateField("transitDays")}
+                      error={!!errors.transitDays}
+                      helperText={errors.transitDays}
+                      sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
+                    />
+                  </FormRow>
+
+                  <FormRow label="Custom Duty:">
+                    <TextField
+                      fullWidth
+                      size="small"
+                      value={formData.customDuty ?? ""}
+                      onChange={handleDecimalChange("customDuty")}
+                      onBlur={() => validateField("customDuty")}
+                      error={!!errors.customDuty}
+                      helperText={errors.customDuty}
+                      sx={{ backgroundColor: 'background.paper' }}
+                      disabled={readOnly}
+                    />
+                  </FormRow>
+
                   <FormRow label="UOM:">
                     <TextField
                       fullWidth
                       size="small"
                       value={formData.uom ?? ""}
-                      onChange={handleNumberChange("uom")}
+                      onChange={handleAlphaNumeric("uom")}
                       onBlur={() => validateField("uom")}
                       error={!!errors.uom}
                       helperText={errors.uom}
@@ -951,24 +993,24 @@ return (
                     <TextField
                       fullWidth
                       size="small"
-                      value={formData.exciseHeadNo ?? ""}
-                      onChange={handleAlphaNumeric("exciseHeadNo")}
-                      onBlur={() => validateField("exciseHeadNo")}
-                      error={!!errors.exciseHeadNo}
-                      helperText={errors.exciseHeadNo}
+                      value={formData.hsnCode ?? ""}
+                      onChange={handleAlphaNumeric("hsnCode")}
+                      onBlur={() => validateField("hsnCode")}
+                      error={!!errors.hsnCode}
+                      helperText={errors.hsnCode}
                       sx={{ backgroundColor: 'background.paper' }}
                       disabled={readOnly}
                     />
                   </FormRow>
 
-                  <FormRow label="Quotation For:">
+                  <FormRow label="Quotation Currency:">
                     <Select
                       fullWidth
                       size="small"
-                      value={formData.quotationFor ?? ""}
-                      onChange={handleChange("quotationFor")}
-                      onBlur={() => validateField("quotationFor")}
-                      error={!!errors.quotationFor}
+                      value={formData.quotationCurrency ?? ""}
+                      onChange={handleChange("quotationCurrency")}
+                      onBlur={() => validateField("quotationCurrency")}
+                      error={!!errors.quotationCurrency}
                       sx={{ backgroundColor: 'background.paper' }}
                       disabled={readOnly}
                     >
@@ -976,8 +1018,8 @@ return (
                       <MenuItem value="Euro">Euro</MenuItem>
                       <MenuItem value="Both">Both</MenuItem>
                     </Select>
-                    {errors.quotationFor && (
-                      <Box sx={{ color: 'error.main', fontSize: '12px', mt: 0.5 }}>{errors.quotationFor}</Box>
+                    {errors.quotationCurrency && (
+                      <Box sx={{ color: 'error.main', fontSize: '12px', mt: 0.5 }}>{errors.quotationCurrency}</Box>
                     )}
                   </FormRow>
 
@@ -1007,17 +1049,15 @@ return (
             )}
 
           <Button
-  variant="contained"
-  className="cancel-btn"
-  onClick={handleCancel}
->
+            variant="contained"
+            className="cancel-btn"
+            onClick={handleCancel}
+          >
 
          {readOnly ? "Close" : "Cancel"}
         </Button>
           </Box>
-       
       </Paper>
-
     </Box>
   );
 };

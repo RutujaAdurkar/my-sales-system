@@ -4,7 +4,6 @@ import {
   Box,
   Button
 } from "@mui/material";
-
 import AddIcon from "@mui/icons-material/Add";
 import ItemForm from "./ItemForm";
 import * as XLSX from "xlsx";
@@ -21,9 +20,24 @@ export default function ItemMasterList() {
 
   // Load table data
   const loadData = async () => {
-    const res = await fetch("http://localhost:5000/api/itemmaster");
-    const data = await res.json();
-    setItems(data);
+    try {
+      const res = await fetch("http://localhost:5000/api/itemmaster");
+      const data = await res.json();
+
+      // Ensure we always set an array. Backend should return an array
+      if (Array.isArray(data)) {
+        setItems(data);
+      } else if (data && Array.isArray(data.recordset)) {
+        // some APIs return { recordset: [...] }
+        setItems(data.recordset);
+      } else {
+        console.warn("/api/itemmaster returned non-array:", data);
+        setItems([]);
+      }
+    } catch (err) {
+      console.error("Failed to load items:", err);
+      setItems([]);
+    }
   };
 
   useEffect(() => {
@@ -141,7 +155,7 @@ export default function ItemMasterList() {
     { field: "ItemName", headerName: "Item Name", width: 120 },
     { field: "TypeDesignation", headerName: "Type Designation", width: 150 },
     { field: "MasterId", headerName: "Master ID", width: 100 },
-    { field: "StoreLocation", headerName: "Store Location", width: 150 },
+    { field: "Location", headerName: "Store Location", width: 150 },
     { field: "SalesPrice", headerName: "Sales Price", width: 100 },
     { field: "HSNCode", headerName: "HSN Code", width: 120 }
   ];
