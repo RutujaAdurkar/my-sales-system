@@ -70,7 +70,6 @@ const FormRow = ({ label, children, right }) => (
   </Grid>
 );
 
-
 export default function VisitReportCustomerwise() {
   const [filters, setFilters] = useState({
     fromDate: "",
@@ -103,7 +102,7 @@ export default function VisitReportCustomerwise() {
     const to = new Date(filters.toDate);
 
     const result = DATA.filter((row) => {
-      const visitDate = new Date(row.visitDate);
+    const visitDate = new Date(row.visitDate);
 
       const dateMatch = visitDate >= from && visitDate <= to;
       const customerMatch =
@@ -193,7 +192,6 @@ const handleClose = () => {
   setFilteredData([]);
   setShowTable(false);
 };
-
 
   return (
     <Box className="visit-report-container">

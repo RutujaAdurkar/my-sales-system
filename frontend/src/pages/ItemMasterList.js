@@ -38,7 +38,7 @@ export default function ItemMasterList() {
       console.error("Failed to load items:", err);
       setItems([]);
     }
-  };
+  }; 
 
   useEffect(() => {
     loadData();
@@ -173,12 +173,12 @@ export default function ItemMasterList() {
   return (
     <StandardTable
       title="Item Master"
-      columns={columns}
+      columns={columns}    
       rows={items}
       search={search}
       setSearch={setSearch}
       selectedRows={selectedRows}
-      setSelectedRows={setSelectedRows}
+      setSelectedRows={setSelectedRows} 
       onAdd={openAddForm}
       onExport={handleExport}
       onEdit={openEditForm}

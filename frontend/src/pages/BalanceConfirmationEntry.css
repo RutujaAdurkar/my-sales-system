@@ -1,0 +1,63 @@
+.bce-container {
+  padding: 12px;
+}
+
+.bce-paper {
+  padding: 14px;
+  border-radius: 4px;
+}
+
+.bce-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+/* TOP SECTION - LETTER NO + DATE (2 columns) */
+.bce-top-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+/* MIDDLE SECTION - CUSTOMER, BALANCE, SUBJECT, ETC (full width) */
+.bce-middle-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+/* FORM ROW */
+.bce-form-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.bce-form-row.full-width {
+  width: 100%;
+}
+
+.bce-label {
+  font-size: 13px;
+  font-weight: 600;
+  min-width: 100px;
+  white-space: nowrap;
+  padding-top: 6px;
+}
+
+.bce-input-wrapper {
+  flex: 1;
+  min-width: 0;
+}
+
+/* FOOTER */
+.bce-footer {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}

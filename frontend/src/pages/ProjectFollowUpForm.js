@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import DownloadIcon from "@mui/icons-material/Download";
+//import DownloadIcon from "@mui/icons-material/Download";
 import * as XLSX from "xlsx";
 import "./ProjectFollowUpForm.css";
 import { saveAs } from "file-saver";
@@ -13,10 +13,10 @@ import {
   FormControlLabel,
   Select,
   MenuItem,
-  Typography,
+  //Typography,
   Paper,
   IconButton,
-  Menu,
+  //Menu,
   MenuItem as MUIMenuItem,TableContainer,TableCell,TableHead,TableRow,TableBody,Table,TablePagination
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -83,7 +83,7 @@ const filteredRows = rows.filter((x) =>
     follow2: "Follow By (2)",           
     followUpDate: "Follow-Up Date",
   };
-
+  
   useEffect(() => {
     fetchLists();
     fetchRows();
@@ -293,27 +293,24 @@ const downloadExcel = () => {
 
      {view === "table" ? (
   <StandardTable
-    title="Payment Followups"
+    title="Project Followups"
     columns={columns}
     rows={rows}
     search={search}
-    setSearch={setSearch}
+    setSearch={setSearch}  
     selectedRows={selectedRows}
-    setSelectedRows={setSelectedRows}
+    setSelectedRows={setSelectedRows} 
 
     onAdd={openAddForm}
     onEdit={openEditForm}
     onView={openViewForm}
-    onDelete={(row) => handleDelete(row.Id)}
-
+    onDelete={(row) => handleDelete(row.Id)}   
     onExport={() => {
       // default: export selected
       downloadExcel();
     }}
   />
 ) : (
-
-
         /* FORM VIEW */
         <Paper className="project-form">
           <Box className="form-top-actions">
@@ -322,7 +319,7 @@ const downloadExcel = () => {
               sx={{ background: "#1976d2" }}
               onClick={() => {
                 setView("table");
-                setReadOnly(false);
+                setReadOnly(false); 
               }}
             >
               Back to Table
@@ -482,13 +479,13 @@ const downloadExcel = () => {
             )}
             
             <Button
-  variant="contained"
-  className="cancel-btn"
-  onClick={() => {
-    setView("table");
-    setReadOnly(false);
-  }}
->
+             variant="contained"
+             className="cancel-btn"
+             onClick={() => {
+             setView("table");
+             setReadOnly(false);
+             }}
+            >
 
              {readOnly ? "CLOSE" : "CANCEL"}
             </Button>

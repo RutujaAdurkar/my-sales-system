@@ -160,7 +160,6 @@ const isAnyFieldFilled = () => {
   );
 };
 
-
 const handleShow = () => {
   if (!isFromToValid()) {
     alert("Please select both From and To dates");
@@ -209,7 +208,6 @@ const handleShow = () => {
   {/* CUSTOMER + ALL */}
   <Box className="form-row-horizontal">
     <Box className="form-label-left">Customer</Box>
-
     <Box className="customer-horizontal">
       <TextField
         select
@@ -236,14 +234,12 @@ const handleShow = () => {
 
   {/* BUTTONS */}
   <Box className="button-row">
-   
 <Button variant="contained" className="show-btn" onClick={handleShow}>
   Show
 </Button>
 
-
     <Button variant="outlined">Print</Button>
-
+    
 <Button
   variant="outlined"
   onClick={handleExportExcel}

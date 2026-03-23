@@ -6,7 +6,7 @@ import {
   Grid,
   TextField,
   Button,
-  MenuItem,
+  MenuItem, 
   Table,
   TableHead,
   TableBody,
@@ -14,7 +14,7 @@ import {
   TableCell,
   IconButton,
   Menu,
-  MenuItem as MUIMenuItem
+  MenuItem as MUIMenuItem   
 } from "@mui/material";
 import StandardTable from "../components/StandardTable";
 
@@ -57,7 +57,7 @@ const ApplicationReportEntry = ({
   const [anchorEl, setAnchorEl] = useState(null);
  
   const [exportAnchorEl, setExportAnchorEl] = useState(null);
-const [selectedRows, setSelectedRows] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
 
   const menuRowRef = useRef(null);
 
@@ -79,7 +79,7 @@ const [selectedRows, setSelectedRows] = useState([]);
     quantity: "",
     application: "",
     ifmSolution: "",
-    kindAttention: "",
+    kindAttention: "", 
   });
 
   const [errors, setErrors] = useState({});
@@ -109,7 +109,7 @@ const [selectedRows, setSelectedRows] = useState([]);
     fetchRows();
   }, []);
 
-  const loadDropdownData = async () => {
+  const loadDropdownData = async () => {      
     try {
       const custRes = await fetch(
         "http://localhost:5000/api/appDropdowns/customers"
@@ -124,9 +124,8 @@ const [selectedRows, setSelectedRows] = useState([]);
       console.error("Dropdown fetch failed", err);
     }
   };
-
   useEffect(() => {
-    if (initialData) {
+    if (initialData) {      
       fillForm(initialData);
     }
   }, [initialData]);
@@ -136,10 +135,10 @@ const [selectedRows, setSelectedRows] = useState([]);
   }, [editingIdFromProps]);
 
   const fetchEditRecord = async (id) => {
-    try {
+    try {                
       const res = await fetch(`http://localhost:5000/api/appReport/${id}`);
       const r = await res.json();
-      if (r) {
+      if (r) {  
         fillForm(r);
         setEditingId(r.Id || id);
         setView("form");
@@ -371,21 +370,21 @@ const columns = [
 </Box>
 
       {view === "table" ? (
-  <StandardTable
-    title="Application Report Entry"
-    columns={columns}
-    rows={filteredRows}
-    search={search}
-    setSearch={setSearch}
-    selectedRows={selectedRows}
-    setSelectedRows={setSelectedRows}
-    onAdd={openAddForm}
-    onView={(row) => {
-      fillForm(row);
-      setEditingId(row.Id);
-      setReadOnly(true);
-      setView("form");
-    }}
+      <StandardTable
+       title="Application Report Entry"
+       columns={columns}
+       rows={filteredRows}
+       search={search}
+       setSearch={setSearch}
+       selectedRows={selectedRows}
+       setSelectedRows={setSelectedRows}
+       onAdd={openAddForm}
+       onView={(row) => {
+        fillForm(row);
+        setEditingId(row.Id);
+        setReadOnly(true);
+        setView("form");
+      }}
     onEdit={(row) => {
       fillForm(row);
       setEditingId(row.Id);
@@ -401,17 +400,15 @@ const columns = [
     }}
   />
 ) : (
-
-        
         <Paper
-  sx={{
-    p: 3,
-    borderRadius: 2,
-    display: "flex",
-    flexDirection: "column",
-    minHeight: "70vh"   // 👈 IMPORTANT
-  }}
->
+         sx={{
+         p: 3,
+         borderRadius: 2,
+         display: "flex",
+         flexDirection: "column",
+         minHeight: "70vh"   // 👈 IMPORTANT
+         }}
+        >
 
         
           <Grid container spacing={4} sx={{ flexGrow: 1 }}>

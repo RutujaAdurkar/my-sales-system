@@ -252,7 +252,6 @@ const showToast = (message, severity = "success") => {
               value={salesReturnDate}
               onChange={(e) => setSalesReturnDate(e.target.value)}
             />
-
           </FormRow>
 
           <FormRow label="Customer">
@@ -280,7 +279,6 @@ const showToast = (message, severity = "success") => {
               value={docDate}
               onChange={(e) => setDocDate(e.target.value)}
             />
-
           </FormRow>
 
           <FormRow label="Doc No.">
@@ -289,7 +287,6 @@ const showToast = (message, severity = "success") => {
               value={docNo}
               onChange={(e) => setDocNo(e.target.value)}
             />
-
           </FormRow>
 
           {/* Checkbox */}
@@ -369,7 +366,6 @@ const showToast = (message, severity = "success") => {
                 }}
                disabled={itemCgst > 0 || itemSgst > 0}
               />
-
             </FormRow>
 
             <Box className="btn-row">
@@ -388,7 +384,6 @@ const showToast = (message, severity = "success") => {
               value={itemDetails}
               onChange={(e) => setItemDetails(e.target.value)}
             />
-
           </Box>
 
           {/* RIGHT */}
@@ -405,8 +400,8 @@ const showToast = (message, severity = "success") => {
                  if (val >= 0) setQty(val);
                 }}
               />
-
             </FormRow>
+
             <FormRow label="Purchase Cost">
               <TextField
                 size="small"
@@ -414,8 +409,8 @@ const showToast = (message, severity = "success") => {
                 value={purchaseCost}
                 onChange={(e) => setPurchaseCost(Number(e.target.value) || 0)}
               />
-
             </FormRow>
+
             <FormRow label="Amount">
              <TextField
                size="small"
@@ -487,21 +482,21 @@ const showToast = (message, severity = "success") => {
 
 
         {/* ================= BOTTOM ERP (WINFORMS STYLE) ================= */}
-<Box className="sr-bottom-win">
+     <Box className="sr-bottom-win">
 
-  {/* LEFT : Narration */}
-  <Box className="sr-bottom-left">
-    <Typography className="erp-label">Narration</Typography>
-    <TextField
-      multiline
-      rows={4}
-      size="small"
-      className="narration-box"
-      value={narration}
-      onChange={(e) => setNarration(e.target.value)}
-    />
+      {/* LEFT : Narration */}
+     <Box className="sr-bottom-left">
+      <Typography className="erp-label">Narration</Typography>
+       <TextField
+        multiline
+        rows={4}
+        size="small"
+        className="narration-box"
+        value={narration}
+        onChange={(e) => setNarration(e.target.value)}
+       />
 
-    <Box className="invoice-cancel-row">
+     <Box className="invoice-cancel-row">
       <Checkbox
         size="small"
         checked={invoiceCancel}
@@ -573,7 +568,6 @@ const showToast = (message, severity = "success") => {
         }}
        disabled={cgst > 0 || sgst > 0}
       />
-
     </Box>
 
     <Box className="erp-row">
@@ -602,7 +596,6 @@ const showToast = (message, severity = "success") => {
     <TotalRow label="Total IGST" value={totalIgst} />
     <TotalRow label="Total" value={grandTotal} bold />
   </Box>
-
 </Box>
 
         {/* ================= FOOTER ================= */}

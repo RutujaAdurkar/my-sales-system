@@ -1,0 +1,69 @@
+.rae-container {
+  padding: 12px;
+}
+
+.rae-paper {
+  padding: 14px;
+  border-radius: 4px;
+}
+
+.rae-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.rae-filter-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  align-items: flex-end;
+  margin-bottom: 12px;
+}
+
+.rae-filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rae-label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.rae-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.rae-table {
+  margin-top: 12px;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.rae-table thead {
+  background-color: #f57c00;
+}
+
+.rae-table thead th {
+  color: white;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.rae-table td {
+  font-size: 13px;
+  padding: 8px;
+}
+
+.rae-total-row {
+  background-color: #f0f0f0;
+  font-weight: 600;
+}
+
+.rae-total-row td {
+  font-weight: 600;
+  padding: 8px;
+}

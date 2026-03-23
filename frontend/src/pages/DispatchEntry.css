@@ -1,0 +1,65 @@
+.de-container {
+  padding: 12px;
+}
+
+.de-paper {
+  padding: 14px;
+  border-radius: 4px;
+}
+
+.de-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.de-filter-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  align-items: flex-end;
+  margin-bottom: 10px;
+}
+
+.de-filter-row--secondary {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.de-checkbox-field {
+  align-items: flex-end;
+}
+
+.de-filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.de-label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.de-checkbox {
+  margin-top: 3px;
+  font-size: 13px;
+}
+
+.de-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.de-table {
+  margin-top: 10px;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.de-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  gap: 8px;
+}

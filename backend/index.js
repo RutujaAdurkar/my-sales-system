@@ -10,7 +10,7 @@ app.use(express.json());
 // Serve uploaded files publicly from /uploads
 app.use('/uploads', express.static('uploads'));
 
-
+ 
 // SQL CONFIG
 const config = {
     user: process.env.DB_USER,

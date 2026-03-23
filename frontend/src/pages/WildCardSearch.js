@@ -3,10 +3,10 @@ import "./WildCardSearch.css";
 import {
   Box,
   Paper,
-  TextField,
-  MenuItem,
-  Button,
-  Typography,
+  TextField,           
+  MenuItem,            
+  Button,    
+  Typography, 
   Table,
   TableHead,
   TableRow,
@@ -32,7 +32,7 @@ const DATA = [
     email: "karthikeyan@wabco.com",
     name: "Senthil",
     phone: "97999887"
-  },
+  }, 
   {
     salesPerson: "Logesh",
     accountName: "ABC BEARINGS LTD",
@@ -164,8 +164,8 @@ export default function WildCardSearch() {
               Total Matches: {rows.length}
             </Typography>
           </>
-        )}
+        )}  
       </Paper>
-    </Box>
+    </Box>  
   );
 }

@@ -214,13 +214,11 @@ export default function TechnicalSupportReport() {
         </Box>
 
         {/* ===== VALIDATION ERROR MESSAGE ===== */}
-{errorMsg && (
-  <Box className="error-msg">
-    {errorMsg}
-  </Box>
-)}
-
-
+     {errorMsg && (
+       <Box className="error-msg">
+         {errorMsg}
+       </Box>
+    )}
 
         {/* ===== TABLE ===== */}
         {showTable && (

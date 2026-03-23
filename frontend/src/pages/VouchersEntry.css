@@ -1,0 +1,173 @@
+.ve-container {
+  padding: 12px;
+}
+
+.ve-paper {
+  padding: 14px;
+  border-radius: 4px;
+}
+
+.ve-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+/* TOP SECTION */
+.ve-top-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+/* ENTRY SECTION */
+.ve-entry-section {
+  margin-bottom: 12px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 4px;
+}
+
+.ve-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.ve-entry-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+/* FORM ROW */
+.ve-form-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.ve-form-row.full-width {
+  width: 100%;
+  flex-direction: column;
+}
+
+.ve-label {
+  font-size: 13px;
+  font-weight: 600;
+  min-width: 90px;
+  white-space: nowrap;
+  padding-top: 6px;
+}
+
+.ve-form-row.full-width .ve-label {
+  min-width: unset;
+  padding-top: 0;
+}
+
+.ve-input-wrapper {
+  flex: 1;
+  min-width: 0;
+}
+
+/* NARRATION ROW */
+.ve-narration-row {
+  margin-bottom: 8px;
+}
+
+.ve-add-btn {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* TABLE SECTION */
+.ve-table-section {
+  margin-bottom: 12px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.ve-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ve-table thead {
+  background-color: #f57c00;
+}
+
+.ve-table thead th {
+  color: white;
+  font-weight: 600;
+  font-size: 13px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.ve-table td {
+  font-size: 13px;
+  padding: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.ve-total-row {
+  background-color: #f0f0f0;
+  font-weight: 600;
+}
+
+.ve-total-row td {
+  font-weight: 600;
+  background-color: #f0f0f0;
+}
+
+/* BOTTOM NARRATION */
+.ve-bottom-narration {
+  margin-bottom: 12px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 4px;
+}
+
+/* FOOTER */
+.ve-footer {
+  display: flex;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* DARK MODE FIXES */
+body.dark .ve-paper {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+body.dark .ve-entry-section {
+  background-color: rgba(255, 255, 255, 0.07);
+}
+
+body.dark .ve-bottom-narration {
+  background-color: rgba(255, 255, 255, 0.07);
+}
+
+body.dark .ve-table thead {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark .ve-table thead th {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+body.dark .ve-table td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark .ve-total-row {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark .ve-total-row td {
+  background-color: rgba(255, 255, 255, 0.08);
+}

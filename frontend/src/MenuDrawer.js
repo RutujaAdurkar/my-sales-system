@@ -110,8 +110,18 @@ const MenuDrawer = ({ open, setOpen }) => {
   else if (name === "city master") navigate("/city-master");
   else if (name === "state master") navigate("/state-master");
   else if (name === "sales return") navigate("/sales-return");
+  else if (name === "dispatch entry" || name.includes("dispatch"))
+    navigate("/dispatch-entry");
+  else if (name === "balance confirmation entry" || name.includes("balance confirmation"))
+    navigate("/balance-confirmation");
+  else if (name === "received amount entry" || name.includes("received amount"))
+    navigate("/received-amount-entry");
+  else if (name === "vouchers entry" || name === "vouchers print" || name.includes("voucher"))
+    navigate("/vouchers-entry");
   else if (name === "wildcard search" || name === "wild card search")
     navigate("/wildcard-search");
+  else if (name.includes("create excel") && name.includes("email"))
+    navigate("/create-excel-email");
  else if (name.includes("visit report") && name.includes("customer"))
   navigate("/visit-report-customerwise");
 else if (name.includes("technical") &&

@@ -31,12 +31,16 @@ import FollowupTelephoneReportCustomerwise from "./pages/FollowupTelephoneReport
 import TechnicalSupportReportCustomerwise from "./pages/TechnicalSupportReportCustomerwise";
 import VideoSalesCallReportCustomerwise from "./pages/VideoSalesCallReportCustomerwise";
 import PaymentFollowupReport from "./pages/PaymentFollowupReport";
+import DispatchEntry from "./pages/DispatchEntry";
+import CreateExcelEmail from "./pages/CreateExcelEmail";
+import BalanceConfirmationEntry from "./pages/BalanceConfirmationEntry";
+import ReceivedAmountEntry from "./pages/ReceivedAmountEntry";
+import VouchersEntry from "./pages/VouchersEntry";
 
 function App() {
   // 🔹 Drawer state (unchanged)
   const [drawerOpen, setDrawerOpen] = useState(false); 
-// false = icon only, true = icon + text
-
+// false = icon only, true = icon + text  
 
   // 🔹 Theme mode state (unchanged)
   const [mode, setMode] = useState(
@@ -58,7 +62,6 @@ function App() {
   [mode]
 );
 
-
   // 🔹 Theme toggle (unchanged)
   const toggleMode = () => {
     setMode((prev) => {
@@ -76,7 +79,6 @@ useEffect(() => {
     document.body.classList.remove("dark");
   }
 }, [mode]);
-
 
   return (
     <ThemeProvider theme={theme}>
@@ -150,12 +152,23 @@ useEffect(() => {
               {/* STATE MASTER FORM */}
               <Route path="/state-master" element={<StateMasterForm />} />
             
-              {/* SALES RETURN */}
+               {/* SALES RETURN */}
                <Route path="/sales-return" element={<SalesReturn />} />
+
+              {/* DISPATCH ENTRY */}
+              <Route path="/dispatch-entry" element={<DispatchEntry />} />
+
+              {/* BALANCE CONFIRMATION ENTRY */}
+              <Route path="/balance-confirmation" element={<BalanceConfirmationEntry />} />
+
+              {/* RECEIVED AMOUNT ENTRY */}
+              <Route path="/received-amount-entry" element={<ReceivedAmountEntry />} />
+
+              {/* VOUCHERS ENTRY */}
+              <Route path="/vouchers-entry" element={<VouchersEntry />} />
               
               {/* WILD CARD SEARCH */}
               <Route path="/wildcard-search" element={<WildCardSearch />} />
-            
               
             {/* VISIT REPORT - CUSTOMERWISE */}
             <Route path="/visit-report-customerwise" element={<VisitReportCustomerwise />} />
@@ -166,21 +179,20 @@ useEffect(() => {
             {/* TECHNICAL SUPPORT REPORT - CUSTOMERWISE */}
             <Route path="/technical-support-report-customerwise" element={<TechnicalSupportReportCustomerwise />} />
 
-
             {/* VIDEO SALES CALL REPORT - CUSTOMERWISE */}
             <Route path="/video-sales-call-report-customerwise" element={<VideoSalesCallReportCustomerwise />} />
+
+            {/* EXCEL FILE CREATION FOR EMAILS */}
+            <Route path="/create-excel-email" element={<CreateExcelEmail />} />
             
             <Route
-               path="/payment-follow-up-report"
-               element={<PaymentFollowupReport />}
-           />
-
+               path="/payment-follow-up-report" element={<PaymentFollowupReport />}  />
             </Routes>
           </Box>
         </DashboardLayout>
       </Router>
-    </ThemeProvider>
-  );
+    </ThemeProvider> 
+  );     
 }
-
-export default App;
+  
+export default App;  
